@@ -26,7 +26,7 @@ class DartCartPoleSwingUpEnv(dart_env.DartEnv, utils.EzPickle):
         com_cost = 0.01 * np.abs(self.robot_skeleton.q[0])
 
         reward = alive_bonus - ang_cost - quad_ctrl_cost - com_cost
-
+        # reward = -ang_cost
         done = abs(ang) > 8 * np.pi or abs(self.robot_skeleton.dq[1]) > 25 or abs(self.robot_skeleton.q[0]) > 5
 
         return ob, reward, bool(done), {}

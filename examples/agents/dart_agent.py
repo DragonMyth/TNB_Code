@@ -8,7 +8,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         env = gym.make(sys.argv[1])
     else:
-        env = gym.make('DartWalker3dSPD-v1')
+        env = gym.make('DartWalker3d-v1')
 
     env.env.disableViewer = False
 

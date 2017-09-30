@@ -13,3 +13,9 @@ from gym.envs.dart.inverted_double_pendulum import DartDoubleInvertedPendulumEnv
 from gym.envs.dart.dog import DartDogEnv
 from gym.envs.dart.reacher2d import DartReacher2dEnv
 
+#Swiming Simulation envs
+from gym.envs.dart.eel_swim_straight import DartEelSwimStraighEnv
+from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
+from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
+from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
+from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnv

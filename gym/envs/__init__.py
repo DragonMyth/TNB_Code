@@ -266,7 +266,46 @@ register(
 )
 
 
+#Dart Swimming Models
+register(
+    id='DartEel-v0',
+    entry_point='gym.envs.dart:DartEelSwimStraighEnv',
+    max_episode_steps=500,
+)
 
+# Normal modal normal env
+register(
+    id='DartTurtle-v0',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighEnv',
+    max_episode_steps=500,
+)
+
+# Mirror model
+register(
+    id='DartTurtle-v1',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighHalfEnv',
+    max_episode_steps=500,
+)
+
+#Large model
+register(
+    id='DartTurtle-v2',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighLargeEnv',
+    max_episode_steps=500,
+)
+
+# SPD controller
+register(
+    id='DartTurtle-v3',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
+    max_episode_steps=500,
+)
+
+register(
+    id='DartTurtle-v4',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
+    max_episode_steps=2000,
+)
 
 # Mujoco
 # ----------------------------------------

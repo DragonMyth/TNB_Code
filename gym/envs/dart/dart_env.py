@@ -20,13 +20,14 @@ except ImportError as e:
     raise error.DependencyNotInstalled("{}. (HINT: you need to install pydart2.)".format(e))
 
 
+
 class DartEnv(gym.Env):
     """Superclass for all Dart environments.
     """
 
     def __init__(self, model_paths, frame_skip, observation_size, action_bounds, \
                  dt=0.002, obs_type="parameter", action_type="continuous", visualize=True, disableViewer=False,\
-                 screen_width=80, screen_height=45):
+                 screen_width=80, screen_height=45,custom_world = None):
         assert obs_type in ('parameter', 'image')
         assert action_type in ("continuous", "discrete")
         print('pydart initialization OK')
@@ -51,9 +52,16 @@ class DartEnv(gym.Env):
             full_paths.append(fullpath)
 
         if full_paths[0][-5:] == '.skel':
-            self.dart_world = pydart.World(dt, full_paths[0])
+            if custom_world is None:
+                self.dart_world = pydart.World(dt, full_paths[0])
+            else:
+                self.dart_world = custom_world(dt, full_paths[0])
+
         else:
-            self.dart_world = pydart.World(dt)
+            if custom_world is None:
+                self.dart_world = pydart.World(dt)
+            else:
+                self.dart_world = custom_world(dt)
             for fullpath in full_paths:
                 self.dart_world.add_skeleton(fullpath)
 
