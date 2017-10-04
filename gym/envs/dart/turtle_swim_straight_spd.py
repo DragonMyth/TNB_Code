@@ -10,7 +10,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = np.pi / 2.0
         frame_skip = 5
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', frame_skip, 16, control_bounds, dt=0.002,
-                                  disableViewer=False,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
         self.init_state = self._get_obs()
@@ -25,7 +25,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-
+        self.symm_rate  = -5e-2*np.array([1,1,0.1,0.1])
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
@@ -59,16 +59,20 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         angs = np.abs(self.robot_skeleton.q[6::])
         ang_cost_rate = 0.0001
         torque_cost_rate = 0.001
-        symm_rate = 0
-        symm_pos_pen = symm_rate * np.sum(np.abs(cur_q[
-                                                     'left_front_limb_joint_1', 'left_front_limb_joint_2', 'left_rear_limb_joint_1', 'left_rear_limb_joint_2'] -
-                                                 cur_q[
-                                                     'right_front_limb_joint_1', 'right_front_limb_joint_2', 'right_rear_limb_joint_1', 'right_rear_limb_joint_2']))
+        symm_pos_pen = np.sum(self.symm_rate *
+                              np.abs(cur_q['left_front_limb_joint_1',
+                                            'left_front_limb_joint_2',
+                                           'left_rear_limb_joint_1',
+                                           'left_rear_limb_joint_2']-
+                                    cur_q['right_front_limb_joint_1',
+                                          'right_front_limb_joint_2',
+                                          'right_rear_limb_joint_1',
+                                          'right_rear_limb_joint_2']))
         # symm_vel_pen = symm_rate*np.sum(np.abs(cur_dq['left_front_limb_joint_1', 'left_front_limb_joint_2'] - cur_dq[
         #     'right_front_limb_joint_1', 'right_front_limb_joint_2']))
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
-        horizontal_vel_rwd = 3*cur_dq[3]
-        orth_pen = (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        horizontal_vel_rwd = 0 #3*cur_dq[3]
+        orth_pen = 0.5* (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd +  horizontal_vel_rwd - rotate_pen - orth_pen - symm_pos_pen
