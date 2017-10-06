@@ -8,9 +8,9 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
         self.action_scale = np.pi / 2.0
-        frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', frame_skip, 16, control_bounds, dt=0.002,
-                                  disableViewer=True,
+        self.frame_skip = 5
+        dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', self.frame_skip, 16, control_bounds, dt=0.002,
+                                  disableViewer=False,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
         self.init_state = self._get_obs()
@@ -19,7 +19,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
         num_of_dofs = len(self.robot_skeleton.dofs) - len(self.robot_skeleton.joints[0].dofs)
 
-        self.simulation_dt = self.dt * 1.0 / frame_skip
+        self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
         # self.Kd = 150 * self.simulation_dt * self.Kp
         self.Kd = self.simulation_dt * self.Kp
@@ -77,7 +77,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd +  horizontal_vel_rwd - rotate_pen - orth_pen - symm_pos_pen
 
-        notdone = np.isfinite(ob).all() and (np.abs(angs) < np.pi / 2.0).all()
+        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
@@ -85,14 +85,12 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
                                   'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'symm_pos_pen': -symm_pos_pen}
 
     def _get_obs(self):
-        return np.concatenate([self.robot_skeleton.q[6::], self.robot_skeleton.dq[6::]]).ravel()
+        return np.concatenate([self.robot_skeleton.q[4:6],self.robot_skeleton.dq[3:6],self.robot_skeleton.q[6::], self.robot_skeleton.dq[6::]]).ravel()
 
     def reset_model(self):
         self.dart_world.reset()
         qpos = self.robot_skeleton.q + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
-        qpos[:6] = 0
         qvel = self.robot_skeleton.dq + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
-        qvel[:6] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()
 
