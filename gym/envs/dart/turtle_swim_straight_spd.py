@@ -25,7 +25,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-        self.symm_rate  = -5e-2*np.array([1,1,0.1,0.1])
+        self.symm_rate  = 5e-2*np.array([1,1,0.1,0.1])
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
