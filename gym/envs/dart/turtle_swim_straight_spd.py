@@ -9,7 +9,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
         self.action_scale = np.pi / 2.0
         self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', self.frame_skip, 16, control_bounds, dt=0.002,
+        dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', self.frame_skip, 21, control_bounds, dt=0.002,
                                   disableViewer=False,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
@@ -25,7 +25,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-        self.symm_rate  = -0.3*np.array([1,1,0.1,0.1])
+        self.symm_rate  = 0#-0.3*np.array([1,1,0.1,0.1])
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
@@ -90,9 +90,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
     def reset_model(self):
         self.dart_world.reset()
         qpos = self.robot_skeleton.q + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
-        qpos[:6] = 0
         qvel = self.robot_skeleton.dq + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
-        qvel[:6] = 0
         self.set_state(qpos, qvel)
         return self._get_obs()
 
