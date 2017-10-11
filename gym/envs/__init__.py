@@ -307,6 +307,12 @@ register(
     max_episode_steps=2000,
 )
 
+register(
+    id='DartTurtle-v5',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvNoEnf',
+    max_episode_steps=500,
+)
+
 # Mujoco
 # ----------------------------------------
 

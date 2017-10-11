@@ -19,3 +19,4 @@ from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
 from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
 from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
 from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnv
+from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnvNoEnf
