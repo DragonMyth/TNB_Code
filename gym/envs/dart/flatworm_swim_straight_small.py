@@ -4,12 +4,12 @@ from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
 
 
-class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
+class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 36, [-1.0] * 36])
+        control_bounds = np.array([[1.0] * 16, [-1.0] * 16])
         self.action_scale = np.pi / 2.0
         self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
+        dart_env.DartEnv.__init__(self, 'flatworm_sm.skel', self.frame_skip, 69, control_bounds, dt=0.002,
                                   disableViewer=False,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
@@ -54,7 +54,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.003
+        tau *= 0.0005
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -100,9 +100,9 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         for _ in range(n_frames):
             comb = []
             import itertools
-            for i in itertools.product(['l', 'r'], [1, 2, 3]):
+            for i in itertools.product(['l', 'r'], [1, 2]):
                 comb.append(i)
-            for segIdx in range(5):
+            for segIdx in range(3):
                 for side, idx in comb:
                     offset1_dir = np.array([-1, 0, 0])
                     offset2_dir = np.array([1, 0, 0])
@@ -117,7 +117,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
 
-            super(DartFlatwormSwimStraighteNEnv,self).do_simulation(tau,1)
+            super(DartFlatwormSwimStraightSmallEnv,self).do_simulation(tau,1)
 
 
 
@@ -146,9 +146,15 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         return node_dict
 
     def build_target_pos(self,a):
-        target_pos = np.zeros(72)
-        target_pos[0:12] = a[0:12]*self.action_scale
-        target_pos[24:36] = a[12:24]*self.action_scale
-        target_pos[48:60] = a[24:36]*self.action_scale
+        target_pos = np.zeros(32)
+        target_pos[0:4] = a[0:4]*self.action_scale
+        target_pos[4:8]= a[4:8]*self.action_scale
+
+
+
+        target_pos[16:20] = a[8:12]*self.action_scale
+        target_pos[20:24] = a[12:16]*self.action_scale
+
+
 
         return np.concatenate(([0.0] * 6, target_pos))
