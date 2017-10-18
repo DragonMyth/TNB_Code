@@ -317,8 +317,22 @@ register(
 register(
     id = 'DartFlatworm-v0',
     entry_point = 'gym.envs.dart:DartFlatwormSwimStraighteNEnv',
-    max_episode_steps=1000,
+    max_episode_steps=500,
 )
+
+register(
+    id = 'DartFlatworm-v1',
+    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightHalfEnv',
+    max_episode_steps=500,
+)
+
+
+register(
+    id = 'DartFlatworm-v2',
+    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightSmallEnv',
+    max_episode_steps=500,
+)
+
 
 
 # Mujoco
