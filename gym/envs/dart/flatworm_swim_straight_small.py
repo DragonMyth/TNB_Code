@@ -10,7 +10,7 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = 2*np.pi
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm.skel', self.frame_skip, 69, control_bounds, dt=0.002,
-                                  disableViewer=True,
+                                  disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
