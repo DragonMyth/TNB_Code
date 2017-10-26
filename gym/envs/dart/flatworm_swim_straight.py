@@ -7,10 +7,10 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 36, [-1.0] * 36])
-        self.action_scale = np.pi / 2.0
+        self.action_scale = np.pi * 2
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
-                                  disableViewer=False,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -24,11 +24,9 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
-        # self.Kd = 150 * self.simulation_dt * self.Kp
         self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-        # self.symm_rate = -1 * np.array([1, 1, 0.01, 0.01])
 
     def _step(self, a):
         old_com = self.robot_skeleton.C
@@ -54,7 +52,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.003
+        tau *= 0.0003
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -112,7 +110,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=5)
+                                                                                    offset2_dir, strength=3)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)

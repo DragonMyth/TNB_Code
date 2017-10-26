@@ -10,7 +10,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = np.pi / 2.0
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle.skel', self.frame_skip, 21, control_bounds, dt=0.002,
-                                  disableViewer=False,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
         self.init_state = self._get_obs()
