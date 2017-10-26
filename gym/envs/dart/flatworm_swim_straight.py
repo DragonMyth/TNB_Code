@@ -73,7 +73,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
-        done = not notdone
+        done = False#not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
