@@ -333,8 +333,13 @@ register(
     max_episode_steps=500,
 )
 
+register(
+    id = 'DartFlatworm-v3',
+    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightSmallFreeBackEnv',
+    max_episode_steps=500,
 
 
+)
 # Mujoco
 # ----------------------------------------
 

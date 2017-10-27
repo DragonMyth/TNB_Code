@@ -10,7 +10,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = np.pi / 2.0
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
-                                  disableViewer=True,
+                                  disableViewer=False,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -54,7 +54,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.005
+        tau *= 0.003
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -117,7 +117,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
 
-            super(DartFlatwormSwimStraightHalfEnv,self).do_simulation(tau,1)
+            super(DartFlatwormSwimStraighteNEnv,self).do_simulation(tau,1)
 
 
 
