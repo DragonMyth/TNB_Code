@@ -1,0 +1,582 @@
+<skel version="1.0">
+    <world name="world 1">
+        <physics>
+            <time_step>0.0001</time_step>
+            <gravity>0 0 0</gravity>
+            <collision_detector>dart</collision_detector>
+        </physics>
+        <skeleton name="reference_bar">
+            <mobile>false</mobile>
+            <body name="ground">
+                <transformation>0 1 0 0 1.57 0.0</transformation>
+                <visualization_shape>
+                    <transformation>0 0 0 0 0 0</transformation>
+                    <geometry>
+                        <capsule>
+                            <height>2.0</height>
+                            <radius>0.02</radius>
+                        </capsule>
+                    </geometry>
+                    <color>0.3 0.3 0.7 1</color>
+                </visualization_shape>
+            </body>
+            <joint type="free" name="joint 1">
+                <parent>world</parent>
+                <child>ground</child>
+            </joint>
+        </skeleton>
+        <skeleton name="flat_creature">
+            <transformation>-1 0 0 0 0 0</transformation>
+            <body name="spine_0">
+                <transformation>0.5 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.01</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="spine_1">
+                <transformation>0.3 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="spine_2">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="spine_3">
+                <transformation>-0.1 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="spine_4">
+                <transformation>-0.3 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="spine_5">
+                <transformation>-0.5 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+
+            <!-- Side wings 0 -->
+            <body name="wing_r_01">
+                <transformation>0.5 0 0.15 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_r_02">
+                <transformation>0.5 0 0.3 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_r_03">
+                <transformation>0.5 0 0.45 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_01">
+                <transformation>0.5 0 -0.15 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_02">
+                <transformation>0.5 0 -0.3 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_03">
+                <transformation>0.5 0 -0.45 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <!-- Side wings 1 -->
+            <body name="wing_r_11">
+                <transformation>0.3 0 0.15 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_r_12">
+                <transformation>0.3 0 0.3 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_r_13">
+                <transformation>0.3 0 0.45 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_11">
+                <transformation>0.3 0 -0.15 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_12">
+                <transformation>0.3 0 -0.3 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="wing_l_13">
+                <transformation>0.3 0 -0.45 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.02 0.15</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <!-- Spine Joints -->
+            <joint name="main_joint" type="free">
+                <parent>world</parent>
+                <child>spine_0</child>
+            </joint>
+            <joint name="spine_1_joint" type="weld">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <parent>spine_0</parent>
+                <child>spine_1</child>
+            </joint>
+            <joint name="spine_2_joint" type="weld">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <parent>spine_1</parent>
+                <child>spine_2</child>
+            </joint>
+            <joint name="spine_3_joint" type="weld">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <parent>spine_2</parent>
+                <child>spine_3</child>
+            </joint>
+            <joint name="spine_4_joint" type="weld">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <parent>spine_3</parent>
+                <child>spine_4</child>
+            </joint>
+            <joint name="spine_5_joint" type="weld">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <parent>spine_4</parent>
+                <child>spine_5</child>
+            </joint>
+
+            <!-- Wing Joints 0 -->
+            <joint name="wing_r_01_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>spine_0</parent>
+                <child>wing_r_01</child>
+            </joint>
+            <joint name="wing_r_02_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_r_01</parent>
+                <child>wing_r_02</child>
+            </joint>
+            <joint name="wing_r_03_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_r_02</parent>
+                <child>wing_r_03</child>
+            </joint>
+            <joint name="wing_l_01_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>spine_0</parent>
+                <child>wing_l_01</child>
+            </joint>
+            <joint name="wing_l_02_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_l_01</parent>
+                <child>wing_l_02</child>
+            </joint>
+            <joint name="wing_l_03_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_l_02</parent>
+                <child>wing_l_03</child>
+            </joint>
+            <!-- Wing Joints 1 -->
+             <joint name="wing_r_11_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>spine_1</parent>
+                <child>wing_r_11</child>
+            </joint>
+            <joint name="wing_r_12_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_r_11</parent>
+                <child>wing_r_12</child>
+            </joint>
+            <joint name="wing_r_13_joint" type="universal">
+                <transformation>0 0 -0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_r_12</parent>
+                <child>wing_r_13</child>
+            </joint>
+            <joint name="wing_l_11_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>spine_1</parent>
+                <child>wing_l_11</child>
+            </joint>
+            <joint name="wing_l_12_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_l_11</parent>
+                <child>wing_l_12</child>
+            </joint>
+            <joint name="wing_l_13_joint" type="universal">
+                <transformation>0 0 0.1 0 0 0</transformation>
+                <axis>
+                    <xyz>-1 0 0</xyz>
+                </axis>
+                <axis2>
+                    <xyz>0 0 1</xyz>
+                </axis2>
+                <parent>wing_l_12</parent>
+                <child>wing_l_13</child>
+            </joint>
+
+        </skeleton>
+    </world>
+</skel>

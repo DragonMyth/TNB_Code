@@ -4,13 +4,13 @@ from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
 
 
-class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
+class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 18, [-1.0] * 18])
+        control_bounds = np.array([[1.0] * 12, [-1.0] * 12])
         self.action_scale = np.pi / 2.0
         self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
-                                  disableViewer=False,
+        dart_env.DartEnv.__init__(self, 'flatworm_reduced.skel', self.frame_skip, 53, control_bounds, dt=0.002,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -54,7 +54,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.003
+        tau *= 0.0003
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -69,8 +69,9 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
+        energy_consumed_pen = 0.1 * np.sum(tau[6::] * old_dq[6::] * self.frame_skip)
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen
+        reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen - energy_consumed_pen
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
         done = not notdone
@@ -102,7 +103,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
             import itertools
             for i in itertools.product(['l', 'r'], [1, 2, 3]):
                 comb.append(i)
-            for segIdx in range(5):
+            for segIdx in range(1):
                 for side, idx in comb:
                     offset1_dir = np.array([-1, 0, 0])
                     offset2_dir = np.array([1, 0, 0])
@@ -117,7 +118,7 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
 
-            super(DartFlatwormSwimStraighteNEnv,self).do_simulation(tau,1)
+            super(DartFlatwormSwimStraightReducedEnv,self).do_simulation(tau,1)
 
 
 
@@ -146,17 +147,8 @@ class DartFlatwormSwimStraightHalfEnv(dart_env.DartEnv, utils.EzPickle):
         return node_dict
 
     def build_target_pos(self,a):
-        target_pos = np.zeros(72)
+        target_pos = np.zeros(24)
         target_pos[0:6] = a[0:6]*self.action_scale
         target_pos[6:12]= a[0:6]*self.action_scale
-
-
-
-        target_pos[24:30] = a[6:12]*self.action_scale
-        target_pos[30:36] = a[6:12]*self.action_scale
-
-
-        target_pos[48:54] = a[12:18]*self.action_scale
-        target_pos[54:60] = a[12:18]*self.action_scale
 
         return np.concatenate(([0.0] * 6, target_pos))
