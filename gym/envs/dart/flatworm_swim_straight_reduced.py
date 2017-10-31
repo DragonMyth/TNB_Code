@@ -7,7 +7,7 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 12, [-1.0] * 12])
-        self.action_scale = np.pi / 2.0
+        self.action_scale = np.array([2*np.pi,2*np.pi,np.pi,np.pi,0.5*np.pi,0.5*np.pi]*2)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_reduced.skel', self.frame_skip, 53, control_bounds, dt=0.002,
                                   disableViewer=True,
@@ -54,7 +54,7 @@ class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.003
+        tau *= 0.001
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -113,7 +113,7 @@ class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=5)
+                                                                                    offset2_dir, strength=6)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
@@ -148,7 +148,8 @@ class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
 
     def build_target_pos(self,a):
         target_pos = np.zeros(24)
-        target_pos[0:6] = a[0:6]*self.action_scale
-        target_pos[6:12]= a[0:6]*self.action_scale
+        a = a*self.action_scale
+        target_pos[0:6] = a[0:6]
+        target_pos[6:12]= a[6:12]
 
         return np.concatenate(([0.0] * 6, target_pos))
