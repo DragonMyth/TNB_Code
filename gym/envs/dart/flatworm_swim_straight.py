@@ -7,10 +7,10 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 36, [-1.0] * 36])
-        self.action_scale = np.pi * 2
+        self.action_scale = np.array([2 * np.pi, 2 * np.pi, np.pi, np.pi, 0.5 * np.pi, 0.5 * np.pi] * 6)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -110,7 +110,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=3)
+                                                                                    offset2_dir, strength=5)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
@@ -145,8 +145,9 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
 
     def build_target_pos(self,a):
         target_pos = np.zeros(72)
-        target_pos[0:12] = a[0:12]*self.action_scale
-        target_pos[24:36] = a[12:24]*self.action_scale
-        target_pos[48:60] = a[24:36]*self.action_scale
+        a = a * self.action_scale
+        target_pos[0:12] = a[0:12]
+        target_pos[24:36] = a[12:24]
+        target_pos[48:60] = a[24:36]
 
         return np.concatenate(([0.0] * 6, target_pos))

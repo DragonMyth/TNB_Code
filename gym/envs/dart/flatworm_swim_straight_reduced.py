@@ -10,7 +10,7 @@ class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = np.array([2*np.pi,2*np.pi,np.pi,np.pi,0.5*np.pi,0.5*np.pi]*2)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_reduced.skel', self.frame_skip, 53, control_bounds, dt=0.002,
-                                  disableViewer=True,
+                                  disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -78,7 +78,7 @@ class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen}
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'energy_consumed_pen':energy_consumed_pen,'tau':tau[6::]}
 
     def _get_obs(self):
 

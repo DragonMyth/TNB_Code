@@ -7,10 +7,10 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 16, [-1.0] * 16])
-        self.action_scale = 0.0005
+        self.action_scale = np.array([2*np.pi, np.pi,np.pi,np.pi*0.5]*4)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm.skel', self.frame_skip, 69, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer= True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -38,17 +38,6 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
 
 
         target_pos = self.build_target_pos(a)
-        ##SPD Controller
-        # for i in range(self.frame_skip):
-        #     invM = self.invM
-        #     p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-        #     d = -self.Kd.dot(self.robot_skeleton.dq)
-        #     qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-        #     tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        #     # tau *= 0.0005
-        #     tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-        #     self.do_simulation(tau, 1)
-
         invM = self.invM
         p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
         d = -self.Kd.dot(self.robot_skeleton.dq)
@@ -73,7 +62,7 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen = 0.1*np.sum(tau[6::]*old_dq[6::]*self.simulation_dt)
+        energy_consumed_pen = 0.1*np.sum(np.abs(tau[6::]*old_dq[6::]*self.simulation_dt))
 
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd  - rotate_pen - orth_pen - energy_consumed_pen
@@ -82,7 +71,7 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'energy_consumed_pen':-energy_consumed_pen, 'actionVals':a}
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'energy_consumed_pen':-energy_consumed_pen, 'tau':tau[6::]}
 
     def _get_obs(self):
 
@@ -152,13 +141,14 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
 
     def build_target_pos(self,a):
         target_pos = np.zeros(32)
-        target_pos[0:4] = a[0:4]*self.action_scale
-        target_pos[4:8]= a[4:8]*self.action_scale
+        a = a* self.action_scale
+        target_pos[0:4] = a[0:4]
+        target_pos[4:8]= a[4:8]
 
 
 
-        target_pos[16:20] = a[8:12]*self.action_scale
-        target_pos[20:24] = a[12:16]*self.action_scale
+        target_pos[16:20] = a[8:12]
+        target_pos[20:24] = a[12:16]
 
 
 
@@ -177,7 +167,7 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
         self.action_scale = np.pi/2
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm_freeback.skel', self.frame_skip, 75, control_bounds, dt=0.002,
-                                  disableViewer= True,
+                                  disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -227,4 +217,7 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
 
 
         return np.concatenate(([0.0] * 6, target_pos))
-
+class DartFlatwormSwimStraightNoSymmEnv(DartFlatwormSwimStraightSmallEnv, utils.EzPickle):
+    def _step(self, a):
+        self.symm_rate = 0
+        super(DartFlatwormSwimStraightNoSymmEnv, self)._step(self, a)
