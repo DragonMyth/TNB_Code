@@ -7,7 +7,7 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraightReducedEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 12, [-1.0] * 12])
-        self.action_scale = np.array([2*np.pi,2*np.pi,np.pi,np.pi,0.5*np.pi,0.5*np.pi]*2)
+        self.action_scale = np.array([5*np.pi,5*np.pi,3*np.pi,3*np.pi,np.pi,np.pi]*2)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_reduced.skel', self.frame_skip, 53, control_bounds, dt=0.002,
                                   disableViewer=not True,

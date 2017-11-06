@@ -7,10 +7,10 @@ from .simple_water_world import BaseFluidSimulator
 class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 16, [-1.0] * 16])
-        self.action_scale = np.array([2*np.pi, np.pi,np.pi,np.pi*0.5]*4)
+        self.action_scale = np.array([2 * np.pi, 2*np.pi, np.pi, np.pi] * 4)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm.skel', self.frame_skip, 69, control_bounds, dt=0.002,
-                                  disableViewer= True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -35,8 +35,6 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
 
-
-
         target_pos = self.build_target_pos(a)
         invM = self.invM
         p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
@@ -58,20 +56,22 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
         angs = np.abs(self.robot_skeleton.q[6::])
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
+
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen = 0.1*np.sum(np.abs(tau[6::]*old_dq[6::]*self.simulation_dt))
+        energy_consumed_pen = 0#0.1 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
 
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd  - rotate_pen - orth_pen - energy_consumed_pen
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'energy_consumed_pen':-energy_consumed_pen, 'tau':tau[6::]}
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen,
+                                  'energy_consumed_pen': -energy_consumed_pen, 'tau': tau[6::]}
 
     def _get_obs(self):
 
@@ -106,15 +106,12 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=6)
+                                                                                    offset2_dir, strength=9)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
 
-            super(DartFlatwormSwimStraightSmallEnv,self).do_simulation(tau,1)
-
-
-
+            super(DartFlatwormSwimStraightSmallEnv, self).do_simulation(tau, 1)
 
     def calc_constraint_force(self, bodynode1, offset1_dir, bodynode2, offset2_dir, strength=1.0):
         shape1 = bodynode1.shapenodes[0]
@@ -131,7 +128,6 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
         constraint_force = constraint_force_dir * strength
         return constraint_force, offset1, offset2
 
-
     def construct_skel_dict(self):
         node_dict = {}
         bodynodes = self.robot_skeleton.bodynodes
@@ -139,32 +135,31 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
             node_dict[bodynodes[i].name] = bodynodes[i]
         return node_dict
 
-    def build_target_pos(self,a):
+    def build_target_pos(self, a):
         target_pos = np.zeros(32)
-        a = a* self.action_scale
+        a = a * self.action_scale
         target_pos[0:4] = a[0:4]
-        target_pos[4:8]= a[4:8]
-
-
+        target_pos[4:8] = a[4:8]
 
         target_pos[16:20] = a[8:12]
         target_pos[20:24] = a[12:16]
 
-
-
         return np.concatenate(([0.0] * 6, target_pos))
-    def build_torque(self,a):
+
+    def build_torque(self, a):
         target_torque = np.zeros(32)
         target_torque[0:4] = a[0:4] * self.action_scale
         target_torque[4:8] = a[4:8] * self.action_scale
         target_torque[16:20] = a[8:12] * self.action_scale
         target_torque[20:24] = a[12:16] * self.action_scale
-        return np.concatenate(([0.0] * 6,target_torque))
+        return np.concatenate(([0.0] * 6, target_torque))
+
 
 class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 19, [-1.0] * 19])
-        self.action_scale = np.pi/2
+        control_bounds = np.array([[1.0] * 16, [-1.0] * 16])
+        # self.action_scale = np.pi / 2
+        self.action_scale = np.array([2 * np.pi, np.pi, np.pi, np.pi * 0.5] * 4)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm_freeback.skel', self.frame_skip, 75, control_bounds, dt=0.002,
                                   disableViewer=not True,
@@ -186,37 +181,75 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
         self.symm_rate = -1 * np.array([1, 1, 0.01, 0.01])
 
-    def _get_obs(self):
+    def _step(self, a):
+        old_com = self.robot_skeleton.C
+        old_q = self.robot_skeleton.q
+        old_dq = self.robot_skeleton.dq
 
+        target_pos = self.build_target_pos(a)
+        invM = self.invM
+        p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        d = -self.Kd.dot(self.robot_skeleton.dq)
+        qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+
+        tau *= 0.003
+        tau[0:len(self.robot_skeleton.joints[0].dofs)+3] = 0
+
+        # tau = self.build_torque(a)
+        self.do_simulation(tau, self.frame_skip)
+
+        cur_com = self.robot_skeleton.C
+        cur_q = self.robot_skeleton.q
+        cur_dq = self.robot_skeleton.dq
+        ob = self._get_obs()
+
+        angs = np.abs(self.robot_skeleton.q[6::])
+
+        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
+        orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+
+        rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
+
+        energy_consumed_pen = 0.1 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
+
+        # mirror_enforce
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
+
+        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
+        done = not notdone
+
+        return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen,
+                                  'energy_consumed_pen': -energy_consumed_pen, 'tau': tau[9::]}
+
+    def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[4:9], self.robot_skeleton.dq[3:9], self.robot_skeleton.q[9::],
                                self.robot_skeleton.dq[9::]]).ravel()
-    def build_torque(self,a):
+
+    def build_torque(self, a):
         target_torque = np.zeros(35)
-        a = a*self.action_scale
+        a = a * self.action_scale
         target_torque[0:3] = a[0:3]
         target_torque[3:7] = a[3:7]
         target_torque[7:11] = a[7:11]
         target_torque[19:23] = a[11:15]
         target_torque[23:27] = a[15:19]
-        return np.concatenate(([0.0] * 6,target_torque))
+        return np.concatenate(([0.0] * 6, target_torque))
 
-    def build_target_pos(self,a):
-        target_pos = np.zeros(35)
-        a = a*self.action_scale
+    def build_target_pos(self, a):
+        target_pos = np.zeros(32)
+        a = a * self.action_scale
 
-        target_pos[0:3] = a[0:3]
+        target_pos[0:4] = a[0:4]
+        target_pos[4:8] = a[4:8]
 
-        target_pos[3:7] = a[3:7]
-        target_pos[7:11]= a[7:11]
+        target_pos[16:20] = a[8:12]
+        target_pos[20:24] = a[12:16]
 
-
-
-        target_pos[19:23] = a[11:15]
-        target_pos[23:27] = a[15:19]
+        return np.concatenate(([0.0] * 9, target_pos))
 
 
-
-        return np.concatenate(([0.0] * 6, target_pos))
 class DartFlatwormSwimStraightNoSymmEnv(DartFlatwormSwimStraightSmallEnv, utils.EzPickle):
     def _step(self, a):
         self.symm_rate = 0
