@@ -157,12 +157,13 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
 
 class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 16, [-1.0] * 16])
+        control_bounds = np.array([[1.0] * 19, [-1.0] * 19])
         # self.action_scale = np.pi / 2
-        self.action_scale = np.array([2 * np.pi, np.pi, np.pi, np.pi * 0.5] * 4)
+        self.action_scale = np.concatenate((np.array([np.pi/2,np.pi/2,np.pi/2]) ,
+                                           np.array([2 * np.pi, 2*np.pi, np.pi, np.pi * 0.5] * 4)))
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm_sm_freeback.skel', self.frame_skip, 75, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -193,8 +194,8 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
 
-        tau *= 0.003
-        tau[0:len(self.robot_skeleton.joints[0].dofs)+3] = 0
+        tau *= 0.001
+        tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
 
         # tau = self.build_torque(a)
         self.do_simulation(tau, self.frame_skip)
@@ -211,7 +212,7 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen = 0.1 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
+        energy_consumed_pen = 0.001 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
 
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
@@ -238,16 +239,17 @@ class DartFlatwormSwimStraightSmallFreeBackEnv(DartFlatwormSwimStraightSmallEnv,
         return np.concatenate(([0.0] * 6, target_torque))
 
     def build_target_pos(self, a):
-        target_pos = np.zeros(32)
+        target_pos = np.zeros(35)
         a = a * self.action_scale
 
-        target_pos[0:4] = a[0:4]
-        target_pos[4:8] = a[4:8]
+        target_pos[0:3] = a[0:3]
+        target_pos[0+3:4+3] = a[0+3:4+3]
+        target_pos[4+3:8+3] = a[4+3:8+3]
 
-        target_pos[16:20] = a[8:12]
-        target_pos[20:24] = a[12:16]
+        target_pos[16+3:20+3] = a[8+3:12+3]
+        target_pos[20+3:24+3] = a[12+3:16+3]
 
-        return np.concatenate(([0.0] * 9, target_pos))
+        return np.concatenate(([0.0] * 6, target_pos))
 
 
 class DartFlatwormSwimStraightNoSymmEnv(DartFlatwormSwimStraightSmallEnv, utils.EzPickle):
