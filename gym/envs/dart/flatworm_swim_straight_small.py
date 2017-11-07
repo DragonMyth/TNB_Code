@@ -106,7 +106,7 @@ class DartFlatwormSwimStraightSmallEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=9)
+                                                                                    offset2_dir, strength=10)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
