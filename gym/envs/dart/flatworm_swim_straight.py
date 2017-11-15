@@ -52,7 +52,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.0003
+        tau *= 0.001
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
         cur_com = self.robot_skeleton.C
@@ -71,7 +71,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
         reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
-        done = False#not notdone
+        done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
@@ -110,7 +110,7 @@ class DartFlatwormSwimStraighteNEnv(dart_env.DartEnv, utils.EzPickle):
                     next_body = self.bodynodes_dict[next_key]
 
                     constraint_force, offset1, offset2 = self.calc_constraint_force(curr_body, offset1_dir, next_body,
-                                                                                    offset2_dir, strength=5)
+                                                                                    offset2_dir, strength=10)
 
                     curr_body.add_ext_force(constraint_force, _offset=offset1)
                     next_body.add_ext_force(-constraint_force, _offset=offset2)
