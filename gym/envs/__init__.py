@@ -316,7 +316,7 @@ register(
 
 register(
     id = 'DartFlatworm-v0',
-    entry_point = 'gym.envs.dart:DartFlatwormSwimStraighteNEnv',
+    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightEnv',
     max_episode_steps=500,
 )
 
