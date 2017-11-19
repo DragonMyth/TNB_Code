@@ -7,10 +7,11 @@ from .utils import *
 class DartFlatwormSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 36, [-1.0] * 36])
-        self.action_scale = np.array([2 * np.pi, 2 * np.pi, np.pi, np.pi, 0.5 * np.pi, 0.5 * np.pi] * 6)
+        self.action_scale = np.array([np.pi/2, np.pi/2, np.pi/2, np.pi/2, np.pi/2,np.pi/2] * 6)
+        self.torque_scale = np.array([6,3,3,2,2,1]*12)
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'flatworm.skel', self.frame_skip, 149, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -50,6 +51,7 @@ class DartFlatwormSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
         tau *= 0.001
+        tau[6::]*= self.torque_scale
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
 
         return self._step_pure_tor(tau)
