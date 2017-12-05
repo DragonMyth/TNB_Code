@@ -50,7 +50,7 @@ class DartFlatwormSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau *= 0.001
+        tau *= 0.0007
         tau[6::]*= self.torque_scale
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
 
