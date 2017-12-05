@@ -340,6 +340,28 @@ register(
 
 
 )
+
+#Regular 1 step spd
+register(
+    id = 'DartHumanSwim-v0',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
+    max_episode_steps=500,
+)
+
+#Direct action output
+register(
+    id = 'DartHumanSwim-v1',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightTauActEnv',
+    max_episode_steps=500,
+)
+
+#Only Legs with heavier pelvis
+register(
+    id = 'DartHumanSwim-v2',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightLegsEnv',
+    max_episode_steps=500,
+)
+
 # Mujoco
 # ----------------------------------------
 
