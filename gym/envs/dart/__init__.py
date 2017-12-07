@@ -27,3 +27,4 @@ from gym.envs.dart.flatworm_swim_straight_small import DartFlatwormSwimStraightS
 from gym.envs.dart.humanoid_swim_straight import DartHumanoidSwimStraightEnv
 from gym.envs.dart.humanoid_swim_straight_tau_act import DartHumanoidSwimStraightTauActEnv
 from gym.envs.dart.humanoid_swim_straight_legs import DartHumanoidSwimStraightLegsEnv
+from gym.envs.dart.humanoid_swim_straight_arms import DartHumanoidSwimStraightArmsEnv

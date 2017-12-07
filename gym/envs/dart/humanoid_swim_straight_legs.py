@@ -49,13 +49,14 @@ class DartHumanoidSwimStraightLegsEnv(dart_env.DartEnv, utils.EzPickle):
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
 
-        tau *= 0.0001
+        tau *= 0.0003
         tau[6::]*= self.torque_scale
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
 
         return self._step_pure_tor(tau)
 
     def _step_pure_tor(self,tau):
+
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq

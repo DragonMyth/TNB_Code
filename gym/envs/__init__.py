@@ -362,6 +362,12 @@ register(
     max_episode_steps=500,
 )
 
+register(
+    id = 'DartHumanSwim-v3',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightArmsEnv',
+    max_episode_steps=500,
+)
+
 # Mujoco
 # ----------------------------------------
 

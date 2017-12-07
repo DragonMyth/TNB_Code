@@ -217,7 +217,7 @@
             </joint>
 
             <joint name="left_tarsals_febula_joint" type="universal">
-                <transformation>0 0.1 0 0 0 0</transformation>
+                <transformation>0 0.125 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
                 </axis>
@@ -252,7 +252,7 @@
             </joint>
 
             <joint name="right_tarsals_febula_joint" type="universal">
-                <transformation>0 0.1 0 0 0 0</transformation>
+                <transformation>0 0.125 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
                 </axis>

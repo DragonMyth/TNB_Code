@@ -4,14 +4,14 @@ from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
 from .utils import *
 
-class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
+class DartHumanoidSwimStraightArmsEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 26, [-1.0] * 26])
+        control_bounds = np.array([[1.0] * 14, [-1.0] * 14])
         self.action_scale = np.pi/2
         self.torque_scale = 1
         self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 57, control_bounds, dt=0.002,
-                                  disableViewer=True,
+        dart_env.DartEnv.__init__(self, 'humanoid_swimmer_arms.skel', self.frame_skip, 33, control_bounds, dt=0.002,
+                                  disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -30,7 +30,6 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
         self.Kd = self.simulation_dt * self.Kp
-        # self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
         self.symm_rate = -1 * np.array([1, 1, 0.01, 0.01])
@@ -57,6 +56,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         return self._step_pure_tor(tau)
 
     def _step_pure_tor(self,tau):
+
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
@@ -102,11 +102,11 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
     def viewer_setup(self):
         self._get_viewer().scene.tb.trans[2] = -3.5
-        self._get_viewer().scene.tb._set_theta(45)
+        self._get_viewer().scene.tb._set_theta(60)
         self.track_skeleton_id = 0
 
     def build_target_pos(self,a):
-        target_pos = np.zeros(26)
+        target_pos = np.zeros(12)
         a = a * self.action_scale
         target_pos = a[:]
 
