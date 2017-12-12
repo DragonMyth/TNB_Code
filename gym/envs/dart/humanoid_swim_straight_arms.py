@@ -11,7 +11,7 @@ class DartHumanoidSwimStraightArmsEnv(dart_env.DartEnv, utils.EzPickle):
         self.torque_scale = 1
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer_arms.skel', self.frame_skip, 33, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -76,7 +76,7 @@ class DartHumanoidSwimStraightArmsEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen =  -30000 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
+        energy_consumed_pen =  -300 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
 
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen

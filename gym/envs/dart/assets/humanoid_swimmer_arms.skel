@@ -296,7 +296,12 @@
                     <limit>
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
+
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
 
                 <parent>root</parent>
@@ -310,6 +315,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
                 <parent>abdomen</parent>
                 <child>chest</child>
@@ -324,19 +333,32 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
                 <axis2>
                     <limit>
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis2>
                 <axis3>
                     <limit>
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis3>
+                <init_pos>1 0 0</init_pos>
                 <parent>chest</parent>
                 <child>left_humerus</child>
             </joint>
@@ -349,6 +371,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
 
 
@@ -364,6 +390,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
 
                 <axis2>
@@ -372,6 +402,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis2>
 
                 <parent>left_radius</parent>
@@ -386,19 +420,32 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
                 <axis2>
                     <limit>
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis2>
                 <axis3>
                     <limit>
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis3>
+                <init_pos>1 0 0</init_pos>
                 <parent>chest</parent>
                 <child>right_humerus</child>
             </joint>
@@ -411,6 +458,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
 
 
@@ -426,6 +477,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis>
 
                 <axis2>
@@ -434,6 +489,10 @@
                     	<lower>-1.5</lower>
                     	<upper>1.5</upper>
                     </limit>
+                    <dynamics>
+                        <damping>0.0005</damping>
+                        <stiffness>0.0001</stiffness>
+                    </dynamics>
                 </axis2>
 
                 <parent>right_radius</parent>
