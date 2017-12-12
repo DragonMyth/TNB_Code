@@ -76,7 +76,7 @@ class DartHumanoidSwimStraightArmsEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen =  0.5 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
+        energy_consumed_pen =  -30000 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
 
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen

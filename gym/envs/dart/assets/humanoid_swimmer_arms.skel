@@ -293,7 +293,12 @@
                 <transformation>0 -0.075 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
+
                 <parent>root</parent>
                 <child>abdomen</child>
             </joint>
@@ -301,16 +306,37 @@
             <joint name="chest_abdomen_joint" type="revolute">
                 <axis>
                     <xyz>0 1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
                 <parent>abdomen</parent>
                 <child>chest</child>
             </joint>
 
 
-            <joint name="left_humerus_chest_joint" type="ball">
+            <joint name="left_humerus_chest_joint" type="euler">
                 <transformation>0 -0.09 0 0 0 0</transformation>
-                <!--<axis_order>xyz</axis_order>-->
-
+                <axis_order>zyx</axis_order>
+                <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis3>
                 <parent>chest</parent>
                 <child>left_humerus</child>
             </joint>
@@ -319,6 +345,10 @@
                 <transformation>0 -0.095 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
 
 
@@ -330,20 +360,45 @@
                 <transformation>0 -0.1 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
 
                 <axis2>
                     <xyz>0 0 1</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis2>
 
                 <parent>left_radius</parent>
                 <child>left_carpals</child>
             </joint>
 
-            <joint name="right_humerus_chest_joint" type="ball">
+            <joint name="right_humerus_chest_joint" type="euler">
                 <transformation>0 -0.09 0 0 3.14159 3.14159</transformation>
-                <!--<axis_order>xyz</axis_order>-->
-
+                <axis_order>zyx</axis_order>
+                <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                </axis3>
                 <parent>chest</parent>
                 <child>right_humerus</child>
             </joint>
@@ -352,6 +407,10 @@
                 <transformation>0 -0.095 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
 
 
@@ -363,10 +422,18 @@
                 <transformation>0 -0.1 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis>
 
                 <axis2>
                     <xyz>0 0 -1</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
                 </axis2>
 
                 <parent>right_radius</parent>
