@@ -498,7 +498,7 @@
                 <parent>right_radius</parent>
                 <child>right_carpals</child>
             </joint>
-            
+
         </skeleton>
     </world>
 </skel>

@@ -368,6 +368,14 @@ register(
     max_episode_steps=500,
 )
 
+#Only Arms and lock wrists
+register(
+    id = 'DartHumanSwim-v4',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightArmsLockWristEnv',
+    max_episode_steps=500,
+)
+
+
 # Mujoco
 # ----------------------------------------
 
