@@ -81,7 +81,7 @@ class DartHumanoidSwimStraightLegsEnv(dart_env.DartEnv, utils.EzPickle):
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
 
-        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
+        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi ).all()
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,

@@ -6,11 +6,11 @@ from .utils import *
 
 class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        control_bounds = np.array([[1.0] * 26, [-1.0] * 26])
+        control_bounds = np.array([[1.0] * 22, [-1.0] * 22])
         self.action_scale = np.pi/2
         self.torque_scale = 1
         self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 57, control_bounds, dt=0.002,
+        dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
                                   disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
@@ -54,6 +54,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         tau[6::]*= self.torque_scale
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
 
+
         return self._step_pure_tor(tau)
 
     def _step_pure_tor(self,tau):
@@ -76,12 +77,12 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen =  0.5 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
+        energy_consumed_pen =  -200 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
 
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
 
-        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
+        notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi).all()
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,

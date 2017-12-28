@@ -11,6 +11,7 @@ BOXNORMALS = {
 }
 
 
+
 class BaseFluidSimulator(pydart.World):
     def __init__(self, step, skel_path):
         super(BaseFluidSimulator, self).__init__(step, skel_path=skel_path)
@@ -106,3 +107,18 @@ class BaseFluidSimulator(pydart.World):
                 p1 = p0 - 2 * self.forces[i]
                 ri.set_color(0.0, 1.0, 0.0)
                 ri.render_arrow(p1, p0, r_base=0.03, head_width=0.03, head_len=0.1)
+
+
+class BaseFluidNoBackSimulator(BaseFluidSimulator):
+
+    def step(self, ):
+        c = self.skeletons[-1].bodynodes[0].C
+        self.trail[0].append(c[0])
+        self.trail[1].append(c[1])
+        self.trail[2].append(c[2])
+
+        for i in range(len(self.skeletons[-1].bodynodes)):
+            self.forces[i] = self.calcFluidForce(self.skeletons[-1].bodynodes[i])
+            self.forces[i,0] = self.forces[i,0]*0.3 #if self.forces[i,0]<=0 else self.forces[i,0]
+            self.skeletons[-1].bodynodes[i].add_ext_force(self.forces[i])
+        super(BaseFluidSimulator, self).step()

@@ -198,9 +198,39 @@
 
 
 
-             <joint name="left_femur_root_joint" type="ball">
+             <joint name="left_femur_root_joint" type="euler">
                 <transformation>0 0.1 0 0 0 0</transformation>
-                <!--<axis_order>xyz</axis_order>-->
+                <axis_order>zyx</axis_order>
+                 <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis3>
                 <parent>root</parent>
                 <child>left_femur</child>
             </joint>
@@ -209,6 +239,10 @@
                 <transformation>0 0.11 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
                 </axis>
 
 
@@ -220,19 +254,65 @@
                 <transformation>0 0.125 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
                 </axis>
 
                 <axis2>
                     <xyz>0 1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
                 </axis2>
 
                 <parent>left_fibula</parent>
                 <child>left_tarsals</child>
             </joint>
 
-            <joint name="right_femur_root_joint" type="ball">
+            <joint name="right_femur_root_joint" type="euler">
                 <transformation>0 0.1 0 0 3.14159 3.14159</transformation>
-
+                <axis_order>zyx</axis_order>
+                 <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
+                </axis3>
                 <parent>root</parent>
                 <child>right_femur</child>
             </joint>
@@ -241,6 +321,10 @@
                 <transformation>0 0.11 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
                 </axis>
 
   <!--               <axis2>
@@ -255,9 +339,26 @@
                 <transformation>0 0.125 0 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
                 </axis>
-               <axis2>
+
+                <axis2>
                     <xyz>0 -1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                        <stiffness>0.000001</stiffness>
+                    </dynamics>
                 </axis2>
 
                 <parent>right_fibula</parent>

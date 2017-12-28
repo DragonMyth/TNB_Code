@@ -186,7 +186,7 @@
             </body>
 
             <body name="left_carpals">
-                <transformation>-0.6 0.32 0 0 0 1.57</transformation>
+                <transformation>-0.55 0.32 -0.05 0 -0.6 1.57</transformation>
                 <inertia>
                     <mass>0.00003</mass>
                 </inertia>
@@ -252,7 +252,7 @@
             </body>
 
             <body name="right_carpals">
-                <transformation>0.6 0.32 0 0 0 -1.57</transformation>
+                <transformation>0.55 0.32 -0.05 0 0.6 -1.57</transformation>
                 <inertia>
                     <mass>0.00003</mass>
                 </inertia>
@@ -358,6 +358,7 @@
                         <stiffness>0.000001</stiffness>
                     </dynamics>
                 </axis3>
+                <!--<init_pos>1 0 0</init_pos>-->
                 <parent>chest</parent>
                 <child>left_humerus</child>
             </joint>
@@ -367,8 +368,8 @@
                 <axis>
                     <xyz>1 0 0</xyz>
                     <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
                     </limit>
                     <dynamics>
                         <damping>0.00005</damping>
@@ -376,36 +377,12 @@
                     </dynamics>
                 </axis>
 
-
+                <init_pos>-0.1</init_pos>
                 <parent>left_humerus</parent>
                 <child>left_radius</child>
             </joint>
 
-            <joint name="left_carpals_radius_joint" type="universal">
-                <transformation>0 -0.1 0 0 0 0</transformation>
-                <axis>
-                    <xyz>1 0 0</xyz>
-                    <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
-                    </limit>
-                    <dynamics>
-                        <damping>0.00005</damping>
-                        <stiffness>0.000001</stiffness>
-                    </dynamics>
-                </axis>
-
-                <axis2>
-                    <xyz>0 0 1</xyz>
-                    <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
-                    </limit>
-                    <dynamics>
-                        <damping>0.00005</damping>
-                        <stiffness>0.000001</stiffness>
-                    </dynamics>
-                </axis2>
+            <joint name="left_carpals_radius_joint" type="weld">
 
                 <parent>left_radius</parent>
                 <child>left_carpals</child>
@@ -444,6 +421,7 @@
                         <stiffness>0.000001</stiffness>
                     </dynamics>
                 </axis3>
+                <!--<init_pos>1 0 0</init_pos>-->
                 <parent>chest</parent>
                 <child>right_humerus</child>
             </joint>
@@ -453,8 +431,8 @@
                 <axis>
                     <xyz>1 0 0</xyz>
                     <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
                     </limit>
                     <dynamics>
                         <damping>0.00005</damping>
@@ -462,37 +440,12 @@
                     </dynamics>
                 </axis>
 
-
+                <init_pos>-0.1</init_pos>
                 <parent>right_humerus</parent>
                 <child>right_radius</child>
             </joint>
 
-            <joint name="right_carpals_radius_joint" type="universal">
-                <transformation>0 -0.1 0 0 0 0</transformation>
-                <axis>
-                    <xyz>1 0 0</xyz>
-                    <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
-                    </limit>
-                    <dynamics>
-                        <damping>0.00005</damping>
-                        <stiffness>0.000001</stiffness>
-                    </dynamics>
-                </axis>
-
-                <axis2>
-                    <xyz>0 0 -1</xyz>
-                    <limit>
-                    	<lower>-1.5</lower>
-                    	<upper>1.5</upper>
-                    </limit>
-                    <dynamics>
-                        <damping>0.00005</damping>
-                        <stiffness>0.000001</stiffness>
-                    </dynamics>
-                </axis2>
-
+            <joint name="right_carpals_radius_joint" type="weld">
                 <parent>right_radius</parent>
                 <child>right_carpals</child>
             </joint>
