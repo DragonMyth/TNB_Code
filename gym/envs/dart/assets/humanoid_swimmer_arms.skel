@@ -358,7 +358,6 @@
                         <stiffness>0.000001</stiffness>
                     </dynamics>
                 </axis3>
-                <init_pos>1 0 0</init_pos>
                 <parent>chest</parent>
                 <child>left_humerus</child>
             </joint>
@@ -445,7 +444,6 @@
                         <stiffness>0.000001</stiffness>
                     </dynamics>
                 </axis3>
-                <init_pos>1 0 0</init_pos>
                 <parent>chest</parent>
                 <child>right_humerus</child>
             </joint>
