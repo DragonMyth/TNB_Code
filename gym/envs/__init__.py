@@ -348,6 +348,14 @@ register(
     max_episode_steps=500,
 )
 
+
+#Regular 1 step spd
+register(
+    id = 'DartHumanSwim-v01',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
+    max_episode_steps=100,
+)
+
 #Direct action output
 register(
     id = 'DartHumanSwim-v1',

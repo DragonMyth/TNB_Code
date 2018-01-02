@@ -2,6 +2,7 @@ import numpy as np
 from gym import utils
 from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
+from .simple_water_world import BaseFluidNoBackSimulator
 from .utils import *
 
 class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
@@ -9,6 +10,12 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         control_bounds = np.array([[1.0] * 22, [-1.0] * 22])
         self.action_scale = np.pi/2
         self.torque_scale = 1
+        # self.torque_scale = np.array([0.2,0.2, # abdomin and chest 0-1
+        #                               1.3,1,1,1.3, # Left arm and elbow 2-5
+        #                               1.3,1,1,1.3, # Right arm and elbow 6-9
+        #                               1.5,1,1,1.4,0.5,0.5, # Left leg and knee 10-15
+        #                               1.5,1,1,1.4,0.5,0.5, # Right leg and knee 16-21
+        #                               ])
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
                                   disableViewer=not True,
@@ -91,8 +98,8 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
     def _get_obs(self):
 
-        return np.concatenate([self.robot_skeleton.q[4:8], self.robot_skeleton.dq[3:8], self.robot_skeleton.q[8::],
-                               self.robot_skeleton.dq[8::]]).ravel()
+        return np.concatenate([self.robot_skeleton.q[4:6], self.robot_skeleton.dq[3:6], self.robot_skeleton.q[6::],
+                               self.robot_skeleton.dq[6::]]).ravel()
 
     def reset_model(self):
         self.dart_world.reset()
@@ -107,7 +114,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self.track_skeleton_id = 0
 
     def build_target_pos(self,a):
-        target_pos = np.zeros(26)
+        target_pos = np.zeros(22)
         a = a * self.action_scale
         target_pos = a[:]
 
