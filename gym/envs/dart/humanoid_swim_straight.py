@@ -11,7 +11,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self.torque_scale = 1
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
@@ -107,7 +107,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self.track_skeleton_id = 0
 
     def build_target_pos(self,a):
-        target_pos = np.zeros(26)
+        target_pos = np.zeros(22)
         a = a * self.action_scale
         target_pos = a[:]
 
