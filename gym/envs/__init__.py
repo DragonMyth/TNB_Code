@@ -353,7 +353,7 @@ register(
 register(
     id = 'DartHumanSwim-v01',
     entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
-    max_episode_steps=100,
+    max_episode_steps=50,
 )
 
 #Direct action output
