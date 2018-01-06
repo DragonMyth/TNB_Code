@@ -2,6 +2,7 @@ import numpy as np
 from gym import utils
 from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
+from .simple_water_world import BaseFluidNoBackSimulator
 from .utils import *
 
 class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
@@ -9,6 +10,12 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         control_bounds = np.array([[1.0] * 22, [-1.0] * 22])
         self.action_scale = np.pi/2
         self.torque_scale = 1
+        self.torque_scale = np.array([0.4,0.4, # abdomin and chest 0-1
+                                      1.3,1,1,1.2, # Left arm and elbow 2-5
+                                      1.3,1,1,1.2, # Right arm and elbow 6-9
+                                      1.5,1,1,1.3,0.5,0.5, # Left leg and knee 10-15
+                                      1.5,1,1,1.3,0.5,0.5, # Right leg and knee 16-21
+                                      ])
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
                                   disableViewer=True,
