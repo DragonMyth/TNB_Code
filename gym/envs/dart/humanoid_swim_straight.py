@@ -5,17 +5,18 @@ from .simple_water_world import BaseFluidSimulator
 from .simple_water_world import BaseFluidNoBackSimulator
 from .utils import *
 
+
 class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 22, [-1.0] * 22])
-        self.action_scale = np.pi/2
+        self.action_scale = np.pi / 2
         self.torque_scale = 1
-        self.torque_scale = np.array([0.4,0.4, # abdomin and chest 0-1
-                                      1.3,1,1,1.2, # Left arm and elbow 2-5
-                                      1.3,1,1,1.2, # Right arm and elbow 6-9
-                                      1.5,1,1,1.3,0.5,0.5, # Left leg and knee 10-15
-                                      1.5,1,1,1.3,0.5,0.5, # Right leg and knee 16-21
-                                      ])
+        # self.torque_scale = np.array([0.6, 0.6,  # abdomin and chest 0-1
+        #                               1.3, 1.2, 1.1, 1.2,  # Left arm and elbow 2-5
+        #                               1.3, 1.2, 1.1, 1.2,  # Right arm and elbow 6-9
+        #                               1.5, 1.2, 1.1, 1.3, 0.5, 0.5,  # Left leg and knee 10-15
+        #                               1.5, 1.2, 1.1, 1.3, 0.5, 0.5,  # Right leg and knee 16-21
+        #                               ])
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
                                   disableViewer=True,
@@ -25,7 +26,6 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self.init_nec_params()
 
     def init_nec_params(self):
-
         self.bodynodes_dict = construct_skel_dict(self.robot_skeleton.bodynodes)
 
         self.init_state = self._get_obs()
@@ -40,15 +40,14 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         # self.Kd = self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-        self.symm_rate = -1 * np.array([1, 1, 0.01, 0.01])
-        self.constraint_idx_arr = [1,2,3]
+
+        self.symm_rate = -0.5 * np.array([1, 1, 1, 1, 0.5, 0.5])
+        self.constraint_idx_arr = [1, 2, 3]
 
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
-
-
 
         target_pos = self.build_target_pos(a)
         invM = self.invM
@@ -58,13 +57,12 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
 
         tau *= 0.0003
-        tau[6::]*= self.torque_scale
+        tau[6::] *= self.torque_scale
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-
 
         return self._step_pure_tor(tau)
 
-    def _step_pure_tor(self,tau):
+    def _step_pure_tor(self, tau):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
@@ -84,22 +82,39 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen =  -200 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt))
+        energy_consumed_pen = max(-200 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt)),-3)
 
+        symm_pos_pen = min(np.sum(self.symm_rate *
+                              (np.abs(cur_q['left_humerus_chest_joint_y',
+                                            'left_humerus_chest_joint_x',
+                                            'left_femur_root_joint_y',
+                                            'left_femur_root_joint_x',
+                                            'left_tarsals_febula_joint_1',
+                                            'left_tarsals_febula_joint_2'] -
+                                      cur_q['right_humerus_chest_joint_y',
+                                            'right_humerus_chest_joint_x',
+                                            'right_femur_root_joint_y',
+                                            'right_femur_root_joint_x',
+                                            'right_tarsals_febula_joint_1',
+                                            'right_tarsals_febula_joint_2'
+                                      ]))),3)
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen - symm_pos_pen
+
+        # reward = min(reward,10)
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi).all()
         done = not notdone
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen,
-                                  'energy_consumed_pen': -energy_consumed_pen, 'tau': tau[8::]}
+                                  'energy_consumed_pen': -energy_consumed_pen, 'tau': tau[8::],
+                                  'symm_pos_pens': symm_pos_pen}
 
     def _get_obs(self):
-
-        return np.concatenate([self.robot_skeleton.q[4:8], self.robot_skeleton.dq[3:8], self.robot_skeleton.q[8::],
-                               self.robot_skeleton.dq[8::]]).ravel()
+        return np.concatenate([self.robot_skeleton.q[4:6], self.robot_skeleton.dq[3:6],
+                               self.robot_skeleton.q[6:8], self.robot_skeleton.dq[6:8],
+                               self.robot_skeleton.q[8::], self.robot_skeleton.dq[8::]]).ravel()
 
     def reset_model(self):
         self.dart_world.reset()
@@ -113,7 +128,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         self._get_viewer().scene.tb._set_theta(45)
         self.track_skeleton_id = 0
 
-    def build_target_pos(self,a):
+    def build_target_pos(self, a):
         target_pos = np.zeros(22)
         a = a * self.action_scale
         target_pos = a[:]
