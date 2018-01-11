@@ -19,7 +19,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         #                               ])
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
-                                  disableViewer=True,
+                                  disableViewer=not True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 

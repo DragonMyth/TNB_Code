@@ -304,7 +304,7 @@ register(
 register(
     id='DartTurtle-v4',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
-    max_episode_steps=2000,
+    max_episode_steps=500,
 )
 
 register(
