@@ -11,12 +11,12 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
         control_bounds = np.array([[1.0] * 22, [-1.0] * 22])
         self.action_scale = np.pi / 2
         self.torque_scale = 1
-        # self.torque_scale = np.array([0.6, 0.6,  # abdomin and chest 0-1
-        #                               1.3, 1.2, 1.1, 1.2,  # Left arm and elbow 2-5
-        #                               1.3, 1.2, 1.1, 1.2,  # Right arm and elbow 6-9
-        #                               1.5, 1.2, 1.1, 1.3, 0.5, 0.5,  # Left leg and knee 10-15
-        #                               1.5, 1.2, 1.1, 1.3, 0.5, 0.5,  # Right leg and knee 16-21
-        #                               ])
+#       self.torque_scale = np.array([0.4,0.4, # abdomin and chest 0-1
+#                                      1.3,1,1,1.2, # Left arm and elbow 2-5
+#                                      1.3,1,1,1.2, # Right arm and elbow 6-9
+#                                      1.5,1,1,1.3,0.5,0.5, # Left leg and knee 10-15
+#                                      1.5,1,1,1.3,0.5,0.5, # Right leg and knee 16-21
+#                                      ])
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 49, control_bounds, dt=0.002,
                                   disableViewer=not True,
@@ -41,7 +41,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
 
-        self.symm_rate = -0.5 * np.array([1, 1, 1, 1, 0.5, 0.5])
+        self.symm_rate = -2 * np.array([2, 2, 1, 1])
         self.constraint_idx_arr = [1, 2, 3]
 
     def _step(self, a):
@@ -82,24 +82,22 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
         rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
-        energy_consumed_pen = max(-200 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt)),-3)
+        waist_penn = 0.5 * np.abs(cur_dq['abdomin_root_joint'])+ 0.3 * np.abs(cur_q['abdomin_root_joint'])
+        # mirror_enforce
+
+        energy_consumed_pen = min(10 * np.sum(np.abs(tau[6::] * old_dq[6::] * self.simulation_dt)),3)
 
         symm_pos_pen = min(np.sum(self.symm_rate *
                               (np.abs(cur_q['left_humerus_chest_joint_y',
                                             'left_humerus_chest_joint_x',
                                             'left_femur_root_joint_y',
-                                            'left_femur_root_joint_x',
-                                            'left_tarsals_febula_joint_1',
-                                            'left_tarsals_febula_joint_2'] -
+                                            'left_femur_root_joint_x'] -
                                       cur_q['right_humerus_chest_joint_y',
                                             'right_humerus_chest_joint_x',
                                             'right_femur_root_joint_y',
-                                            'right_femur_root_joint_x',
-                                            'right_tarsals_febula_joint_1',
-                                            'right_tarsals_febula_joint_2'
-                                      ]))),3)
+                                            'right_femur_root_joint_x']))),5)
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen - symm_pos_pen
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen - symm_pos_pen-waist_penn
 
         # reward = min(reward,10)
 
