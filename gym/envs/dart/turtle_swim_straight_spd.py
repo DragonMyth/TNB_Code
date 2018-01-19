@@ -5,7 +5,6 @@ from .simple_water_world import BaseFluidSimulator
 from .simple_water_world import BaseFluidEnhancedSimulator
 
 
-
 class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
@@ -14,6 +13,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 21, control_bounds, dt=0.002,
                                   disableViewer=not True,
                                   custom_world=BaseFluidEnhancedSimulator)
+
         utils.EzPickle.__init__(self)
         self.init_state = self._get_obs()
         self.original_com = self.robot_skeleton.C
@@ -24,7 +24,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
         # self.Kd = 150 * self.simulation_dt * self.Kp
-        self.Kd = 20*self.simulation_dt * self.Kp
+        self.Kd = 20 * self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
         self.symm_rate = 3 * np.array([1, 1, 0.01, 0.01])
@@ -36,24 +36,25 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
         target_pos = np.concatenate(([0.0] * 6, a * self.action_scale))
         ##SPD Controller
-        for i in range(self.frame_skip):
-            invM = self.invM
-            p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-            d = -self.Kd.dot(self.robot_skeleton.dq)
-            qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-            tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-            # tau *= 0.0005
-            tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-            self.do_simulation(tau, 1)
-
-        # invM = self.invM
-        # p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-        # d = -self.Kd.dot(self.robot_skeleton.dq)
-        # qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-        # tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+        # for i in range(self.frame_skip):
+        #     invM = self.invM
+        #     p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        #     d = -self.Kd.dot(self.robot_skeleton.dq)
+        #     qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        #     tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
         #
-        # tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-        # self.do_simulation(tau, self.frame_skip)
+        #     tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
+        #     self.do_simulation(tau, 1)
+
+        invM = self.invM
+        p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        d = -self.Kd.dot(self.robot_skeleton.dq)
+        qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+        tau /= 5.0
+        tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
+        self.do_simulation(tau, self.frame_skip)
+
         cur_com = self.robot_skeleton.C
         cur_q = self.robot_skeleton.q
         cur_dq = self.robot_skeleton.dq
@@ -71,8 +72,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
                                            'right_front_limb_joint_2',
                                            'right_rear_limb_joint_1',
                                            'right_rear_limb_joint_2']))
-        # symm_vel_pen = symm_rate*np.sum(np.abs(cur_dq['left_front_limb_joint_1', 'left_front_limb_joint_2'] - cur_dq[
-        #     'right_front_limb_joint_1', 'right_front_limb_joint_2']))
+
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
         horizontal_vel_rwd = 0  # 3*cur_dq[3]
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
@@ -85,7 +85,8 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau':tau,'symm_pos_pens': -symm_pos_pen}
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
+                                  'symm_pos_pens': -symm_pos_pen}
 
     def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[4:6], self.robot_skeleton.dq[3:6], self.robot_skeleton.q[6::],
@@ -112,24 +113,25 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
 
         target_pos = np.concatenate(([0.0] * 6, a * self.action_scale))
 
-        for i in range(self.frame_skip):
-            invM = self.invM
-            p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-            d = -self.Kd.dot(self.robot_skeleton.dq)
-            qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-            tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-            # tau *= 0.0005
-            tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-            self.do_simulation(tau, 1)
+        # for i in range(self.frame_skip):
+        #     invM = self.invM
+        #     p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        #     d = -self.Kd.dot(self.robot_skeleton.dq)
+        #     qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        #     tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+        #     # tau *= 0.0005
+        #     tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
+        #     self.do_simulation(tau, 1)
 
-        # invM = self.invM
-        # p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-        # d = -self.Kd.dot(self.robot_skeleton.dq)
-        # qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-        # tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        # # tau *= 0.0005
-        # tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-        # self.do_simulation(tau, self.frame_skip)
+        invM = self.invM
+        p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        d = -self.Kd.dot(self.robot_skeleton.dq)
+        qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+        tau /= 5.0
+        tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
+        self.do_simulation(tau, self.frame_skip)
+
 
         cur_com = self.robot_skeleton.C
         cur_q = self.robot_skeleton.q

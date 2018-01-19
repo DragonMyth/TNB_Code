@@ -349,12 +349,20 @@ register(
 )
 
 
-#Regular 1 step spd
+#Used to collect big amount of data
 register(
     id = 'DartHumanSwim-v01',
     entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
     max_episode_steps=50,
 )
+
+#Used to visulize states fragments
+register(
+    id = 'DartHumanSwim-v02',
+    entry_point = 'gym.envs.dart:DartHumanoidVisualizationEnv',
+    max_episode_steps=1000,
+)
+
 
 #Direct action output
 register(
@@ -380,6 +388,13 @@ register(
 register(
     id = 'DartHumanSwim-v4',
     entry_point = 'gym.envs.dart:DartHumanoidSwimStraightArmsLockWristEnv',
+    max_episode_steps=500,
+)
+
+#Only stablize waist
+register(
+    id = 'DartHumanSwim-v5',
+    entry_point = 'gym.envs.dart:DartHumanoidStableWaistEnv',
     max_episode_steps=500,
 )
 

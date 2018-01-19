@@ -29,3 +29,5 @@ from gym.envs.dart.humanoid_swim_straight_tau_act import DartHumanoidSwimStraigh
 from gym.envs.dart.humanoid_swim_straight_legs import DartHumanoidSwimStraightLegsEnv
 from gym.envs.dart.humanoid_swim_straight_arms import DartHumanoidSwimStraightArmsEnv
 from gym.envs.dart.humanoid_swim_straight_arms import DartHumanoidSwimStraightArmsLockWristEnv
+from gym.envs.dart.humanoid_swim_straight import DartHumanoidVisualizationEnv
+from gym.envs.dart.humanoid_swim_straight import  DartHumanoidStableWaistEnv
