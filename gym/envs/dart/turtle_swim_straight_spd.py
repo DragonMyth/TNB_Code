@@ -27,7 +27,10 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.Kd = 20 * self.simulation_dt * self.Kp
 
         self.invM = np.linalg.inv(self.robot_skeleton.M + self.Kd * self.simulation_dt)
-        self.symm_rate = 3 * np.array([1, 1, 0.01, 0.01])
+
+        #Symm rate Positive to be enforcing Symmetry
+        #          Negative to be enforcing Asymmetry
+        self.symm_rate = -5 * np.array([1, 1, 0.01, 0.01])
 
     def _step(self, a):
         old_com = self.robot_skeleton.C
@@ -51,7 +54,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau /= 5.0
+        tau /= 50.0
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
 
@@ -76,7 +79,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
         horizontal_vel_rwd = 0  # 3*cur_dq[3]
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
+        rotate_pen = 0.1*np.sum(np.abs(cur_q[0]))
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen - symm_pos_pen
 
@@ -106,11 +109,17 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
 
 class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
+    def __init__(self):
+        DartTurtleSwimStraighSPDEnv.__init__(self)
+        self.symm_rate = -1 * np.array([1, 1, 0.01, 0.01])
+
+
     def _step(self, a):
+        self.symm_rate = -5 * np.array([1, 1, 0.01, 0.01])
+
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
-
         target_pos = np.concatenate(([0.0] * 6, a * self.action_scale))
 
         # for i in range(self.frame_skip):
@@ -128,7 +137,7 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
         d = -self.Kd.dot(self.robot_skeleton.dq)
         qddot = invM.dot(-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
         tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        tau /= 5.0
+        tau /= 50.0
         tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
         self.do_simulation(tau, self.frame_skip)
 
@@ -142,7 +151,18 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
         horizontal_vel_rwd = 0  # 3*cur_dq[3]
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
+        rotate_pen = 0.1 * np.sum(np.abs(cur_q[0]))
+
+        symm_pos_pen = 0.1*np.sum(self.symm_rate *
+                              np.abs(cur_q['left_front_limb_joint_1',
+                                           'left_front_limb_joint_2',
+                                           'left_rear_limb_joint_1',
+                                           'left_rear_limb_joint_2'] -
+                                     cur_q['right_front_limb_joint_1',
+                                           'right_front_limb_joint_2',
+                                           'right_rear_limb_joint_1',
+                                           'right_rear_limb_joint_2']))
+
         # mirror_enforce
         reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen
 
@@ -151,4 +171,5 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
 
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen}
+                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen,'tau': tau,
+                                  'symm_pos_pens': -symm_pos_pen}

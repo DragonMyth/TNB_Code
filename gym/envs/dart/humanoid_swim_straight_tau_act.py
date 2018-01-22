@@ -10,7 +10,7 @@ class DartHumanoidSwimStraightTauActEnv(DartHumanoidSwimStraightEnv, utils.EzPic
         self.action_scale = 0.001
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'humanoid_swimmer.skel', self.frame_skip, 57, control_bounds, dt=0.002,
-                                  disableViewer=not True,
+                                  disableViewer=True,
                                   custom_world=BaseFluidSimulator)
         utils.EzPickle.__init__(self)
 
