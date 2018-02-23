@@ -80,7 +80,7 @@ class DartHumanoidSwimStraightEnv(dart_env.DartEnv, utils.EzPickle):
 
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
 
-        rotate_pen = np.sum(np.abs(cur_q[0]))
+        rotate_pen = np.sum(np.abs(cur_q[0]))*20
 
         waist_penn = 0.5 * np.abs(cur_dq['abdomin_root_joint']) + 0.3 * np.abs(cur_q['abdomin_root_joint'])
         # mirror_enforce
@@ -155,7 +155,7 @@ class DartHumanoidStableWaistEnv(DartHumanoidSwimStraightEnv, utils.EzPickle):
 
         orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
 
-        rotate_pen = np.sum(np.abs(cur_q[0]))
+        rotate_pen = np.sum(np.abs(cur_q[0]))*20
 
         waist_penn = 0.5 * np.abs(cur_dq['abdomin_root_joint']) + 0.3 * np.abs(cur_q['abdomin_root_joint'])
         # mirror_enforce
