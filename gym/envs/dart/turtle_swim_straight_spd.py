@@ -35,7 +35,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
         self.recordGap = 3
         self.traj_buffer = []
-        self.symm_autoencoder = load_model("./AutoEncoder/autoencoder_one_step.h5")
+        self.symm_autoencoder = load_model("./AutoEncoder/autoencoder_combine_1+2+3+4.h5")
         self.novelty_factor = 10
         print("Model name is", self.symm_autoencoder.name)
 
@@ -181,23 +181,23 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
 
         # # this should be the unscaled novelty term
         novelDiff = 0
-        # if (self.stepNum % self.recordGap == 0):
-        #     # 5 here is the num of dim for root related states
-        #     self.traj_buffer.append(ob[5::])
-        # if (len(self.traj_buffer) == 15):
-        #     # Reshape to 1 dimension
-        #     traj_seg = np.array([self.traj_buffer])
-        #     traj_seg = self.normalizeTraj(traj_seg, -np.pi / 2, np.pi / 2, -50, 50)
-        #     traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
-        #
-        #     traj_recons = self.symm_autoencoder.predict(traj_seg)
-        #     diff = traj_recons - traj_seg
-        #     novelDiff = np.linalg.norm(diff[:], axis=1)[0]
-        #     # print("Novel diff is", nov elDiff)
-        #     self.traj_buffer.pop(0)
-        #
-        # self.stepNum += 1
-        # novelDiff = self.novelty_factor * novelDiff
+        if (self.stepNum % self.recordGap == 0):
+            # 5 here is the num of dim for root related states
+            self.traj_buffer.append(ob[5::])
+        if (len(self.traj_buffer) == 15):
+            # Reshape to 1 dimension
+            traj_seg = np.array([self.traj_buffer])
+            traj_seg = self.normalizeTraj(traj_seg, -np.pi / 2, np.pi / 2, -50, 50)
+            traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
+
+            traj_recons = self.symm_autoencoder.predict(traj_seg)
+            diff = traj_recons - traj_seg
+            novelDiff = np.linalg.norm(diff[:], axis=1)[0]
+            # print("Novel diff is", nov elDiff)
+            self.traj_buffer.pop(0)
+
+        self.stepNum += 1
+        novelDiff = self.novelty_factor * novelDiff
 
         angs = np.abs(self.robot_skeleton.q[6::])
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000

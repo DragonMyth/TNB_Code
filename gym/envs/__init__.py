@@ -399,6 +399,22 @@ register(
 )
 
 
+
+register(
+    id = 'DartHumanUpperSwim-v0',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightUpperEnforceEnv',
+    max_episode_steps=500,
+)
+
+
+register(
+    id = 'DartHumanUpperSwim-v1',
+    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightUpperReleaseEnv',
+    max_episode_steps=500,
+)
+
+
+
 # Mujoco
 # ----------------------------------------
 

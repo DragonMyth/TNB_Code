@@ -137,3 +137,17 @@ class BaseFluidEnhancedSimulator(BaseFluidSimulator):
             self.forces[i,0] = self.forces[i,0]*1000 #if self.forces[i,0]<=0 else self.forces[i,0]
             self.skeletons[-1].bodynodes[i].add_ext_force(self.forces[i])
         super(BaseFluidSimulator, self).step()
+
+class BaseFluidEnhancedAllDirSimulator(BaseFluidSimulator):
+
+    def step(self, ):
+        c = self.skeletons[-1].bodynodes[0].C
+        self.trail[0].append(c[0])
+        self.trail[1].append(c[1])
+        self.trail[2].append(c[2])
+
+        for i in range(len(self.skeletons[-1].bodynodes)):
+            self.forces[i] = self.calcFluidForce(self.skeletons[-1].bodynodes[i])
+            self.forces[i] = self.forces[i]*1000 #if self.forces[i,0]<=0 else self.forces[i,0]
+            self.skeletons[-1].bodynodes[i].add_ext_force(self.forces[i])
+        super(BaseFluidSimulator, self).step()
