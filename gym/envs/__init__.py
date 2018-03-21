@@ -313,6 +313,14 @@ register(
     max_episode_steps=500,
 )
 
+#This env is for turtle with corrected spd controller that M is updated every step
+register(
+    id='DartTurtle-v6',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDCorrectedEnv',
+    max_episode_steps=500,
+)
+
+
 
 register(
     id = 'DartFlatworm-v0',
