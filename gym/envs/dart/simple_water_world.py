@@ -10,7 +10,10 @@ BOXNORMALS = {
     'right': [1, 0, 0]
 }
 
+def fastCross(u,v):
+    S = np.array([[0,-u[2],u[1]],[u[2],0,-u[0]],[-u[1],u[0],0]])
 
+    return S.dot(v)
 
 class BaseFluidSimulator(pydart.World):
     def __init__(self, step, skel_path):
@@ -51,38 +54,38 @@ class BaseFluidSimulator(pydart.World):
         com_vel = bodynode.com_linear_velocity();
 
 
-        node_linear_velocity_out = com_vel+np.cross(ang_vel,np.array([0, 0, bodyGeomety[2] / 2]))
+        node_linear_velocity_out = com_vel+fastCross(ang_vel,np.array([0, 0, bodyGeomety[2] / 2]))
 
         world_out_normal = bodynode.to_world(BOXNORMALS['outward']) - worldCenterPoint
         unit_force_out = world_out_normal.dot(node_linear_velocity_out)
         unit_force_out = 0 if unit_force_out < 0 else unit_force_out
         force_out = -bodyGeomety[0] * bodyGeomety[1] * unit_force_out * world_out_normal
 
-        node_linear_velocity_in = com_vel+np.cross(ang_vel,np.array([0, 0, -bodyGeomety[2] / 2]))
+        node_linear_velocity_in = com_vel+fastCross(ang_vel,np.array([0, 0, -bodyGeomety[2] / 2]))
         world_in_normal = bodynode.to_world(BOXNORMALS['inward']) - worldCenterPoint
         unit_force_in = world_in_normal.dot(node_linear_velocity_in)
         unit_force_in = 0 if unit_force_in < 0 else unit_force_in
         force_in = -bodyGeomety[0] * bodyGeomety[1] * unit_force_in * world_in_normal
 
-        node_linear_velocity_up = com_vel+np.cross(ang_vel,np.array([0, bodyGeomety[1] / 2, 0]))
+        node_linear_velocity_up = com_vel+fastCross(ang_vel,np.array([0, bodyGeomety[1] / 2, 0]))
         world_up_normal = bodynode.to_world(BOXNORMALS['up']) - worldCenterPoint
         unit_force_up = world_up_normal.dot(node_linear_velocity_up)
         unit_force_up = 0 if unit_force_up < 0 else unit_force_up
         force_up = -bodyGeomety[0] * bodyGeomety[2] * unit_force_up * world_up_normal
 
-        node_linear_velocity_down = com_vel+np.cross(ang_vel,np.array([0, -bodyGeomety[1] / 2, 0]))
+        node_linear_velocity_down = com_vel+fastCross(ang_vel,np.array([0, -bodyGeomety[1] / 2, 0]))
         world_down_normal = bodynode.to_world(BOXNORMALS['down']) - worldCenterPoint
         unit_force_down = world_down_normal.dot(node_linear_velocity_down)
         unit_force_down = 0 if unit_force_down < 0 else unit_force_down
         force_down = -bodyGeomety[0] * bodyGeomety[2] * unit_force_down * world_down_normal
 
-        node_linear_velocity_left = com_vel+np.cross(ang_vel,np.array([-bodyGeomety[0] / 2, 0, 0]))
+        node_linear_velocity_left = com_vel+fastCross(ang_vel,np.array([-bodyGeomety[0] / 2, 0, 0]))
         world_left_normal = bodynode.to_world(BOXNORMALS['left']) - worldCenterPoint
         unit_force_left = world_left_normal.dot(node_linear_velocity_left)
         unit_force_left = 0 if unit_force_left < 0 else unit_force_left
         force_left = -bodyGeomety[1] * bodyGeomety[2] * unit_force_left * world_left_normal
 
-        node_linear_velocity_right = com_vel+np.cross(ang_vel,np.array([bodyGeomety[0] / 2, 0, 0]))
+        node_linear_velocity_right = com_vel+fastCross(ang_vel,np.array([bodyGeomety[0] / 2, 0, 0]))
         world_right_normal = bodynode.to_world(BOXNORMALS['right']) - worldCenterPoint
         unit_force_right = world_right_normal.dot(node_linear_velocity_right)
         unit_force_right = 0 if unit_force_right < 0 else unit_force_right
