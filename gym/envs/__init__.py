@@ -20,7 +20,7 @@ register(
 register(
     id='ReversedAddition-v0',
     entry_point='gym.envs.algorithmic:ReversedAdditionEnv',
-    kwargs={'rows' : 2},
+    kwargs={'rows': 2},
     max_episode_steps=200,
     reward_threshold=25.0,
 )
@@ -28,7 +28,7 @@ register(
 register(
     id='ReversedAddition3-v0',
     entry_point='gym.envs.algorithmic:ReversedAdditionEnv',
-    kwargs={'rows' : 3},
+    kwargs={'rows': 3},
     max_episode_steps=200,
     reward_threshold=25.0,
 )
@@ -149,17 +149,17 @@ register(
 register(
     id='FrozenLake-v0',
     entry_point='gym.envs.toy_text:FrozenLakeEnv',
-    kwargs={'map_name' : '4x4'},
+    kwargs={'map_name': '4x4'},
     max_episode_steps=100,
-    reward_threshold=0.78, # optimum = .8196
+    reward_threshold=0.78,  # optimum = .8196
 )
 
 register(
     id='FrozenLake8x8-v0',
     entry_point='gym.envs.toy_text:FrozenLakeEnv',
-    kwargs={'map_name' : '8x8'},
+    kwargs={'map_name': '8x8'},
     max_episode_steps=200,
-    reward_threshold=0.99, # optimum = 1
+    reward_threshold=0.99,  # optimum = 1
 )
 
 register(
@@ -182,7 +182,7 @@ register(
 register(
     id='Taxi-v2',
     entry_point='gym.envs.toy_text.taxi:TaxiEnv',
-    reward_threshold=8, # optimum = 8.46
+    reward_threshold=8,  # optimum = 8.46
     max_episode_steps=200,
 )
 
@@ -265,8 +265,7 @@ register(
     max_episode_steps=1000,
 )
 
-
-#Dart Swimming Models
+# Dart Swimming Models
 register(
     id='DartEel-v0',
     entry_point='gym.envs.dart:DartEelSwimStraighEnv',
@@ -287,14 +286,14 @@ register(
     max_episode_steps=500,
 )
 
-#Large model
+# Large model
 register(
     id='DartTurtle-v2',
     entry_point='gym.envs.dart:DartTurtleSwimStraighLargeEnv',
     max_episode_steps=500,
 )
 
-# SPD controller
+# This env is for turtle with classic pd controller that is used for enforcement training
 register(
     id='DartTurtle-v3',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
@@ -307,121 +306,132 @@ register(
     max_episode_steps=500,
 )
 
+# This env is for turtle with classic pd controller that is used for release training
+
 register(
     id='DartTurtle-v5',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvNoEnf',
     max_episode_steps=500,
 )
 
-#This env is for turtle with corrected spd controller that M is updated every step
+# This env is for turtle with corrected spd controller that M is updated every step
 register(
     id='DartTurtle-v6',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDCorrectedEnv',
     max_episode_steps=500,
 )
 
-
-
+# This env is for turtle with classic pd controller that is used for data collection
 register(
-    id = 'DartFlatworm-v0',
-    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightEnv',
-    max_episode_steps=500,
-)
-
-register(
-    id = 'DartFlatworm-v1',
-    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightReducedEnv',
-    max_episode_steps=500,
+    id='DartTurtle-v7',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighPDCollectionEnv',
+    max_episode_steps=2500,
 )
 
 
 register(
-    id = 'DartFlatworm-v2',
-    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightSmallEnv',
+    id='DartFlatworm-v0',
+    entry_point='gym.envs.dart:DartFlatwormSwimStraightEnv',
     max_episode_steps=500,
 )
 
 register(
-    id = 'DartFlatworm-v3',
-    entry_point = 'gym.envs.dart:DartFlatwormSwimStraightSmallFreeBackEnv',
-    max_episode_steps=500,
-
-
-)
-
-#Regular 1 step spd
-register(
-    id = 'DartHumanSwim-v0',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
+    id='DartFlatworm-v1',
+    entry_point='gym.envs.dart:DartFlatwormSwimStraightReducedEnv',
     max_episode_steps=500,
 )
 
-
-#Used to collect big amount of data
 register(
-    id = 'DartHumanSwim-v01',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightEnv',
+    id='DartFlatworm-v2',
+    entry_point='gym.envs.dart:DartFlatwormSwimStraightSmallEnv',
+    max_episode_steps=500,
+)
+
+register(
+    id='DartFlatworm-v3',
+    entry_point='gym.envs.dart:DartFlatwormSwimStraightSmallFreeBackEnv',
+    max_episode_steps=500,
+
+)
+
+# Regular 1 step spd
+register(
+    id='DartHumanSwim-v0',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightEnv',
+    max_episode_steps=500,
+)
+
+# Used to collect big amount of data
+register(
+    id='DartHumanSwim-v01',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightEnv',
     max_episode_steps=50,
 )
 
-#Used to visulize states fragments
+# Used to visulize states fragments
 register(
-    id = 'DartHumanSwim-v02',
-    entry_point = 'gym.envs.dart:DartHumanoidVisualizationEnv',
+    id='DartHumanSwim-v02',
+    entry_point='gym.envs.dart:DartHumanoidVisualizationEnv',
     max_episode_steps=1000,
 )
 
-
-#Direct action output
+# Direct action output
 register(
-    id = 'DartHumanSwim-v1',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightTauActEnv',
+    id='DartHumanSwim-v1',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightTauActEnv',
     max_episode_steps=500,
 )
 
-#Only Legs with heavier pelvis
+# Only Legs with heavier pelvis
 register(
-    id = 'DartHumanSwim-v2',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightLegsEnv',
+    id='DartHumanSwim-v2',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightLegsEnv',
     max_episode_steps=500,
 )
 
 register(
-    id = 'DartHumanSwim-v3',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightArmsEnv',
+    id='DartHumanSwim-v3',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightArmsEnv',
     max_episode_steps=500,
 )
 
-#Only Arms and lock wrists
+# Only Arms and lock wrists
 register(
-    id = 'DartHumanSwim-v4',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightArmsLockWristEnv',
+    id='DartHumanSwim-v4',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightArmsLockWristEnv',
     max_episode_steps=500,
 )
 
-#Only stablize waist
+# Only stablize waist
 register(
-    id = 'DartHumanSwim-v5',
-    entry_point = 'gym.envs.dart:DartHumanoidStableWaistEnv',
+    id='DartHumanSwim-v5',
+    entry_point='gym.envs.dart:DartHumanoidStableWaistEnv',
     max_episode_steps=500,
 )
-
-
 
 register(
-    id = 'DartHumanUpperSwim-v0',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightUpperEnforceEnv',
+    id='DartHumanUpperSwim-v0',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightUpperEnforceEnv',
     max_episode_steps=500,
 )
-
 
 register(
-    id = 'DartHumanUpperSwim-v1',
-    entry_point = 'gym.envs.dart:DartHumanoidSwimStraightUpperReleaseEnv',
+    id='DartHumanUpperSwim-v1',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightUpperReleaseEnv',
     max_episode_steps=500,
 )
 
+register(
+    id='DartHumanFullSwim-v0',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightFullEnforceEnv',
+    max_episode_steps=500,
+)
 
+register(
+    id='DartHumanFullSwim-v1',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightFullReleaseEnv',
+    max_episode_steps=500,
+)
 
 # Mujoco
 # ----------------------------------------
@@ -527,14 +537,14 @@ register(
 
 # # print ', '.join(["'{}'".format(name.split('.')[0]) for name in atari_py.list_games()])
 for game in ['air_raid', 'alien', 'amidar', 'assault', 'asterix', 'asteroids', 'atlantis',
-    'bank_heist', 'battle_zone', 'beam_rider', 'berzerk', 'bowling', 'boxing', 'breakout', 'carnival',
-    'centipede', 'chopper_command', 'crazy_climber', 'demon_attack', 'double_dunk',
-    'elevator_action', 'enduro', 'fishing_derby', 'freeway', 'frostbite', 'gopher', 'gravitar',
-    'hero', 'ice_hockey', 'jamesbond', 'journey_escape', 'kangaroo', 'krull', 'kung_fu_master',
-    'montezuma_revenge', 'ms_pacman', 'name_this_game', 'phoenix', 'pitfall', 'pong', 'pooyan',
-    'private_eye', 'qbert', 'riverraid', 'road_runner', 'robotank', 'seaquest', 'skiing',
-    'solaris', 'space_invaders', 'star_gunner', 'tennis', 'time_pilot', 'tutankham', 'up_n_down',
-    'venture', 'video_pinball', 'wizard_of_wor', 'yars_revenge', 'zaxxon']:
+             'bank_heist', 'battle_zone', 'beam_rider', 'berzerk', 'bowling', 'boxing', 'breakout', 'carnival',
+             'centipede', 'chopper_command', 'crazy_climber', 'demon_attack', 'double_dunk',
+             'elevator_action', 'enduro', 'fishing_derby', 'freeway', 'frostbite', 'gopher', 'gravitar',
+             'hero', 'ice_hockey', 'jamesbond', 'journey_escape', 'kangaroo', 'krull', 'kung_fu_master',
+             'montezuma_revenge', 'ms_pacman', 'name_this_game', 'phoenix', 'pitfall', 'pong', 'pooyan',
+             'private_eye', 'qbert', 'riverraid', 'road_runner', 'robotank', 'seaquest', 'skiing',
+             'solaris', 'space_invaders', 'star_gunner', 'tennis', 'time_pilot', 'tutankham', 'up_n_down',
+             'venture', 'video_pinball', 'wizard_of_wor', 'yars_revenge', 'zaxxon']:
     for obs_type in ['image', 'ram']:
         # space_invaders should yield SpaceInvaders-v0 and SpaceInvaders-ram-v0
         name = ''.join([g.capitalize() for g in game.split('_')])
@@ -591,7 +601,8 @@ for game in ['air_raid', 'alien', 'amidar', 'assault', 'asterix', 'asteroids', '
         register(
             id='{}NoFrameskip-v0'.format(name),
             entry_point='gym.envs.atari:AtariEnv',
-            kwargs={'game': game, 'obs_type': obs_type, 'frameskip': 1, 'repeat_action_probability': 0.25}, # A frameskip of 1 means we get every frame
+            kwargs={'game': game, 'obs_type': obs_type, 'frameskip': 1, 'repeat_action_probability': 0.25},
+            # A frameskip of 1 means we get every frame
             max_episode_steps=frameskip * 100000,
             nondeterministic=nondeterministic,
         )
@@ -601,7 +612,7 @@ for game in ['air_raid', 'alien', 'amidar', 'assault', 'asterix', 'asteroids', '
         register(
             id='{}NoFrameskip-v4'.format(name),
             entry_point='gym.envs.atari:AtariEnv',
-            kwargs={'game': game, 'obs_type': obs_type, 'frameskip': 1}, # A frameskip of 1 means we get every frame
+            kwargs={'game': game, 'obs_type': obs_type, 'frameskip': 1},  # A frameskip of 1 means we get every frame
             max_episode_steps=frameskip * 100000,
             nondeterministic=nondeterministic,
         )
@@ -707,19 +718,19 @@ register(
 )
 
 # semi_supervised envs
-    # probably the easiest:
+# probably the easiest:
 register(
     id='SemisuperPendulumNoise-v0',
     entry_point='gym.envs.safety:SemisuperPendulumNoiseEnv',
     max_episode_steps=200,
 )
-    # somewhat harder because of higher variance:
+# somewhat harder because of higher variance:
 register(
     id='SemisuperPendulumRandom-v0',
     entry_point='gym.envs.safety:SemisuperPendulumRandomEnv',
     max_episode_steps=200,
 )
-    # probably the hardest because you only get a constant number of rewards in total:
+# probably the hardest because you only get a constant number of rewards in total:
 register(
     id='SemisuperPendulumDecay-v0',
     entry_point='gym.envs.safety:SemisuperPendulumDecayEnv',

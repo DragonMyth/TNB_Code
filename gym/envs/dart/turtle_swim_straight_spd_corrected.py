@@ -3,6 +3,7 @@ from gym import utils
 from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidSimulator
 from .simple_water_world import BaseFluidEnhancedSimulator
+from .simple_water_world import BaseFluidEnhancedAllDirSimulator
 from keras.models import load_model
 
 
@@ -22,10 +23,10 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
 
         num_of_dofs = len(self.robot_skeleton.dofs) - len(self.robot_skeleton.joints[0].dofs)
 
-        self.simulation_dt = self.dt * 1.0 / self.frame_skip
+        self.simulation_dt = self.dt  * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
-        # self.Kd = 150 * self.simulation_dt * self.Kp
-        self.Kd = 2000 * self.simulation_dt * self.Kp
+        self.Kd = 150 * self.simulation_dt * self.Kp
+        # self.Kd = 20 * self.simulation_dt * self.Kp
         # Symm rate Positive to be enforcing Symmetry
         #          Negative to be enforcing Asymmetry
         self.symm_rate = -0 * np.array([1, 1, 0.01, 0.01])
@@ -40,16 +41,26 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
         old_dq = self.robot_skeleton.dq
 
         target_pos = np.concatenate(([0.0] * 6, a * self.action_scale))
-        ##SPD Controller
+        #SPD Controller
         for i in range(self.frame_skip):
             M = self.robot_skeleton.M + self.Kd * self.simulation_dt
             p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
             d = -self.Kd.dot(self.robot_skeleton.dq)
+
             qddot = np.linalg.solve(M,-self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
             tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
 
             tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
             self.do_simulation(tau, 1)
+        #
+        # M = self.robot_skeleton.M + self.Kd * self.simulation_dt
+        # p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
+        # d = -self.Kd.dot(self.robot_skeleton.dq)
+        # qddot = np.linalg.solve(M, -self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
+        # tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
+        #
+        # tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
+        # self.do_simulation(tau, self.frame_skip)
 
         cur_com = self.robot_skeleton.C
         cur_q = self.robot_skeleton.q
@@ -85,7 +96,8 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
         return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                   'horizontal_vel_rwd': horizontal_vel_rwd,
                                   'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
-                                  'symm_pos_pens': -symm_pos_pen, 'novelty': novelDiff}
+                                  'symm_pos_pens': -symm_pos_pen, 'novelty': novelDiff,
+                                  'energy_consumed_pen': 0}
 
     def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[4:6], self.robot_skeleton.dq[3:6], self.robot_skeleton.q[6::],

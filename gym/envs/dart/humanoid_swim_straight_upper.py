@@ -39,7 +39,7 @@ class DartHumanoidSwimStraightUpperEnforceEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
         self.recordGap = 3
         self.traj_buffer = []
-        self.symm_autoencoder = load_model("./AutoEncoder/DartHumanUpperAutoencoder_1+2+3+4.h5")
+        self.symm_autoencoder = load_model("./AutoEncoder/DartHumanUpperAutoencoder_1+2.h5")
         self.novelty_factor = 20
         print("Model name is", self.symm_autoencoder.name)
 
@@ -158,22 +158,22 @@ class DartHumanoidSwimStraightUpperReleaseEnv(DartHumanoidSwimStraightUpperEnfor
         ob = self._get_obs()
 
         novelDiff = 0
-        # if (self.stepNum % self.recordGap == 0):
-        #     # 5 here is the num of dim for root related states
-        #     self.traj_buffer.append(ob[9::])
-        # if (len(self.traj_buffer) == 15):
-        #     # Reshape to 1 dimension
-        #     traj_seg = np.array([self.traj_buffer])
-        #     traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -30, 30)
-        #     traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
-        #
-        #     traj_recons = self.symm_autoencoder.predict(traj_seg)
-        #     diff = traj_recons - traj_seg
-        #     novelDiff = np.linalg.norm(diff[:], axis=1)[0]
-        #     # print("Novel diff is", nov elDiff)
-        #     self.traj_buffer.pop(0)
-        #
-        # self.stepNum += 1
+        if (self.stepNum % self.recordGap == 0):
+            # 5 here is the num of dim for root related states
+            self.traj_buffer.append(ob[9::])
+        if (len(self.traj_buffer) == 15):
+            # Reshape to 1 dimension
+            traj_seg = np.array([self.traj_buffer])
+            traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -30, 30)
+            traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
+
+            traj_recons = self.symm_autoencoder.predict(traj_seg)
+            diff = traj_recons - traj_seg
+            novelDiff = np.linalg.norm(diff[:], axis=1)[0]
+            # print("Novel diff is", nov elDiff)
+            self.traj_buffer.pop(0)
+
+        self.stepNum += 1
 
         novelDiff = self.novelty_factor * novelDiff
 
