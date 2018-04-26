@@ -38,3 +38,4 @@ from gym.envs.dart.humanoid_swim_straight_upper import DartHumanoidSwimStraightU
 from gym.envs.dart.humanoid_swim_straight_upper import DartHumanoidSwimStraightUpperReleaseEnv
 from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullEnforceEnv
 from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullReleaseEnv
+from gym.envs.dart.humanoid_swim_straight_full_data_collection import DartHumanoidSwimStraightFullDataCollectionEnv
