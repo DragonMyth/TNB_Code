@@ -90,6 +90,13 @@ register(
     max_episode_steps=500,
 )
 
+register(
+    id='PathFinding-v0',
+    entry_point='gym.envs.classic_control:PathFinding',
+    max_episode_steps=500,
+
+)
+
 # Box2d
 # ----------------------------------------
 
