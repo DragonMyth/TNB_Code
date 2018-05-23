@@ -13,13 +13,16 @@ from gym.envs.dart.inverted_double_pendulum import DartDoubleInvertedPendulumEnv
 from gym.envs.dart.dog import DartDogEnv
 from gym.envs.dart.reacher2d import DartReacher2dEnv
 
-#Swiming Simulation envs
+# Swiming Simulation envs
 from gym.envs.dart.eel_swim_straight import DartEelSwimStraighEnv
 from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
 from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
 from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
-from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnv
-from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnvNoEnf
+from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnv
+from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnvNoEnf
+from gym.envs.dart.turtle_swim_straight_spd_corrected import DartTurtleSwimStraighSPDCorrectedEnv
+from gym.envs.dart.turtle_swim_straight_pd_data_collection import DartTurtleSwimStraighPDCollectionEnv
+
 from gym.envs.dart.flatworm_swim_straight import DartFlatwormSwimStraightEnv
 from gym.envs.dart.flatworm_swim_straight_reduced import DartFlatwormSwimStraightReducedEnv
 from gym.envs.dart.flatworm_swim_straight_small import DartFlatwormSwimStraightSmallEnv
@@ -30,6 +33,9 @@ from gym.envs.dart.humanoid_swim_straight_legs import DartHumanoidSwimStraightLe
 from gym.envs.dart.humanoid_swim_straight_arms import DartHumanoidSwimStraightArmsEnv
 from gym.envs.dart.humanoid_swim_straight_arms import DartHumanoidSwimStraightArmsLockWristEnv
 from gym.envs.dart.humanoid_swim_straight import DartHumanoidVisualizationEnv
-from gym.envs.dart.humanoid_swim_straight import  DartHumanoidStableWaistEnv
+from gym.envs.dart.humanoid_swim_straight import DartHumanoidStableWaistEnv
 from gym.envs.dart.humanoid_swim_straight_upper import DartHumanoidSwimStraightUpperEnforceEnv
 from gym.envs.dart.humanoid_swim_straight_upper import DartHumanoidSwimStraightUpperReleaseEnv
+from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullEnforceEnv
+from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullReleaseEnv
+from gym.envs.dart.humanoid_swim_straight_full_data_collection import DartHumanoidSwimStraightFullDataCollectionEnv
