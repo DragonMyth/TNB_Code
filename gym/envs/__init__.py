@@ -328,7 +328,6 @@ register(
     max_episode_steps=2500,
 )
 
-
 register(
     id='DartFlatworm-v0',
     entry_point='gym.envs.dart:DartFlatwormSwimStraightEnv',
@@ -433,10 +432,30 @@ register(
     max_episode_steps=500,
 )
 
+register(
+    id='DartHumanFullSwim-v2',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightFullDataCollectionEnv',
+    max_episode_steps=2500,
+
+)
 
 register(
-    id = 'DartHumanFullSwim-v2',
-    entry_point ='gym.envs.dart:DartHumanoidSwimStraightFullDataCollectionEnv',
+    id='DartPathFinding-v0',
+    entry_point='gym.envs.dart:DartCubePathFindingEnforceEnv',
+    max_episode_steps=200,
+
+)
+
+register(
+    id='DartPathFinding-v1',
+    entry_point='gym.envs.dart:DartCubePathFindingReleaseEnv',
+    max_episode_steps=500,
+
+)
+
+register(
+    id='DartPathFinding-v2',
+    entry_point='gym.envs.dart:DartCubePathFindingDataCollectEnv',
     max_episode_steps=2500,
 
 )

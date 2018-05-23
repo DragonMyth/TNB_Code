@@ -42,7 +42,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
         self.recordGap = 3
         self.traj_buffer = []
-        self.symm_autoencoder = load_model("./AutoEncoder/DartTurtleAutoencoder_1+2+3.h5")
+        self.symm_autoencoder = load_model("../AutoEncoder/local/DartTurtleAutoencoder_1+2+3+4.h5")
         self.novelty_factor = 50
         # print("Model name is", self.symm_autoencoder.name)
 
@@ -144,7 +144,7 @@ class DartTurtleSwimStraighSPDEnvNoEnf(DartTurtleSwimStraighSPDEnv):
     def __init__(self):
         DartTurtleSwimStraighSPDEnv.__init__(self)
         self.symm_rate = -0 * np.array([1, 1, 0.01, 0.01])
-        self.symm_autoencoder = None
+        # self.symm_autoencoder = None
 
     def _step(self, a):
 

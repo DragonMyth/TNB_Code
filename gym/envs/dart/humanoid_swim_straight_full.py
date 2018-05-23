@@ -42,7 +42,7 @@ class DartHumanoidSwimStraightFullEnforceEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
         self.recordGap = 3
         self.traj_buffer = []
-        self.symm_autoencoder = None # load_model("./AutoEncoder/DartHumanFullAutoencoder_1+2+3+4.h5")
+        self.symm_autoencoder = load_model("./AutoEncoder/remote/athens/AutoEncoder/DartHumanoidFullAutoencoder_1.h5")
         self.novelty_factor = 20
         if self.symm_autoencoder is not None:
             print("Model name is", self.symm_autoencoder.name)
@@ -92,7 +92,7 @@ class DartHumanoidSwimStraightFullEnforceEnv(dart_env.DartEnv, utils.EzPickle):
             if (len(self.traj_buffer) == 15):
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -30, 30)
+                traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -50, 50)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 traj_recons = self.symm_autoencoder.predict(traj_seg)
@@ -155,7 +155,7 @@ class DartHumanoidSwimStraightFullReleaseEnv(DartHumanoidSwimStraightFullEnforce
     def __init__(self):
         DartHumanoidSwimStraightFullEnforceEnv.__init__(self)
 
-        self.symm_autoencoder = None
+        #self.symm_autoencoder = None
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
@@ -195,7 +195,7 @@ class DartHumanoidSwimStraightFullReleaseEnv(DartHumanoidSwimStraightFullEnforce
             if (len(self.traj_buffer) == 15):
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -30, 30)
+                traj_seg = self.normalizeTraj(traj_seg, -np.pi, np.pi, -50, 50)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 traj_recons = self.symm_autoencoder.predict(traj_seg)
@@ -219,7 +219,7 @@ class DartHumanoidSwimStraightFullReleaseEnv(DartHumanoidSwimStraightFullEnforce
         energy_consumed_pen = 0.5 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
 
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen + novelDiff
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen - energy_consumed_pen
 
         notdone = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all()
         done = not notdone
