@@ -92,10 +92,7 @@ class DartCubePathFindingEnforceEnv(dart_env.DartEnv, utils.EzPickle):
             valid = False
         done = not valid
 
-        return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': distant_rwd,
-                                  'rotate_pen': -0, 'orth_pen': -0, 'tau': tau,
-                                  'symm_pos_pens': -0, 'novelty': novelDiff,
-                                  'energy_consumed_pen': -0}
+        return ob, reward, done, {'Total Reward': reward, 'distant_rwd': distant_rwd, 'tau': tau, 'novelty': novelDiff}
 
     def _get_obs(self):
         return np.concatenate(

@@ -5,3 +5,6 @@ from gym.envs.classic_control.pendulum import PendulumEnv
 from gym.envs.classic_control.acrobot import AcrobotEnv
 
 from gym.envs.classic_control.path_finding import PathFinding
+from gym.envs.classic_control.path_finding import PathFindingReleasing
+
+from gym.envs.classic_control.path_finding_data_collect import PathFindingDataCollect
