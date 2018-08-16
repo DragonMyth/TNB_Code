@@ -29,7 +29,7 @@ class PathFindingDataCollect(gym.Env):
         self.grid_map[8:13, 8:13] = 1
 
         # This is the goal grid
-        goal_i, goal_j = 10, 18
+        goal_i, goal_j = 11, 18
         self.grid_map[goal_i, goal_j] = 2
 
         self.grid_size = 0.25

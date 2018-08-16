@@ -23,6 +23,7 @@ class PathFinding(gym.Env):
         self.grid_map[-1, :] = 1
         self.grid_map[:, 0] = 1
         self.grid_map[:, -1] = 1
+
         self.grid_map[4, 4:-7] = 1
         self.grid_map[4:-7, 4] = 1
         self.grid_map[-5, 7:-4] = 1
@@ -30,7 +31,7 @@ class PathFinding(gym.Env):
         self.grid_map[8:13, 8:13] = 1
 
         # This is the goal grid
-        goal_i, goal_j = 7, 18
+        goal_i, goal_j = 11, 18
         self.grid_map[goal_i, goal_j] = 2
 
         self.grid_size = 0.25
@@ -75,8 +76,8 @@ class PathFinding(gym.Env):
 
         autoencoder_dir = "./AutoEncoder/local/"
         # autoencoder1 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_1.h5")
-        # autoencoder2 = load_model(autoencoder_dir + "new_path_finding_autoencoder_2.h5")
-        # autoencoder3 = load_model(autoencoder_dir + "new_path_finding_autoencoder_3.h5")
+        # autoencoder2 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_2.h5")
+        # autoencoder3 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_3.h5")
         # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_4.h5")
 
         # self.novel_autoencoders.append(autoencoder1)
@@ -88,7 +89,7 @@ class PathFinding(gym.Env):
         for i in range(len(self.novel_autoencoders)):
             print("Model {} name is {}".format(i, self.novel_autoencoders[i].name))
 
-        self.novelty_factor = 70
+        self.novelty_factor = 100
         self.novelDiff = 0
         # self.novelty_discount = 1
         # self.novelty_discount_rate = 0.99
@@ -123,16 +124,16 @@ class PathFinding(gym.Env):
 
         novelRwd = self.calc_novelty_from_autoencoder(obs)
 
-        # novelRwd *= self.novelty_discount
-        # self.novelty_discount *= self.novelty_discount_rate
-        # novelRwd = self.calc_novelty_from_path(obs)
+        if self.stepNum >= 180:
+            novelRwd = 0
+            self.novelDiff = 0
 
         if (self.novelDiff > 0):
             self.path_data[-1][1] = self.novelDiff
 
-        alive_penalty = -5
-        progress_reward = 80 * (old_to_goal_dist - curr_to_goal_dist)
-        distance_to_goal_reward = min(70, 10 / curr_to_goal_dist)
+        alive_penalty = -10
+        progress_reward = 180 * (old_to_goal_dist - curr_to_goal_dist)
+        distance_to_goal_reward = min(50, 10 / curr_to_goal_dist)
 
         i, j = self.pos_to_grid_idx(pos_after)
 
@@ -149,15 +150,16 @@ class PathFinding(gym.Env):
                             close_to_wall_penalty = 1 / dist_sq
 
         close_to_wall_penalty = min(10, close_to_wall_penalty)
-        reward = alive_penalty + progress_reward + distance_to_goal_reward - close_to_wall_penalty + novelRwd
+
+        reward = alive_penalty + progress_reward + distance_to_goal_reward - close_to_wall_penalty
 
         done = False
-        if wall_hit == 1:
-            # done = True
-            reward -= 500
-        elif self.grid_map[i, j] == 2:
+
+        if self.grid_map[i, j] == 2:
             done = True
-            reward += 10000
+            reward += 20000
+
+        # reward = 0.1 * reward + novelRwd
 
         return obs, reward, done, {'Alive penalty': alive_penalty,
                                    'Progress Reward': progress_reward,
@@ -189,7 +191,7 @@ class PathFinding(gym.Env):
                     self.point_vel[0] *= -.2
                 if (change_dir[1] == 1):
                     self.point_vel[1] *= -.2
-                wall_hit = 1
+                wall_hit += 1
 
             self.point_pos = self.point_pos + self.dt * self.point_vel
             self.point_vel = self.point_vel + self.dt * (self.point_acc_force / self.point_mass)
@@ -445,9 +447,9 @@ class PathFindingReleasing(PathFinding):
 
             novelRwd = self.novelty_factor * self.novelDiff
 
-        alive_penalty = -5
-        progress_reward = 80 * (old_to_goal_dist - curr_to_goal_dist)
-        distance_to_goal_reward = min(70, 10 / curr_to_goal_dist)
+        alive_penalty = -20
+        progress_reward = 180 * (old_to_goal_dist - curr_to_goal_dist)
+        distance_to_goal_reward = min(50, 10 / curr_to_goal_dist)
 
         i, j = self.pos_to_grid_idx(pos_after)
 
@@ -471,7 +473,7 @@ class PathFindingReleasing(PathFinding):
             reward -= 500
         elif self.grid_map[i, j] == 2:
             done = True
-            reward += 10000
+            reward += 20000
 
         return obs, reward, done, {'Alive penalty': alive_penalty,
                                    'Progress Reward': progress_reward,
