@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 import gym
 from mpi4py import MPI
-from baselines.baselines.common import set_global_seeds
-from baselines.baselines import bench
+from baselines.common import set_global_seeds
+from baselines import bench
 import os.path as osp
-from baselines.baselines import logger
+from baselines import logger
 
 
 def train(env_id, num_timesteps, seed):
-    from baselines.baselines.ppo1 import pposgd_simple, mlp_policy
-    import baselines.baselines.common.tf_util as U
+    from baselines.ppo1 import pposgd_simple, mlp_policy
+    import baselines.common.tf_util as U
     rank = MPI.COMM_WORLD.Get_rank()
     sess = U.single_threaded_session()
     sess.__enter__()
@@ -31,7 +31,7 @@ def train(env_id, num_timesteps, seed):
     env.seed(workerseed)
 
     model = pposgd_simple.learn(env, policy_fn,
-                                max_timesteps=1e6,
+                                max_timesteps=1e5,
                                 timesteps_per_actorbatch=int(3000),
                                 clip_param=0.2, entcoeff=0.01,
                                 optim_epochs=4, optim_stepsize=1e-3, optim_batchsize=64,
