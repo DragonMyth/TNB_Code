@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/NoveltyEnforcement.iml" afterPath="$PROJECT_DIR$/.idea/NoveltyEnforcement.iml" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,7 +18,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="post_training_process.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="post_training_process.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="540">
@@ -28,6 +26,16 @@
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="24" column="12" lean-forward="false" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -66,6 +74,7 @@
         <option value="$USER_HOME$/anaconda3/envs/deepRL/lib/python3.6/site-packages/gym/envs/classic_control/path_finding_data_collect.py" />
         <option value="$USER_HOME$/anaconda3/envs/deepRL/lib/python3.6/site-packages/gym/envs/classic_control/path_finding.py" />
         <option value="$PROJECT_DIR$/baselines/baselines/ppo1/run_2d_path_finding.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -438,6 +447,14 @@
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="12" lean-forward="false" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="12" />
+          <folding />
         </state>
       </provider>
     </entry>
