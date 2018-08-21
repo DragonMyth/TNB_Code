@@ -15,8 +15,8 @@ import multiprocessing
 import os.path as osp
 
 # curr_environment = "DartHumanSwim-v5"
-from baselines.baselines import bench as bc
-from baselines.baselines import logger
+from baselines import bench as bc
+from baselines import logger
 
 
 def perform_rollout(policy,
