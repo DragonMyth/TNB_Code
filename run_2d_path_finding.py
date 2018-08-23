@@ -64,7 +64,7 @@ def train(sess, env_id, num_timesteps, seed):
 
 
 def main():
-    num_iterations = 10
+    num_iterations = 1
     num_processes = MPI.COMM_WORLD.Get_size()
     num_timesteps_per_process = 2000
     env_name = 'SimplerPathFinding-v0'

@@ -1,4 +1,5 @@
 import random
+from mpi4py import MPI
 
 import gym
 import joblib
@@ -14,9 +15,14 @@ from boltons import iterutils
 import multiprocessing
 import os.path as osp
 
-# curr_environment = "DartHumanSwim-v5"
 from baselines import bench as bc
 from baselines import logger
+
+import tensorflow as tf
+from baselines.ppo1 import mlp_policy
+import baselines.common.tf_util as U
+
+import itertools
 
 
 def perform_rollout(policy,
@@ -26,7 +32,7 @@ def perform_rollout(policy,
                     plot_result=False,
                     control_step_skip=1,
                     costum_horizon=None,
-                    use_mean_action=False,
+                    stochastic=True,
                     debug=False,
                     saved_rollout_path=None,
                     num_repeat=1
@@ -71,16 +77,16 @@ def perform_rollout(policy,
                     env.unwrapped.action_dim)) * np.pi
             else:
                 if i % control_step_skip == 0:
-                    if not use_mean_action:
-                        action_taken = policy.get_action(observation)[0]
-                    else:
-                        action_taken = policy.get_action(observation)[1]['mean']
+                    action_taken = policy.act(stochastic, observation)[0]
                     last_action = action_taken
                 else:
                     action_taken = last_action
             if animate:
                 if (policy is not None):
-                    std = np.exp(policy.get_action(observation)[1]['log_std'])
+                    # log_std = policy.log_std()
+
+                    std = policy.log_std(observation)[0]
+
                     print("std is: ", std)
                     print("Action taken is: ", action_taken)
             if predefined_actions:
@@ -139,6 +145,9 @@ def perform_rollout(policy,
 
 def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15, **opt):
     # For Each rollout
+    rank = MPI.COMM_WORLD.Get_rank()
+    np.random.seed(42 + rank)
+
     np.random.seed(42)
 
     rollout_num_ranges = range(rollout_num)
@@ -154,7 +163,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
 
-        useful_path_data = path['observations'][250::]
+        useful_path_data = path['observations'][:]
         split_paths = list(iterutils.chunked_iter(useful_path_data, instancesNum * obs_skip))
         # Split a rollout in to segments of 50 time steps
 
@@ -176,85 +185,104 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
         print(np.shape(subsampled_paths_per_thread))
         return subsampled_paths_per_thread
 
-    results = Parallel(n_jobs=num_cores)(delayed(saveSingleRollout)(i) for i in rollout_num_ranges)
+    results = []
+    for i in rollout_num_ranges:
+        results.append(saveSingleRollout(i))
+    # results = Parallel(n_jobs=num_cores)(delayed(saveSingleRollout)(i) for i in rollout_num_ranges)
 
-    import itertools
     subsampled_paths = itertools.chain(*results)
     return subsampled_paths
 
 
 def collect_rollouts_from_dir(env, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
-                              traj_per_policy=100,
+                              traj_per_policy_per_process=100,
                               policy_file_basename='itr_', ):
-    openFileOption = {}
-    openFileOption['initialdir'] = './data/local/experiment'
-    directory = askdirectory(**openFileOption)
+    comm = MPI.COMM_WORLD
+    # directory = None  # './data/ppo_PathFinding-v0/baseline_seed=0'
+    directory = './data/ppo_PathFinding-v0/baseline_seed=0'
+    # openFileOption = {}
+    # openFileOption['initialdir'] = './data/ppo_' + env
+    # directory = askdirectory(**openFileOption)
 
-    all_subsampled_paths = []
+    all_subsampled_paths = None
+    if (MPI.COMM_WORLD.Get_rank() == 0):
+        all_subsampled_paths = []
+
+    env_temp = gym.make(env)
+
+    def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
+        return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64, num_hid_layers=3,
+                                    )
+
+    subsampled_path_per_proc = []
     for i in range(num_policies):
         policy_idx = i * policy_gap + start_num
         print("This is policy " + str(policy_idx))
 
-        policy_filename = policy_file_basename + str(policy_idx) + '.pkl'
+        policy_filename = policy_file_basename + str(policy_idx)
         policy_filename_full = directory + '/' + policy_filename
+        tf.reset_default_graph()
 
-        params = joblib.load(policy_filename_full)
+        with U.make_session(num_cpu=1) as sess:
+            pi = policy_fn('pi', env_temp.observation_space, env_temp.action_space)
 
-        try:
-            curr_policy = params['policy']
-        except(TypeError):
-            curr_policy = params
+            saver = tf.train.Saver()
+            saver.restore(sess, policy_filename_full)
 
-        print(policy_filename_full)
+            print(policy_filename_full)
 
-        subsampled_paths = collect_rollout(curr_policy, env, traj_per_policy, ignoreObs, animate=False)
+            subsampled_paths = collect_rollout(pi, env, traj_per_policy_per_process, ignoreObs, animate=False)
 
-        numpyArr = np.array(subsampled_paths)
+            subsampled_path_per_proc.extend(subsampled_paths)
+            # print("Shape of Path for this policy is ", numpyArr.shape)
+            # all_subsampled_paths.extend(subsampled_paths)
+            # print("Shape of aggregated paths is", np.array(all_subsampled_paths).shape)
 
-        print("Shape of Path for this policy is ", numpyArr.shape)
-        all_subsampled_paths.extend(subsampled_paths)
-        print("Shape of aggregated paths is", np.array(all_subsampled_paths).shape)
+    subsampled_path_per_proc = np.array(subsampled_path_per_proc)
+    all_subsampled_paths = comm.gather(subsampled_path_per_proc, root=0)
     # subsampled_paths = None
-    numpyArr = np.array(all_subsampled_paths)
+    if (MPI.COMM_WORLD.Get_rank() == 0):
+        all_subsampled_paths = list(itertools.chain(*all_subsampled_paths))
 
-    print("All paths final shape is ", numpyArr.shape)
+        # print("The length of the collected array is", len(all_subsampled_paths))
+        numpyArr = np.array(all_subsampled_paths)
+        print("All paths final shape is ", numpyArr.shape)
 
-    joblib.dump(all_subsampled_paths, "./AutoEncoder/local/Subsampled_paths/" + output_name)
+        joblib.dump(numpyArr, "./novelty_data/local/sampled_paths/" + output_name)
 
 
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl"):
     openFileOption = {}
-    openFileOption['initialdir'] = './data/local/experiment'
+    openFileOption['initialdir'] = './data/ppo_' + env
     filename = askopenfilename(**openFileOption)
 
     # DartFlatworm
     # DartHumanSwim
     # environment = "DartTurtle-v3"
 
+    env_temp = gym.make(env)
+
+    def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
+        return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64, num_hid_layers=3,
+                                    )
+
     snapshot_dir = filename[0:filename.rfind('/') + 1]
 
     # logger.set_snapshot_dir(snapshot_dir)
+    with U.single_threaded_session() as sess:
+        pi = policy_fn('pi', env_temp.observation_space, env_temp.action_space)
 
-    params = joblib.load(filename)
+        saver = tf.train.Saver()
 
-    try:
-        curr_policy = params['policy']
-    except(TypeError):
-        curr_policy = params
+        filename = filename.split('.')[:-1][0]
 
-    # mean_network = curr_policy._mean_network
-    # spec = params['env'].spec
-    # new_policy = GaussianMLPPolicy(
-    #     env_spec=spec,
-    #     # hidden_sizes=(64, 64)
-    #     mean_network=mean_network,
-    #     init_std=2
-    # )
-    path = perform_rollout(curr_policy, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
-                           use_mean_action=False,
-                           control_step_skip=action_skip,
-                           saved_rollout_path=None
-                           )
+        saver.restore(sess, filename)
+
+        path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
+                               stochastic=False,
+                               control_step_skip=action_skip,
+                               saved_rollout_path=None
+                               )
     if save_path:
         joblib.dump(path, save_filename)
 
@@ -291,9 +319,9 @@ def plot_path_data():
 # render_policy('DartHumanFullSwim-v1')
 # render_policy('DartHumanFullSwim-v2', action_skip=5)
 
-# render_policy('PathFinding-v0')
+# render_policy('SimplerPathFinding-v2', action_skip=5)
 # render_policy('PathFinding-v2', action_skip=5)
-perform_rollout(None, 'PathFinding-v0', animate=True)
+# perform_rollout(None, 'PathFinding-v0', animate=True)
 
 # render_policy('DartPathFinding-v0')
 # render_policy('DartPathFinding-v2', action_skip=5)
@@ -321,8 +349,19 @@ perform_rollout(None, 'PathFinding-v0', animate=True)
 # collect_rollouts_from_dir('PathFinding-v2', 20, 'path_finding_biased_baseline.pkl', 0, start_num=0,
 #                           traj_per_policy=200)
 
-
+#
 # collect_rollouts_from_dir('PathFinding-v2', 4, 'path_finding_biased_baseline.pkl', 0, start_num=50,
 #                           traj_per_policy=500)
 #
 # plot_path_data()
+
+#
+# collect_rollouts_from_dir('SimplerPathFinding-v0', 5, 'simpler_path_finding_biased_baseline.pkl', 0, policy_gap=5,
+#                           policy_file_basename='policy_param_-',
+#                           start_num=0,
+#                           traj_per_policy=500)
+
+collect_rollouts_from_dir('SimplerPathFinding-v2', 5, 'simpler_path_finding_biased_baseline.pkl', 0, policy_gap=5,
+                          policy_file_basename='policy_param_-',
+                          start_num=0,
+                          traj_per_policy_per_process=50)

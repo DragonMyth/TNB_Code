@@ -13,9 +13,6 @@ from keras.models import load_model
 import os.path
 import matplotlib.pyplot as plt
 
-from rllab.envs.gym_env import GymEnv
-from rllab.envs.normalized_env import normalize
-
 environment = 'DartHumanFullSwim-v0'
 
 model_filename = 'new_path_finding_biased_autoencoder_1.h5'
@@ -57,9 +54,7 @@ def invNormalizeTraj(traj, minq, maxq, mindq, maxdq):
 dataset = normalizeTraj(dataset, -qlim, qlim, -dqLim, dqLim)
 
 dataset = dataset.reshape((len(dataset), np.prod(dataset.shape[1:])))
-
 # norm_dataset = sklearn.preprocessing.normalize(dataset, norm="l2", return_norm=True)
-
 
 
 # data_norms = norm_dataset[1]
@@ -123,11 +118,11 @@ if not os.path.isfile('./AutoEncoder/local/' + model_filename):
     decoded_layer = autoencoder.layers[-1]
 
     autoencoder.name = model_filename
-    autoencoder.save('../AutoEncoder/local/' + model_filename)
+    autoencoder.save('../novelty_data/local/autoencoders/' + model_filename)
 else:
 
     x_test = dataset[int(len(dataset) / 5.0 * 4)::]
-    autoencoder = load_model("../AutoEncoder/local/" + model_filename)
+    autoencoder = load_model('../novelty_data/local/autoencoders/' + model_filename)
 
 
 def vis_in_graph():
@@ -160,73 +155,73 @@ def vis_in_graph():
     plt.show()
 
 
-def vis_in_motion():
-    print("Motion Visualization")
-    env = normalize(GymEnv(environment, record_video=True, log_dir='./AutoEncoder/AutoencoderVis'))
-
-    # This following traj is the original one
-
-    # This following traj is the reconstructed one
-    # traj = (autoencoder.predict(x_test)[0]*data_norms[0]).reshape(15,44)
-    action_dim = env.action_dim
-    horizon = env.horizon
-    continue_length = int(horizon / traj_dim)
-    trials_nums = 1
-    for _ in range(trials_nums):
-        env.reset()
-        random_trial = random.randint(0, len(x_test) - 1)
-
-        # traj = (x_test[random_trial] * data_norms[random_trial]).reshape(traj_dim, model_dim)
-        traj_1 = np.copy(x_test)[random_trial].reshape(traj_dim, model_dim)[:]
-        traj_1 = invNormalizeTraj(traj_1, -np.pi, np.pi, -dqLim, dqLim)
-
-        for step in range(horizon):
-
-            if step % continue_length == 0:
-                if int(step / continue_length) < traj_dim:
-                    state = traj_1[int(step / continue_length)]
-
-                    # These are for humanoid swimmer
-                    # q = np.concatenate([[0] * 6, state[0:2], state[4:24]])
-                    # dq = np.concatenate([[0] * 6, state[2:4], state[24::]])
-
-                    q = np.concatenate([[0] * 6, state[0:int(model_dim / 2)]])
-                    dq = np.concatenate([[0] * 6, state[int(model_dim / 2)::]])
-
-                    skeleton = env.wrapped_env.env.env.env.robot_skeleton
-
-                    skeleton.set_positions(q)
-                    skeleton.set_velocities(dq)
-
-            action = np.array([0] * action_dim)
-            env.step(action)
-            env.render()
-
-        env.reset()
-        # traj = (autoencoder.predict(x_test)[random_trial] * data_norms[random_trial]).reshape(traj_dim, model_dim)
-        traj_2 = autoencoder.predict(np.array([np.copy(x_test)[random_trial]])).reshape(traj_dim, model_dim)[:]
-        traj_2 = invNormalizeTraj(traj_2, -np.pi, np.pi, -dqLim, dqLim)
-
-        for step in range(horizon):
-
-            if step % continue_length == 0:
-                if int(step / continue_length) < traj_dim:
-                    state = traj_2[int(step / continue_length)]
-                    # q = np.concatenate([[0] * 6, state[0:2], state[4:24]])
-                    # dq = np.concatenate([[0] * 6, state[2:4], state[24::]])
-
-                    q = np.concatenate([[0] * 6, state[0:int(model_dim / 2)]])
-                    dq = np.concatenate([[0] * 6, state[int(model_dim / 2)::]])
-
-                    skeleton = env.wrapped_env.env.env.env.robot_skeleton
-
-                    skeleton.set_positions(q)
-                    skeleton.set_velocities(dq)
-
-            action = np.array([0] * action_dim)
-            env.step(action)
-            env.render()
-
+# def vis_in_motion():
+#     print("Motion Visualization")
+#     env = normalize(GymEnv(environment, record_video=True, log_dir='./AutoEncoder/AutoencoderVis'))
+#
+#     # This following traj is the original one
+#
+#     # This following traj is the reconstructed one
+#     # traj = (autoencoder.predict(x_test)[0]*data_norms[0]).reshape(15,44)
+#     action_dim = env.action_dim
+#     horizon = env.horizon
+#     continue_length = int(horizon / traj_dim)
+#     trials_nums = 1
+#     for _ in range(trials_nums):
+#         env.reset()
+#         random_trial = random.randint(0, len(x_test) - 1)
+#
+#         # traj = (x_test[random_trial] * data_norms[random_trial]).reshape(traj_dim, model_dim)
+#         traj_1 = np.copy(x_test)[random_trial].reshape(traj_dim, model_dim)[:]
+#         traj_1 = invNormalizeTraj(traj_1, -np.pi, np.pi, -dqLim, dqLim)
+#
+#         for step in range(horizon):
+#
+#             if step % continue_length == 0:
+#                 if int(step / continue_length) < traj_dim:
+#                     state = traj_1[int(step / continue_length)]
+#
+#                     # These are for humanoid swimmer
+#                     # q = np.concatenate([[0] * 6, state[0:2], state[4:24]])
+#                     # dq = np.concatenate([[0] * 6, state[2:4], state[24::]])
+#
+#                     q = np.concatenate([[0] * 6, state[0:int(model_dim / 2)]])
+#                     dq = np.concatenate([[0] * 6, state[int(model_dim / 2)::]])
+#
+#                     skeleton = env.wrapped_env.env.env.env.robot_skeleton
+#
+#                     skeleton.set_positions(q)
+#                     skeleton.set_velocities(dq)
+#
+#             action = np.array([0] * action_dim)
+#             env.step(action)
+#             env.render()
+#
+#         env.reset()
+#         # traj = (autoencoder.predict(x_test)[random_trial] * data_norms[random_trial]).reshape(traj_dim, model_dim)
+#         traj_2 = autoencoder.predict(np.array([np.copy(x_test)[random_trial]])).reshape(traj_dim, model_dim)[:]
+#         traj_2 = invNormalizeTraj(traj_2, -np.pi, np.pi, -dqLim, dqLim)
+#
+#         for step in range(horizon):
+#
+#             if step % continue_length == 0:
+#                 if int(step / continue_length) < traj_dim:
+#                     state = traj_2[int(step / continue_length)]
+#                     # q = np.concatenate([[0] * 6, state[0:2], state[4:24]])
+#                     # dq = np.concatenate([[0] * 6, state[2:4], state[24::]])
+#
+#                     q = np.concatenate([[0] * 6, state[0:int(model_dim / 2)]])
+#                     dq = np.concatenate([[0] * 6, state[int(model_dim / 2)::]])
+#
+#                     skeleton = env.wrapped_env.env.env.env.robot_skeleton
+#
+#                     skeleton.set_positions(q)
+#                     skeleton.set_velocities(dq)
+#
+#             action = np.array([0] * action_dim)
+#             env.step(action)
+#             env.render()
+#
 
 def plot_reconst_err():
     decoded_traj = autoencoder.predict(x_test)
