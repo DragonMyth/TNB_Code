@@ -6,6 +6,7 @@ from gym import error
 from gym.utils import atomic_write
 from gym.utils.json_utils import json_encode_np
 
+
 class StatsRecorder(object):
     def __init__(self, directory, file_prefix, autoreset=False, env_id=None):
         self.autoreset = autoreset
@@ -16,7 +17,7 @@ class StatsRecorder(object):
         self.file_prefix = file_prefix
         self.episode_lengths = []
         self.episode_rewards = []
-        self.episode_types = [] # experimental addition
+        self.episode_types = []  # experimental addition
         self._type = 't'
         self.timestamps = []
         self.steps = None
@@ -43,14 +44,21 @@ class StatsRecorder(object):
         assert not self.closed
 
         if self.done:
-            raise error.ResetNeeded("Trying to step environment which is currently done. While the monitor is active for {}, you cannot step beyond the end of an episode. Call 'env.reset()' to start the next episode.".format(self.env_id))
+            raise error.ResetNeeded(
+                "Trying to step environment which is currently done. While the monitor is active for {}, you cannot step beyond the end of an episode. Call 'env.reset()' to start the next episode.".format(
+                    self.env_id))
         elif self.steps is None:
-            raise error.ResetNeeded("Trying to step an environment before reset. While the monitor is active for {}, you must call 'env.reset()' before taking an initial step.".format(self.env_id))
+            raise error.ResetNeeded(
+                "Trying to step an environment before reset. While the monitor is active for {}, you must call 'env.reset()' before taking an initial step.".format(
+                    self.env_id))
 
     def after_step(self, observation, reward, done, info):
         self.steps += 1
         self.total_steps += 1
-        self.rewards += reward
+        if (type(reward) == int):
+            self.rewards += reward
+        else:
+            self.rewards += reward[0]
         self.done = done
 
         if done:
@@ -65,7 +73,9 @@ class StatsRecorder(object):
         assert not self.closed
 
         if self.done is not None and not self.done and self.steps > 0:
-            raise error.Error("Tried to reset environment which is not done. While the monitor is active for {}, you cannot call reset() unless the episode is over.".format(self.env_id))
+            raise error.Error(
+                "Tried to reset environment which is not done. While the monitor is active for {}, you cannot call reset() unless the episode is over.".format(
+                    self.env_id))
 
         self.done = False
         if self.initial_reset_timestamp is None:

@@ -111,6 +111,27 @@ register(
 
 )
 
+register(
+    id='SimplerPathFinding-v0',
+    entry_point='gym.envs.classic_control:SimplerPathFinding',
+    max_episode_steps=500,
+
+)
+
+register(
+    id='SimplerPathFinding-v1',
+    entry_point='gym.envs.classic_control:SimplerPathFindingReleasing',
+    max_episode_steps=500,
+
+)
+
+register(
+    id='SimplerPathFinding-v2',
+    entry_point='gym.envs.classic_control:SimplerPathFindingDataCollect',
+    max_episode_steps=2500,
+
+)
+
 # Box2d
 # ----------------------------------------
 
