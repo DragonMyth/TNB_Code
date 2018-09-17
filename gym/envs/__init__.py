@@ -314,6 +314,13 @@ register(
     max_episode_steps=500,
 )
 
+# Dart Eel data collect Models
+register(
+    id='DartEel-v2',
+    entry_point='gym.envs.dart:DartEelSwimStraighDataCollectEnv',
+    max_episode_steps=2500,
+)
+
 # Normal modal normal env
 register(
     id='DartTurtle-v0',

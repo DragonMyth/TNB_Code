@@ -15,6 +15,7 @@ from gym.envs.dart.reacher2d import DartReacher2dEnv
 
 # Swiming Simulation envs
 from gym.envs.dart.eel_swim_straight import DartEelSwimStraighEnv
+from gym.envs.dart.eel_swim_straight_data_collect import DartEelSwimStraighDataCollectEnv
 from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
 from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
 from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
