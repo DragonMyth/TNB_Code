@@ -5,7 +5,7 @@ import gym
 from baselines.common.distributions import make_pdtype
 
 
-class MlpPolicy(object):
+class MlpPolicyNovelty(object):
     recurrent = False
 
     def __init__(self, name, *args, **kwargs):
@@ -32,6 +32,14 @@ class MlpPolicy(object):
                                                       kernel_initializer=U.normc_initializer(1.0)))
             self.vpred = tf.layers.dense(last_out, 1, name='final', kernel_initializer=U.normc_initializer(1.0))[:, 0]
 
+        with tf.variable_scope('vf_novel'):
+            last_out = obz
+            for i in range(num_hid_layers):
+                last_out = tf.nn.tanh(tf.layers.dense(last_out, hid_size, name="fc%i" % (i + 1),
+                                                      kernel_initializer=U.normc_initializer(1.0)))
+            self.vpred_novel = tf.layers.dense(last_out, 1, name='final', kernel_initializer=U.normc_initializer(1.0))[
+                               :, 0]
+
         with tf.variable_scope('pol'):
             last_out = obz
             for i in range(num_hid_layers):
@@ -56,11 +64,12 @@ class MlpPolicy(object):
 
         stochastic = tf.placeholder(dtype=tf.bool, shape=())
         ac = U.switch(stochastic, self.pd.sample(), self.pd.mode())
-        self._act = U.function([stochastic, ob], [ac, self.vpred])
+
+        self._act = U.function([stochastic, ob], [ac, self.vpred, self.vpred_novel])
 
     def act(self, stochastic, ob):
-        ac1, vpred1 = self._act(stochastic, ob[None])
-        return ac1[0], vpred1[0]
+        ac1, vpred1, vpred_novel = self._act(stochastic, ob[None])
+        return ac1[0], vpred1[0], vpred_novel[0]
 
     def log_std(self, ob):
         log_std = self.get_pd_param()
@@ -69,8 +78,10 @@ class MlpPolicy(object):
     def get_variables(self):
         return tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, self.scope)
 
-    def get_trainable_variables(self):
-        return tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, self.scope)
+    def get_trainable_variables(self, scope=None):
+        if scope is None:
+            scope = self.scope
+        return tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope)
 
     def get_initial_state(self):
         return []
