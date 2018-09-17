@@ -19,51 +19,46 @@ with open(filename, newline='') as csvfile:
             for j in range(len(row)):
                 category_idx_lookup[row[j]] = j
                 data_lookup[j] = []
+            # category_idx_lookup['Iteration'] = len(row)
+            # data_lookup[len(row)] = []
             continue
         if row:
             for j in range(len(row)):
                 data_lookup[j].append(round(float(row[j]), 5))
+            # data_lookup[len(row)].append(i - 1)
 
-Iterations = data_lookup[category_idx_lookup['Iteration']]
-indices = [i for i, x in enumerate(Iterations) if x == 0]
+EpisodesSofar = data_lookup[category_idx_lookup['EpisodesSoFar']]
 
-AverageReturns = data_lookup[category_idx_lookup['AverageReturn']]
-MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
-MinReturns = data_lookup[category_idx_lookup['MinReturn']]
+indices = [i for i, x in enumerate(EpisodesSofar) if x == 0]
 
-AverageReturns = np.clip(AverageReturns, -35000, 35000)
-MaxReturns = np.clip(MaxReturns, -35000, 35000)
-MinReturns = np.clip(MinReturns, -35000, 35000)
+AverageReturns = data_lookup[category_idx_lookup['EpRewMean']]
+# MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
+# MinReturns = data_lookup[category_idx_lookup['MinReturn']]
 
-img_id = 0
-for i in range(len(indices)):
-    begin = indices[i]
+# AverageReturns = np.clip(AverageReturns)
+# MaxReturns = np.clip(MaxReturns, -35000, 35000)
+# MinReturns = np.clip(MinReturns, -35000, 35000)
 
-    if (i < len(indices) - 1):
-        end = indices[i + 1]
-    else:
-        end = -1
-    plot.figure()
 
-    plot.plot(Iterations[begin:end], AverageReturns[begin:end], 'r', label='Average Return')
-    plot.plot(Iterations[begin:end], MinReturns[begin:end], 'g', label='Minimum Return')
-    plot.plot(Iterations[begin:end], MaxReturns[begin:end], 'b', label='Maximum Return')
-    plot.xlabel('Iterations')
-    plot.ylabel('Expected Return')
-    # plot.title('Mirror Enforcement Larger Loss')
-    # plot.yscale('symlog')
-    plot.legend()
+plot.figure()
 
-    plot.savefig(snapshot_dir + '/progress_' + str(img_id) + '.jpg')
-    plot.figure()
+plot.plot(EpisodesSofar, AverageReturns, 'r', label='Average Return')
+# plot.plot(Iterations[begin:end], MinReturns[begin:end], 'g', label='Minimum Return')
+# plot.plot(Iterations[begin:end], MaxReturns[begin:end], 'b', label='Maximum Return')
+plot.xlabel('EpisodesSofar')
+plot.ylabel('Expected Return')
+# plot.title('Mirror Enforcement Larger Loss')
+# plot.yscale('symlog')
+plot.legend()
+plot.yscale('symlog')
+plot.savefig(snapshot_dir + '/progress' + '.jpg')
+plot.figure()
 
-    # MirroredLoss = data_lookup[category_idx_lookup['MirroredLoss']]
-    # plot.plot(Iterations[begin:end],MirroredLoss[begin:end],label='Mirrored Loss')
-    # plot.title('Mirror Enforcement Larger Loss')
-    #
-    # plot.legend()
+# MirroredLoss = data_lookup[category_idx_lookup['MirroredLoss']]
+# plot.plot(Iterations[begin:end],MirroredLoss[begin:end],label='Mirrored Loss')
+# plot.title('Mirror Enforcement Larger Loss')
+#
+# plot.legend()
 
-    plot.savefig(snapshot_dir + '/mirror_loss_' + str(img_id) + '.jpg')
-    img_id += 1
 
 plot.show()

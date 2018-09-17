@@ -17,6 +17,9 @@ environment = 'DartHumanFullSwim-v0'
 
 model_filename = 'new_path_finding_biased_autoencoder_1.h5'
 
+# model_filename = 'new_path_finding_autoencoder_placeholder.h5'
+
+
 autoencoder = None
 
 openFileOption = {}
@@ -35,8 +38,8 @@ traj_dim = len(dataset[0])
 # dqLim = 50 # this works for turtle model
 # dqLim = 30
 
-dqLim = 10  # This works for path finding model
-qlim = 10
+dqLim = 5  # This works for path finding model
+qlim = 5
 
 
 def normalizeTraj(traj, minq, maxq, mindq, maxdq):
@@ -52,8 +55,8 @@ def invNormalizeTraj(traj, minq, maxq, mindq, maxdq):
 
 
 dataset = normalizeTraj(dataset, -qlim, qlim, -dqLim, dqLim)
-
 dataset = dataset.reshape((len(dataset), np.prod(dataset.shape[1:])))
+
 # norm_dataset = sklearn.preprocessing.normalize(dataset, norm="l2", return_norm=True)
 
 
@@ -73,16 +76,20 @@ if not os.path.isfile('./AutoEncoder/local/' + model_filename):
     encoding_dim = 64
 
     input_traj = Input(shape=(input_dim,))
-    encoded = Dense(512, activation='relu')(input_traj)
+
+    encoded = Dense(1024, activation='relu')(input_traj)
+    encoded = Dense(512, activation='relu')(encoded)
     encoded = Dense(256, activation='relu')(encoded)
     encoded = Dense(128, activation='relu')(encoded)
     encoded = Dense(64, activation='relu')(encoded)
-    # encoded = Dense(32,activation='relu')(encoded)
-    # #
-    # decoded = Dense(64,activation='relu')(encoded)
-    decoded = Dense(128, activation='relu')(encoded)
+    encoded = Dense(32, activation='relu')(encoded)
+
+    decoded = Dense(64, activation='relu')(encoded)
+    decoded = Dense(128, activation='relu')(decoded)
     decoded = Dense(256, activation='relu')(decoded)
     decoded = Dense(512, activation='relu')(decoded)
+    encoded = Dense(1024, activation='relu')(decoded)
+
     decoded = Dense(input_dim, activation='tanh')(decoded)
 
     autoencoder = Model(input_traj, decoded)
@@ -124,6 +131,8 @@ else:
     x_test = dataset[int(len(dataset) / 5.0 * 4)::]
     autoencoder = load_model('../novelty_data/local/autoencoders/' + model_filename)
 
+
+# def vis_data_in_motion():
 
 def vis_in_graph():
     decoded_traj = autoencoder.predict(x_test)
