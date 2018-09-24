@@ -32,7 +32,7 @@ def callback(localv, globalv):
 
 
 def train(sess, env_id, num_timesteps, timesteps_per_actor, autoencoders, seed):
-    from baselines.ppo1 import pposgd_simple, mlp_policy, pposgd_novelty, mlp_policy_novelty
+    from baselines.ppo1 import pposgd_simple, mlp_policy, pposgd_novelty, mlp_policy_novelty, pposgd_novelty_projection
 
     rank = MPI.COMM_WORLD.Get_rank()
 
@@ -46,28 +46,25 @@ def train(sess, env_id, num_timesteps, timesteps_per_actor, autoencoders, seed):
                                                    num_hid_layers=3,
                                                    )
 
-    for auto in autoencoders:
-        env.env.novel_autoencoders.append(auto)
+    env.env.novel_autoencoders = autoencoders
 
     env = bench.Monitor(env, logger.get_dir() and
                         osp.join(logger.get_dir(), str(rank)))
 
     env.seed(seed + rank)
-
-    model = pposgd_novelty.learn(env, policy_fn,
-                                 max_timesteps=num_timesteps,
-                                 # max_iters=30,
-                                 timesteps_per_actorbatch=timesteps_per_actor,
-                                 clip_param=0.2, entcoeff=0.0,
-                                 optim_epochs=4, optim_stepsize=1e-3, optim_batchsize=64,
-                                 gamma=0.99, lam=0.95,
-                                 schedule='linear',
-                                 callback=callback,
-                                 # Following params are kwargs
-                                 session=sess,
-                                 gap=5,
-                                 )
-
+    model = pposgd_novelty_projection.learn(env, policy_fn,
+                                            max_timesteps=num_timesteps,
+                                            # max_iters=30,
+                                            timesteps_per_actorbatch=timesteps_per_actor,
+                                            clip_param=0.2, entcoeff=0,
+                                            optim_epochs=4, optim_stepsize=1e-3, optim_batchsize=64,
+                                            gamma=0.99, lam=0.95,
+                                            schedule='linear',
+                                            callback=callback,
+                                            # Following params are kwargs
+                                            session=sess,
+                                            gap=5,
+                                            )
     env.close()
     return model
 
@@ -78,7 +75,7 @@ def main():
     num_processes = MPI.COMM_WORLD.Get_size()
     num_timesteps_per_process = 1000
 
-    num_iterations_enforce = 200
+    num_iterations_enforce = 150
     num_iterations_release = 100
 
     release_env_name = 'SimplerPathFinding-v1'
@@ -87,42 +84,50 @@ def main():
     # for i in range(5):
     seed = i * 13 + 7 * (i ** 2)
     # seed = 128
+
     import baselines.common.tf_util as U
     import datetime
     import time
+
+    comm = MPI.COMM_WORLD
+    mpi_rank = comm.Get_rank()
+
     ts = time.time()
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M')
 
     tf.reset_default_graph()
 
-    autoencoder_dir = "../novelty_data/local/autoencoders/"
-    autoencoder1 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_1.h5")
-    autoencoder2 = load_model(autoencoder_dir + "new_path_finding_autoencoder_placeholder.h5")
-    autoencoder3 = load_model(autoencoder_dir + "new_path_finding_autoencoder_placeholder.h5")
-    autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_placeholder.h5")
-
     with U.single_threaded_session() as sess:
+        U.ALREADY_INITIALIZED.update(set(tf.global_variables()))
+
+        autoencoder_dir = "../novelty_data/local/autoencoders/"
+        # autoencoder1 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_1.h5")
+        autoencoder1 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_1.h5")
+
+        autoencoder2 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_2.h5")
+        # autoencoder2 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_2_seed=0_v2.h5")
+
+        autoencoder3 = load_model(autoencoder_dir + "new_path_finding_autoencoder_placeholder.h5")
+        autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_placeholder.h5")
+        # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4.h5")
+
+        autoencoder_list = [autoencoder1, autoencoder2]
+        U.ALREADY_INITIALIZED.update(set(tf.global_variables()))
+
         logger.reset()
         logger.configure(
-            '../data/ppo_' + enforce_env_name + '_baseline_seed=' + str(
+            '../data/ppo_' + enforce_env_name + '_autoencoder_' + str(len(autoencoder_list)) + '_seed=' + str(
                 seed) + '/' + str(st))
 
         model = train(sess, enforce_env_name,
                       num_timesteps=num_iterations_enforce * num_processes * num_timesteps_per_process,
-                      timesteps_per_actor=num_timesteps_per_process, autoencoders=[], seed=seed)
-
-        # logger.reset()
-        # logger.configure('data/ppo_PathFinding-v0_release/baseline_seed=' + str(seed))
-        # with tf.variable_scope(tf.get_variable_scope(), reuse=True):
-        #     model = train(sess, release_env_name,
-        #                   num_timesteps=num_iterations_release * num_processes * num_timesteps_per_process,
-        #                   timesteps_per_actor=num_timesteps_per_process, seed=seed)
-
-        comm = MPI.COMM_WORLD
-        mpi_rank = comm.Get_rank()
+                      timesteps_per_actor=num_timesteps_per_process,
+                      autoencoders=autoencoder_list,
+                      seed=seed)
 
         if mpi_rank == 0:
             env = gym.make(enforce_env_name)
+            env.env.novel_autoencoders = autoencoder_list
 
             env = wrappers.Monitor(env, logger.get_dir() + '/results', force=True)
 
