@@ -80,7 +80,6 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         ob = self._get_obs()
 
         novelRwd, novelPenn = self.calc_novelty_from_autoencoder(ob)
-
         angs = np.abs(self.robot_skeleton.q[6::])
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
@@ -155,11 +154,10 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 1 - min(self.novelDiff, 1)
+                self.novelDiffRev = 5 - min(self.novelDiff, 5)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
-
             novelRwd = self.novelty_factor * self.novelDiff
             novelPenn = self.novelty_factor * self.novelDiffRev
         return novelRwd, novelPenn
