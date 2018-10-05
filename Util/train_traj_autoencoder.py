@@ -161,6 +161,8 @@ if __name__ == '__main__':
     parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=0)
     parser.add_argument('--qnorm', help='Scale of the q in the skel', default=np.pi)
     parser.add_argument('--dqnorm', help='Scale of the dq in the skel', default=50)
+    parser.add_argument('--num_epoch', help='Scale of the dq in the skel', default=300)
+    parser.add_argument('--batch_size', help='Scale of the dq in the skel', default=1024)
 
     args = parser.parse_args()
 
@@ -185,7 +187,7 @@ if __name__ == '__main__':
     x_train = dataset[:int(len(dataset) / 5.0 * 4)]
     x_test = dataset[int(len(dataset) / 5.0 * 4)::]
 
-    autoencoder.train(x_train, x_test, epoches=300, batchsize=1024)
+    autoencoder.train(x_train, x_test, epoches=int(args.num_epoch), batchsize=int(args.batch_size))
     autoencoder.vis_in_graph(x_test)
     autoencoder.plot_reconst_err(x_test)
     print("Done")

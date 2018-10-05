@@ -24,10 +24,13 @@ if __name__ == '__main__':
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=5)
 
     args = parser.parse_args()
-
     env_name = args.env
-
     seed = args.seed
+
+    num_epoch = 300
+    batch_size = 1024
+    qnorm = np.pi
+    dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
     for i in range(5):
@@ -80,8 +83,10 @@ if __name__ == '__main__':
                                             + ' --seed ' + str(seed)
                                             + ' --data_collect_env ' + str(args.data_collect_env)
                                             + ' --curr_run ' + str(curr_run)
-                                            + ' --qnorm ' + str(np.pi)
-                                            + ' --dqnorm ' + str(50)
+                                            + ' --qnorm ' + str(qnorm)
+                                            + ' --dqnorm ' + str(dqnorm)
+                                            + ' --num_epoch' + str(num_epoch)
+                                            + ' --batch_size ' + str(batch_size)
                                             , shell=True
 
                                             )
