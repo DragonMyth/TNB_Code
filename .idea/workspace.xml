@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" afterPath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
       <change beforePath="$PROJECT_DIR$/turtle_forward_automate_run.py" afterPath="$PROJECT_DIR$/turtle_forward_automate_run.py" />
     </list>
