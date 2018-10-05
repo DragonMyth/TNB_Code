@@ -208,9 +208,17 @@
                 <transformation>0 0 -0.08 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis>
                 <axis2>
                     <xyz>0 0 1</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis2>
                 <parent>torso</parent>
                 <child>right_front_limb</child>
@@ -219,9 +227,17 @@
                 <transformation>0 0 -0.08 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis>
                 <axis2>
                     <xyz>0 0 1</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis2>
                 <parent>torso</parent>
                 <child>right_rear_limb</child>
@@ -230,9 +246,17 @@
                 <transformation>0 0 0.08 0 0 0</transformation>
                 <axis>
                     <xyz>-1 0 0</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis>
                 <axis2>
                     <xyz>0 0 1</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis2>
                 <parent>torso</parent>
                 <child>left_front_limb</child>
@@ -241,9 +265,17 @@
                 <transformation>0 0 0.08 0 0 0</transformation>
                 <axis>
                     <xyz>-1 0 0</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis>
                 <axis2>
                     <xyz>0 0 1</xyz>
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis2>
                 <parent>torso</parent>
                 <child>left_rear_limb</child>
