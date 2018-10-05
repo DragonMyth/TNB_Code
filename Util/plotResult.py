@@ -24,7 +24,7 @@ with open(filename, newline='') as csvfile:
             continue
         if row:
             for j in range(len(row)):
-                data_lookup[j].append(round(float(row[j]), 5))
+                data_lookup[j].append(row[j])
             # data_lookup[len(row)].append(i - 1)
 
 EpisodesSofar = data_lookup[category_idx_lookup['EpisodesSoFar']]
@@ -45,7 +45,7 @@ plot.figure()
 plot.plot(EpisodesSofar, AverageReturns, 'r', label='Average Return')
 # plot.plot(Iterations[begin:end], MinReturns[begin:end], 'g', label='Minimum Return')
 # plot.plot(Iterations[begin:end], MaxReturns[begin:end], 'b', label='Maximum Return')
-plot.xlabel('EpisodesSofar')
+plot.xlabel('Iters')
 plot.ylabel('Expected Return')
 # plot.title('Mirror Enforcement Larger Loss')
 # plot.yscale('symlog')

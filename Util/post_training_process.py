@@ -19,11 +19,10 @@ from baselines import bench as bc
 from baselines import logger
 
 import tensorflow as tf
-from baselines.ppo1 import mlp_policy, mlp_policy_novelty
+from baselines.ppo1 import mlp_policy, mlp_policy_novelty, mlp_policy_mirror_novelty
 import baselines.common.tf_util as U
 
 import itertools
-
 from keras.models import load_model
 
 
@@ -71,6 +70,36 @@ def perform_rollout(policy,
                     env.unwrapped.action_dim)) * np.pi
             else:
                 if i % control_step_skip == 0:
+
+                    # observation_permutation = [0, 1, 2, 3, 4, 9, 10, 11, 12,
+                    #                            5, 6, 7, 8, 17, 18, 19, 20, 13,
+                    #                            14, 15, 16]
+                    #
+                    # action_permutation = [4, 5, 6, 7, 0, 1, 2, 3]
+                    # obs_perm_mat = np.zeros((len(observation_permutation), len(observation_permutation)),
+                    #                         dtype=np.float32)
+                    # act_perm_mat = np.zeros((len(action_permutation), len(action_permutation)), dtype=np.float32)
+                    #
+                    # for k, perm in enumerate(observation_permutation):
+                    #     obs_perm_mat[k][perm] = 1
+                    #
+                    # for k, perm in enumerate(action_permutation):
+                    #     act_perm_mat[k][perm] = 1
+                    #
+                    # mirr_obs = np.dot(observation, obs_perm_mat)
+                    #
+                    # orig_mean = policy._orig_mean(observation)
+                    # mirr_mean = policy._mirr_mean(observation)
+                    # mirr_obs_mean = policy._mirr_obs_mean(observation)
+                    # means_1 = (orig_mean, mirr_mean,mirr_obs_mean)
+                    # orig_mean_2 = policy._orig_mean(mirr_obs)
+                    # mirr_mean_2 = policy._mirr_mean(mirr_obs)
+                    # mirr_obs_mean_2 = policy._mirr_obs_mean(mirr_obs)
+                    #
+                    # means_2 = (orig_mean_2, mirr_mean_2,mirr_obs_mean_2)
+                    # action_taken_1 = policy.act(False, observation)[0]
+                    # action_taken_2 = policy.act(False, mirr_obs)[0]
+
                     action_taken = policy.act(stochastic, observation)[0]
                     last_action = action_taken
                 else:
@@ -87,8 +116,7 @@ def perform_rollout(policy,
                 action_taken = predefined_actions[i][::-1]
 
             observation, reward, done, info = env.step(action_taken)
-
-            # observation, reward, done, info = env.step(np.array([-1,0]))
+            # observation, reward, done, info = env.step(np.array([-1, 0]))
 
             reward = reward[0] if type(reward) == tuple else reward
             path['observations'].append(observation)
@@ -146,7 +174,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
     # For Each rollout
     rank = MPI.COMM_WORLD.Get_rank()
     np.random.seed(42 + rank)
-
+    environment.seed(42 + rank)
     rollout_num_ranges = range(rollout_num)
     num_cores = multiprocessing.cpu_count()
 
@@ -155,8 +183,8 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
-        obs_skip = 10  # np.random.randint(5, 15)
-        num_datapoints = int(2500 / (instancesNum * 10))
+        obs_skip = np.random.randint(7, 28)
+        num_datapoints = int(2500 / (instancesNum * 28))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
 
@@ -219,7 +247,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
             restore_policy(sess, pi, policy_param)
             subsampled_paths = collect_rollout(pi, env, traj_per_policy_per_process, ignoreObs, animate=False,
-                                               instancesNum=10)
+                                               instancesNum=15)
 
             subsampled_path_per_proc.extend(subsampled_paths)
             # print("Shape of Path for this policy is ", numpyArr.shape)
@@ -241,12 +269,13 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
         numpyArr = np.array(all_subsampled_paths)
         print("All paths final shape is ", numpyArr.shape)
 
-        save_dir = os.path.abspath(os.curdir) + "/../novelty_data/local/sampled_paths/" + output_name
+        save_dir = os.path.abspath(os.curdir) + "/novelty_data/local/sampled_paths/" + output_name
         joblib.dump(numpyArr, save_dir)
         return save_dir
 
 
-def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl"):
+def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
+                  save_video=False):
     openFileOption = {}
     openFileOption['initialdir'] = '../data/ppo_' + env
     filename = askopenfilename(**openFileOption)
@@ -262,21 +291,28 @@ def render_policy(env, action_skip=1, save_path=False, save_filename="path_findi
     # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
     with U.single_threaded_session() as sess:
         env = gym.make(env)
-        autoencoder_dir = "../novelty_data/local/autoencoders/"
-        autoencoder1 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_1.h5")
-        autoencoder2 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_2.h5")
-        # autoencoder3 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_3.h5")
 
-        autoencoder_list = [autoencoder1, autoencoder2]
+        autoencoder_dir = "novelty_data/local/autoencoders/"
+
+        # autoencoder1 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_0_seed_102.h5")
+        # autoencoder2 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_1_seed_102.h5")
+        # autoencoder3 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_2_seed_102.h5")
+        # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
+
+        autoencoder_list = []  # [autoencoder1, autoencoder2, autoencoder3]
         env.env.novel_autoencoders = autoencoder_list
 
         pi = policy_fn('pi', env.observation_space, env.action_space)
 
         restore_policy(sess, pi, policy_param)
+
+        summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
+
         path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
-                               stochastic=False,
+                               stochastic=stoch,
                                control_step_skip=action_skip,
                                saved_rollout_path=None
+
                                )
     if save_path:
         joblib.dump(path, save_filename)
@@ -310,7 +346,7 @@ def create_visitation_from_dir(env, num_policies, output_name, ignoreObs, policy
         # print(visitation_grid)
         visitation_grid = visitation_grid / (visitation_grid.max())
         print(visitation_grid)
-        joblib.dump(visitation_grid, "../novelty_data/local/visitation_grid/" + output_name)
+        joblib.dump(visitation_grid, "./novelty_data/local/visitation_grid/" + output_name)
 
         visualize_visitation_grid(visitation_grid)
 
@@ -363,7 +399,7 @@ def visualize_visitation_grid(visitation_grid):
     plt.show()
 
 
-def plot_path_data(path_dir=None):
+def plot_path_data(path_dir=None, save_dir=None):
     if (MPI.COMM_WORLD.Get_rank() == 0):
         print(path_dir)
         autoencoder = None
@@ -393,7 +429,11 @@ def plot_path_data(path_dir=None):
         axes = plot.gca()
         axes.set_ylim([-2.5, 2.5])
         axes.set_xlim([-2.5, 2.5])
-        plot.show()
+
+        if not save_dir:
+            plot.show()
+        else:
+            plot.savefig(save_dir)
 
 
 def restore_policy(sess, policy, policy_params):
@@ -407,12 +447,19 @@ def restore_policy(sess, policy, policy_params):
 
 
 def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
-    return mlp_policy_novelty.MlpPolicyNovelty(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64,
-                                               num_hid_layers=3,
-                                               )
-    # return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64,
-    #                             num_hid_layers=3,
-    #                             )
+    # return mlp_policy_novelty.MlpPolicyNovelty(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64,
+    #                                            num_hid_layers=3,
+    #                                            )
+    return mlp_policy_mirror_novelty.MlpPolicyMirrorNovelty(name=name, ob_space=ob_space, ac_space=ac_space,
+                                                            hid_size=64,
+                                                            num_hid_layers=3,
+                                                            mirror_loss=True,
+                                                            observation_permutation=[0, 1, 2, 3, 4, 9, 10, 11, 12,
+                                                                                     5, 6, 7, 8, 17, 18, 19, 20, 13,
+                                                                                     14, 15, 16],
+
+                                                            action_permutation=[4, 5, 6, 7, 0, 1, 2, 3]
+                                                            )
 
 
 def create_manual_visitation():
@@ -431,28 +478,34 @@ def create_manual_visitation():
     # visitation_grid[-20:-16, 3:-1] = 1
 
     print(visitation_grid)
-    joblib.dump(visitation_grid, "../novelty_data/local/visitation_grid/fill_bot_lane.pkl")
+    joblib.dump(visitation_grid, "./novelty_data/local/visitation_grid/fill_bot_lane.pkl")
 
     visualize_visitation_grid(visitation_grid)
 
 
-# create_manual_visitation()
+if __name__ == '__main__':
+    import argparse
 
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--seed', help='RNG seed', type=int, default=0)
+    parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=0)
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='SimplerPathFinding-v2')
+    parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
+    parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=100)
+    parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
+                        default=40)
+    parser.add_argument('--policy_saving_path', help='Directory for saving the log files for this run')
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
-render_policy('SimplerPathFinding-v0')
-# render_policy('SimplerPathFinding-v2', action_skip=5)
-# render_policy('DartEel-v0')
+    args = parser.parse_args()
 
-#
-
-
-# # visualize_visitation_grid(None)
-# save_dir = collect_rollouts_from_dir('SimplerPathFinding-v2', 10, 'simplerpathfinding_path_1_seed=0.pkl', 0,
-#                                      policy_gap=5,
-#                                      policy_file_basename='policy_params_',
-#                                      start_num=100,
-#                                      traj_per_policy_per_process=50,
-#                                      data_dir='/Users/dragonmyth/Documents/CS/NoveltyEnforcement/data/ppo_SimplerPathFinding-v0_autoencoder_1_seed=0/2018-09-23_12:40')
-#
-# plot_path_data(save_dir)
-# plot_path_data()
+    save_dir = collect_rollouts_from_dir(args.data_collect_env, int(args.collect_policy_num),
+                                         args.data_collect_env + '_seed_' + str(
+                                             args.seed) + '_run_' + str(args.curr_run) + '.pkl',
+                                         int(args.ignore_obs),
+                                         policy_gap=int(args.collect_policy_gap),
+                                         policy_file_basename='policy_params_',
+                                         start_num=int(args.collect_policy_start),
+                                         traj_per_policy_per_process=int(args.collect_num_of_trajs),
+                                         data_dir=args.policy_saving_path)

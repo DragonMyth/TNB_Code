@@ -83,13 +83,13 @@ class Autoencoder():
         plt.ylabel('loss')
         plt.xlabel('epoch')
         plt.legend(['train', 'test'], loc='upper left')
-        plt.show()
-
+        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_training_curve.png')
+        plt.close()
         # encoded_input = Input(shape=(encoding_dim,))
         # decoded_layer = self.autoencoder.layers[-1]
 
         self.autoencoder.name = model_filename
-        self.autoencoder.save('../novelty_data/local/autoencoders/' + model_filename)
+        self.autoencoder.save('./novelty_data/local/autoencoders/' + model_filename)
 
     # def vis_data_in_motion():
 
@@ -120,7 +120,10 @@ class Autoencoder():
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
-        plt.show()
+
+        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_vis.png')
+        plt.close()
+        # plt.show()
 
     def plot_reconst_err(self, x_test):
         decoded_traj = self.autoencoder.predict(x_test)
@@ -132,28 +135,49 @@ class Autoencoder():
         l2_norm = np.linalg.norm(diff[:], axis=1)
 
         plt.plot(items, l2_norm)
-        plt.show()
+        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_err.png')
+        plt.close()
+        # plt.show()
         print(l2_norm.shape)
         print(np.mean(l2_norm))
 
 
 if __name__ == '__main__':
-
-    model_filename = 'new_path_finding_autoencoder_autoencoder_1.h5'
-
-    openFileOption = {}
+    # openFileOption = {}
     # openFileOption['initialdir'] = './data/local/experiment'
-    filenames = askopenfilenames(**openFileOption)
+    # filenames = askopenfilenames(**openFileOption)
+    #
+    # dataset = []
+    # for file in filenames:
+    #     dataset.extend(joblib.load(file))
+    # dataset = np.array(dataset)
+    import argparse
 
-    dataset = []
-    for file in filenames:
-        dataset.extend(joblib.load(file))
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('--env', help='environment ID', default='DartTurtle-v0')
+    parser.add_argument('--seed', help='RNG seed', type=int, default=0)
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v2')
+    parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=0)
+    parser.add_argument('--qnorm', help='Scale of the q in the skel', default=np.pi)
+    parser.add_argument('--dqnorm', help='Scale of the dq in the skel', default=50)
+
+    args = parser.parse_args()
+
+    model_filename = args.env + '_autoencoder_seed_' + str(args.seed) + '_run_' + str(args.curr_run) + '.h5'
+
+    collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
+        args.seed) + '_run_' + str(
+        args.curr_run) + '.pkl'
+
+    dataset = joblib.load(collected_data_filename)
     dataset = np.array(dataset)
 
     model_dim = len(dataset[0][0])
     traj_dim = len(dataset[0])
 
-    autoencoder = Autoencoder(10, 10, model_filename, model_dim * traj_dim, model_dim, traj_dim)
+    autoencoder = Autoencoder(float(args.qnorm), float(args.dqnorm), model_filename, model_dim * traj_dim, traj_dim,
+                              model_dim)
 
     dataset = autoencoder.normalizeTraj(dataset)
     dataset = dataset.reshape((len(dataset), np.prod(dataset.shape[1:])))
@@ -161,7 +185,7 @@ if __name__ == '__main__':
     x_train = dataset[:int(len(dataset) / 5.0 * 4)]
     x_test = dataset[int(len(dataset) / 5.0 * 4)::]
 
-    autoencoder.train(x_train, x_test, epoches=3, batchsize=1024)
+    autoencoder.train(x_train, x_test, epoches=300, batchsize=1024)
     autoencoder.vis_in_graph(x_test)
     autoencoder.plot_reconst_err(x_test)
     print("Done")
