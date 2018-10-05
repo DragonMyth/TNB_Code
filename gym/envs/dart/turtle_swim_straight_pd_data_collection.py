@@ -4,7 +4,7 @@ from gym.envs.dart import dart_env
 from .simple_water_world import BaseFluidEnhancedAllDirSimulator
 
 
-class DartTurtleSwimStraighPDCollectionEnv(dart_env.DartEnv, utils.EzPickle):
+class DartTurtleSwimStraighPDEnvDataCollect(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
         self.action_scale = np.pi / 2.0

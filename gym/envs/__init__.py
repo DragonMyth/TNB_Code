@@ -118,12 +118,6 @@ register(
 
 )
 
-register(
-    id='SimplerPathFinding-v1',
-    entry_point='gym.envs.classic_control:SimplerPathFindingReleasing',
-    max_episode_steps=500,
-
-)
 
 register(
     id='SimplerPathFinding-v2',
@@ -324,36 +318,42 @@ register(
 # Normal modal normal env
 register(
     id='DartTurtle-v0',
-    entry_point='gym.envs.dart:DartTurtleSwimStraighEnv',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
     max_episode_steps=500,
 )
 
-# Mirror model
-register(
-    id='DartTurtle-v1',
-    entry_point='gym.envs.dart:DartTurtleSwimStraighHalfEnv',
-    max_episode_steps=500,
-)
-
-# Large model
 register(
     id='DartTurtle-v2',
-    entry_point='gym.envs.dart:DartTurtleSwimStraighLargeEnv',
-    max_episode_steps=500,
+    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvDataCollect',
+    max_episode_steps=2500,
 )
+# # Mirror model
+# register(
+#     id='DartTurtle-v1',
+#     entry_point='gym.envs.dart:DartTurtleSwimStraighHalfEnv',
+#     max_episode_steps=500,
+# )
+#
+# # Large model
+# register(
+#     id='DartTurtle-v2',
+#     entry_point='gym.envs.dart:DartTurtleSwimStraighLargeEnv',
+#     max_episode_steps=500,
+# )
+#
+# # This env is for turtle with classic pd controller that is used for enforcement training
+# register(
+#     id='DartTurtle-v3',
+#     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
+#     max_episode_steps=500,
+# )
+#
+# register(
+#     id='DartTurtle-v4',
+#     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
+#     max_episode_steps=500,
+# )
 
-# This env is for turtle with classic pd controller that is used for enforcement training
-register(
-    id='DartTurtle-v3',
-    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
-    max_episode_steps=500,
-)
-
-register(
-    id='DartTurtle-v4',
-    entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
-    max_episode_steps=500,
-)
 
 # This env is for turtle with classic pd controller that is used for release training
 

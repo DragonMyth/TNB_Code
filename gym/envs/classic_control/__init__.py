@@ -9,8 +9,7 @@ from gym.envs.classic_control.path_finding import PathFindingReleasing
 
 from gym.envs.classic_control.path_finding_data_collect import PathFindingDataCollect
 
-
 from gym.envs.classic_control.simpler_path_finding import SimplerPathFinding
-from gym.envs.classic_control.simpler_path_finding import SimplerPathFindingReleasing
+# from gym.envs.classic_control.simpler_path_finding import SimplerPathFindingReleasing
 
 from gym.envs.classic_control.simpler_path_finding_data_collect import SimplerPathFindingDataCollect

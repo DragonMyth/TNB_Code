@@ -16,13 +16,15 @@ from gym.envs.dart.reacher2d import DartReacher2dEnv
 # Swiming Simulation envs
 from gym.envs.dart.eel_swim_straight import DartEelSwimStraighEnv
 from gym.envs.dart.eel_swim_straight_data_collect import DartEelSwimStraighDataCollectEnv
-from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
-from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
-from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
-from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnv
-from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnvNoEnf
-from gym.envs.dart.turtle_swim_straight_spd_corrected import DartTurtleSwimStraighSPDCorrectedEnv
-from gym.envs.dart.turtle_swim_straight_pd_data_collection import DartTurtleSwimStraighPDCollectionEnv
+
+# from gym.envs.dart.turtle_swim_straight import DartTurtleSwimStraighEnv
+# from gym.envs.dart.turtle_swim_straight_half import DartTurtleSwimStraighHalfEnv
+# from gym.envs.dart.turtle_swim_straight_large import DartTurtleSwimStraighLargeEnv
+# from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnv
+# from gym.envs.dart.turtle_swim_straight_pd import DartTurtleSwimStraighSPDEnvNoEnf
+
+from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnv
+from gym.envs.dart.turtle_swim_straight_spd_data_collect import DartTurtleSwimStraighSPDEnvDataCollect
 
 from gym.envs.dart.flatworm_swim_straight import DartFlatwormSwimStraightEnv
 from gym.envs.dart.flatworm_swim_straight_reduced import DartFlatwormSwimStraightReducedEnv
@@ -41,9 +43,6 @@ from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFu
 from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullReleaseEnv
 from gym.envs.dart.humanoid_swim_straight_full_data_collection import DartHumanoidSwimStraightFullDataCollectionEnv
 
-
 from gym.envs.dart.cube_path_finding import DartCubePathFindingEnforceEnv
 from gym.envs.dart.cube_path_finding import DartCubePathFindingReleaseEnv
 from gym.envs.dart.cube_path_finding_data_collect import DartCubePathFindingDataCollectEnv
-
-

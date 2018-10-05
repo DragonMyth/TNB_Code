@@ -41,21 +41,35 @@ class SimplerPathFindingDataCollect(gym.Env):
         self.grid_map[1:mid_idx - 1, (mid_idx + 2):-1] = 1
         self.grid_map[(mid_idx + 2):-1, (mid_idx + 2):-1] = 1
 
-        self.grid_map[mid_idx - 3:mid_idx - 1, mid_idx - 3: mid_idx - 1] = 0
-        self.grid_map[mid_idx - 3:mid_idx - 1, mid_idx + 2: mid_idx + 4] = 0
-        self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx + 2: mid_idx + 4] = 0
-        self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx - 3: mid_idx - 1] = 0
+        # self.grid_map[mid_idx - 2, mid_idx - 2] = -1
+        # self.grid_map[mid_idx + 2, mid_idx - 2] = -1
+        # self.grid_map[mid_idx + 2, mid_idx + 2] = -1
+        # self.grid_map[mid_idx - 2, mid_idx + 2] = -1
+
+        # self.grid_map[mid_idx - 3:mid_idx - 1, mid_idx + 2: mid_idx + 4] = 0
+        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx + 2: mid_idx + 4] = 0
+        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx - 3: mid_idx - 1] = 0
 
         self.grid_map[mid_idx - 1:mid_idx + 2, 1] = 2
         self.grid_map[mid_idx - 1:mid_idx + 2, -2] = 3
         self.grid_map[1, mid_idx - 1:mid_idx + 2] = 4
         self.grid_map[-2, mid_idx - 1:mid_idx + 2] = 5
 
-        self.grid_map[mid_idx, 2:mid_idx] = 6
-        self.grid_map[mid_idx, mid_idx + 1:-2] = 7
-        self.grid_map[2:mid_idx, mid_idx] = 8
-        self.grid_map[mid_idx + 1:-2, mid_idx] = 9
+        self.grid_map[mid_idx - 1:mid_idx + 2, 2:mid_idx - 1] = 6
+        self.grid_map[mid_idx, mid_idx - 1] = 6
 
+        self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 7
+        self.grid_map[mid_idx, mid_idx + 1] = 7
+        # self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 1
+
+        self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 8
+        self.grid_map[mid_idx - 1, mid_idx] = 8
+        # self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 1
+
+        self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 9
+        self.grid_map[mid_idx + 1, mid_idx] = 9
+
+        # self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 1
         # This is the goal grid
         # self.grid_map[1:-1, -2] = 2
 
@@ -74,7 +88,11 @@ class SimplerPathFindingDataCollect(gym.Env):
         self.dt = 0.002
         self.frameskip = 1
 
-        self.action_scale = 4
+        # This scale is for direct velocity output
+        self.velocity_scale = 4
+        # This scale is for torque output
+        self.torque_scale = 250
+
         self.obs_dim = 4
 
         self.action_dim = 2
@@ -107,29 +125,15 @@ class SimplerPathFindingDataCollect(gym.Env):
         self.novel_visitations = []
 
         self.sum_of_old = 0
-
-        # autoencoder_dir = "../novelty_data/local/autoencoders/"
-        # autoencoder1 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_1_test.h5")
-        # autoencoder2 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_2.h5")
-        # autoencoder3 = load_model(autoencoder_dir + "new_path_finding_biased_autoencoder_3.h5")
-        # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_4.h5")
-
-        # self.novel_autoencoders.append(autoencoder1)
-        # self.novel_autoencoders.append(autoencoder2)
-        # self.novel_autoencoders.append(autoencoder3)
-        # self.novel_autoencoders.append(autoencoder4)
-
-        # print("Autoencoder Model names: ")
-        # for i in range(len(self.novel_autoencoders)):
-        #     print("Model {} name is {}".format(i, self.novel_autoencoders[i].name))
-
-        # 5 works for manually designed visitation grids
-        # self.novelty_factor = 5
-
+        self.sum_of_new = 0
         self.novelty_factor = 50
 
         self.novelDiff = 0
+        self.novelDiffRev = 0
         self.path_data = []
+        self.have_goal_rew = True
+
+        self.ret = 0
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -137,19 +141,15 @@ class SimplerPathFindingDataCollect(gym.Env):
 
     def _step(self, action):
 
-        # action
-        # norm = np.linalg.norm(action)
-        # if norm == 0:
-        #     action = action * 0
-        # else:
-        #     action = action / norm
-
         pos_before = self.point_pos
 
-        tau = np.clip(action, -self.action_scale, self.action_scale)
+        tau = np.clip(action * self.torque_scale, -self.torque_scale, self.torque_scale)
 
-        # tau = action * self.action_scale
-        wall_hit = self.do_simulation_first_order(tau, self.frameskip)
+        # tau = np.clip(action, -self.velocity_scale, self.velocity_scale)
+
+        wall_hit = self.do_simulation(tau, self.frameskip)
+
+        # wall_hit = self.do_simulation(tau, self.frameskip)
 
         obs = self._get_obs()
 
@@ -162,61 +162,56 @@ class SimplerPathFindingDataCollect(gym.Env):
 
         self.stepNum += 1
 
-        novelRwd = self.calc_novelty_from_autoencoder(obs)
+        novelRwd, novelPenn = self.calc_novelty_from_autoencoder(obs)
+
+        # if self.stepNum >= 60:
+        #     novelRwd = 0
 
         # print(self.novelDiff)
-        self.sum_of_old += self.novelDiff
 
         if (self.novelDiff > 0):
             self.path_data[-1][1] = self.novelDiff
 
         i, j = self.pos_to_grid_idx(pos_after)
 
-        close_to_wall_penalty = 0
-        for neighbor_c in range(i - 2, i + 3, 1):
-            for neighbor_r in range(j - 2, j + 3, 1):
-                if neighbor_c > 0 and neighbor_c < len(self.grid_map) and neighbor_r > 0 and neighbor_r < len(
-                        self.grid_map[0]):
-                    grid_val = self.grid_map[neighbor_c, neighbor_r]
-                    if grid_val == 1:
-                        wall_pos = self.grid_idx_to_pos(neighbor_c, neighbor_r)
-                        dist_sq = (pos_after[0] - wall_pos[0]) ** 2 + (pos_after[1] - wall_pos[1]) ** 2
-                        if (close_to_wall_penalty < 1.0 / dist_sq):
-                            close_to_wall_penalty = 1 / dist_sq
-
-        close_to_wall_penalty = 0  # -min(5, close_to_wall_penalty)
-
-        alive_penalty = -1  # - self.stepNum
-
-        # progress_reward = 100 * (pos_after[0] - pos_before[0])
-        horizontal_position_rwd = 0  # 100 * (pos_after[0] - self.original_pos[0])
-        vertical_assistance_rwd = 0  # 10 * (pos_after[1] - self.original_pos[1])
+        alive_penalty = -1  # -1  # - self.stepNum
 
         reward = alive_penalty
+        # reward -= self.sum_of_old
+        # reward += novelRwd * 0.01
+
         # reward = novelRwd
         # novelRwd = (novelRwd) ** 2
         done = False
-
         if 6 <= self.grid_map[i, j] <= 9:
-            reward += 20 * (self.grid_map[i, j] - 5) ** 2
+            reward += 50 * ((self.grid_map[i, j] - 5) / 4.0) ** 3
             self.grid_map[i, j] = 0
 
         if 2 <= self.grid_map[i, j] <= 5:
             done = True
+            # print("Sum of Old: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
+            # if self.have_goal_rew:
             # print("Sum of accumulated old penalty: ", self.sum_of_old)
-            reward += 500 * (self.grid_map[i, j] - 1) ** 2
+            reward += 500 * ((self.grid_map[i, j] - 1) / 4.0) ** 3
+            # etlse:
+            # print("Sum of accumulated old penalty: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
+            self.ret += reward
 
-        # if wall_hit:
-        #     done = True
-        # if self.sum_of_old > 10:
-        #     reward -= 1000
-        # done = True
+            # print(self.ret)
+        # if self.grid_map[i, j] == -1:
+        #     reward -= 5
+        #     novelPenn += 10
+        if wall_hit:
+            reward -= 10
+            # done = True
 
-        # + (alive_penalty + close_to_wall_penalty + horizontal_position_rwd + vertical_assistance_rwd)
+        # if self.sum_of_old > 20:
+        # self.have_goal_rew = False
+        self.ret += reward
 
-        return obs, (reward, novelRwd), done, {'Alive penalty': alive_penalty,
-                                               'tau': tau, 'Novelty': novelRwd,
-                                               'Total Reward': reward}
+        return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
+                                                 'tau': tau, 'Novelty': novelRwd,
+                                                 'Total Reward': reward}
 
     def _get_obs(self):
         return np.concatenate([[self.point_pos[0], self.point_pos[1]], [self.point_vel[0], self.point_vel[1]]]).ravel()
@@ -250,7 +245,8 @@ class SimplerPathFindingDataCollect(gym.Env):
                     break
 
             self.point_pos = self.point_pos + self.dt * self.point_vel
-            self.point_vel = self.point_vel + self.dt * (self.point_acc_force / self.point_mass)
+            self.point_vel = np.clip(self.point_vel + self.dt * (self.point_acc_force / self.point_mass),
+                                     -self.velocity_scale, self.velocity_scale)
         return wall_hit
 
     def do_simulation_first_order(self, vel, frameskip):
@@ -287,14 +283,17 @@ class SimplerPathFindingDataCollect(gym.Env):
         return wall_hit
 
     def _reset(self):
-        self.point_pos = self.init_pos + self.np_random.uniform(low=-0.01,
-                                                                high=0.01,
-                                                                size=(2))
+        self.point_pos = self.init_pos  # + self.np_random.uniform(low=-0.05,
+        #                        high=0.05,
+        #                       size=(2))
 
-        self.point_vel = -np.zeros(2) + self.np_random.uniform(low=-0.01, high=0.01, size=(2))
+        self.point_vel = -np.zeros(2)  # + self.np_random.uniform(low=-0.05, high=0.05, size=(2))
         self.point_acc_force = -np.zeros(2)
         self.stepNum = 0
         self.sum_of_old = 0
+        self.sum_of_new = 0
+        self.have_goal_rew = True
+        self.ret = 0
         return self._get_obs()
 
     def _render(self, mode='human', close=False):
@@ -343,6 +342,10 @@ class SimplerPathFindingDataCollect(gym.Env):
                     elif (6 <= self.grid_map[i, j] <= 9):
 
                         cell.set_color(0, ((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0))
+                    elif (self.grid_map[i, j] == -1):
+
+                        cell.set_color(1, 0, 0)
+
                     else:
                         color = np.ones(3)
                         for vis in self.novel_visitations:
@@ -478,9 +481,9 @@ class SimplerPathFindingDataCollect(gym.Env):
 
     def calc_novelty_from_autoencoder(self, obs):
         novelRwd = 0
+        novelPenn = 0
         if len(self.novel_autoencoders) > 0:
             if (self.stepNum % self.recordGap == 0):
-                # 5 here is the num of dim for root related states
                 if (np.isfinite(obs).all()):
                     self.traj_buffer.append(obs[:])
 
@@ -493,7 +496,12 @@ class SimplerPathFindingDataCollect(gym.Env):
 
                 for i in range(len(self.novel_autoencoders)):
                     autoencoder = self.novel_autoencoders[i]
+
                     traj_recons = autoencoder.predict(traj_seg)
+                    # if (self.stepNum == 20):
+                    #     print("Original traj sum: ", np.sum(traj_seg))
+                    #     print("Reconstructed traj sum: ", np.sum(traj_recons))
+
                     diff = traj_recons - traj_seg
 
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
@@ -502,12 +510,12 @@ class SimplerPathFindingDataCollect(gym.Env):
                 self.traj_buffer.pop(0)
 
                 self.novelDiff = min(novelDiffList)
-                # print(self.novelDiff)
 
-                # if self.novelDiff < 0.06:
-                #     self.novelDiff = 0
-                # else:
-                # self.novelDiff = 1 - min(self.novelDiff, 1)
+                self.novelDiffRev = 1 - min(self.novelDiff, 1)
+
+                self.sum_of_old += self.novelDiffRev
+                self.sum_of_new += self.novelDiff
 
             novelRwd = self.novelty_factor * self.novelDiff
-        return novelRwd
+            novelPenn = self.novelty_factor * self.novelDiffRev * 0.1
+        return novelRwd, novelPenn

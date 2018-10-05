@@ -7,10 +7,10 @@ from .simple_water_world import BaseFluidEnhancedAllDirSimulator
 from keras.models import load_model
 
 
-class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
+class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
-        self.action_scale = np.pi / 2.0
+        self.action_scale = np.pi  # / 2.0
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 21, control_bounds, dt=0.002,
                                   disableViewer=True,
@@ -25,22 +25,42 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
-        self.Kd = 150 * self.simulation_dt * self.Kp
+        self.Kd = 120 * self.simulation_dt * self.Kp
+
         # self.Kd = 20 * self.simulation_dt * self.Kp
         # Symm rate Positive to be enforcing Symmetry
         #          Negative to be enforcing Asymmetry
-        self.symm_rate = -0 * np.array([1, 1, 0.01, 0.01])
+
+        self.dqLim = 25  # This works for path finding model
+        self.qLim = np.pi / 2
 
         self.stepNum = 0
-        self.recordGap = 3
-        self.traj_buffer = []
+        self.recordGap = 2
+
+        init_obs = self._get_obs()
+        self.novelty_window_size = 15
+        self.traj_buffer = []  # [init_obs] * 5
+
+        self.novel_autoencoders = []
+
+        self.sum_of_old = 0
+        self.sum_of_new = 0
+        self.novelty_factor = 10
+
+        self.novelDiff = 0
+        self.novelDiffRev = 0
+        self.path_data = []
+        self.ret = 0
+        self.ignore_obs = 5
 
     def _step(self, a):
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
 
-        target_pos = np.concatenate(([0.0] * 6, a * self.action_scale))
+        target_joint_pos = np.clip(a * self.action_scale, -self.action_scale, self.action_scale)
+
+        target_pos = np.concatenate(([0.0] * 6, target_joint_pos))
         # SPD Controller
 
         for i in range(self.frame_skip):
@@ -53,52 +73,29 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
 
             tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
             self.do_simulation(tau, 1)
-        #
-        # M = self.robot_skeleton.M + self.Kd * self.simulation_dt
-        # p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-        # d = -self.Kd.dot(self.robot_skeleton.dq)
-        # qddot = np.linalg.solve(M, -self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-        # tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        #
-        # tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-        # self.do_simulation(tau, self.frame_skip)
 
         cur_com = self.robot_skeleton.C
         cur_q = self.robot_skeleton.q
         cur_dq = self.robot_skeleton.dq
         ob = self._get_obs()
 
-        # this should be the unscaled novelty term
-        novelDiff = 0
+        novelRwd, novelPenn = self.calc_novelty_from_autoencoder(ob)
 
         angs = np.abs(self.robot_skeleton.q[6::])
-        ang_cost_rate = 0.0001
-        torque_cost_rate = 0.001
-        symm_pos_pen = np.sum(self.symm_rate *
-                              np.abs(cur_q['left_front_limb_joint_1',
-                                           'left_front_limb_joint_2',
-                                           'left_rear_limb_joint_1',
-                                           'left_rear_limb_joint_2'] -
-                                     cur_q['right_front_limb_joint_1',
-                                           'right_front_limb_joint_2',
-                                           'right_rear_limb_joint_1',
-                                           'right_rear_limb_joint_2']))
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
-        horizontal_vel_rwd = 0  # 3*cur_dq[3]
-        orth_pen = 0.5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 0.1 * np.sum(np.abs(cur_q[0]))
+
+        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
         # mirror_enforce
-        reward = 1 + horizontal_pos_rwd + horizontal_vel_rwd - rotate_pen - orth_pen - symm_pos_pen + novelDiff
+        reward = 1 + horizontal_pos_rwd - rotate_pen - orth_pen
 
         valid = np.isfinite(ob[5::]).all() and (np.abs(angs) < np.pi / 2.0).all() and (np.abs(cur_dq) < 50).all()
         done = not valid
 
-        return ob, reward, done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
-                                  'horizontal_vel_rwd': horizontal_vel_rwd,
-                                  'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
-                                  'symm_pos_pens': -symm_pos_pen, 'novelty': novelDiff,
-                                  'energy_consumed_pen': 0}
+        return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
+                                                'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
+                                                'energy_consumed_pen': 0}
 
     def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[4:6], self.robot_skeleton.dq[3:6], self.robot_skeleton.q[6::],
@@ -109,6 +106,11 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
         qpos = self.robot_skeleton.q + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
         qvel = self.robot_skeleton.dq + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
         self.set_state(qpos, qvel)
+
+        self.stepNum = 0
+        self.sum_of_old = 0
+        self.sum_of_new = 0
+        self.ret = 0
         return self._get_obs()
 
     def viewer_setup(self):
@@ -120,3 +122,44 @@ class DartTurtleSwimStraighSPDCorrectedEnv(dart_env.DartEnv, utils.EzPickle):
         traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
         traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
         return traj
+
+    def calc_novelty_from_autoencoder(self, obs):
+        novelRwd = 0
+        novelPenn = 0
+        if len(self.novel_autoencoders) > 0:
+            if (self.stepNum % self.recordGap == 0):
+                if (np.isfinite(obs).all()):
+                    self.traj_buffer.append(obs[self.ignore_obs:])
+
+            if (len(self.traj_buffer) == self.novelty_window_size):
+                novelDiffList = []
+                # Reshape to 1 dimension
+                traj_seg = np.array([self.traj_buffer])
+                traj_seg = self.normalizeTraj(traj_seg, -self.qLim, self.qLim, -self.dqLim, self.dqLim)
+                traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
+
+                for i in range(len(self.novel_autoencoders)):
+                    autoencoder = self.novel_autoencoders[i]
+
+                    traj_recons = autoencoder.predict(traj_seg)
+                    # if (self.stepNum == 20):
+                    #     print("Original traj sum: ", np.sum(traj_seg))
+                    #     print("Reconstructed traj sum: ", np.sum(traj_recons))
+
+                    diff = traj_recons - traj_seg
+
+                    normDiff = np.linalg.norm(diff[:], axis=1)[0]
+                    novelDiffList.append(normDiff)
+                    # print("Novel diff is", nov elDiff)
+                self.traj_buffer.pop(0)
+
+                self.novelDiff = min(novelDiffList)
+
+                self.novelDiffRev = 1 - min(self.novelDiff, 1)
+
+                self.sum_of_old += self.novelDiffRev
+                self.sum_of_new += self.novelDiff
+
+            novelRwd = self.novelty_factor * self.novelDiff
+            novelPenn = self.novelty_factor * self.novelDiffRev
+        return novelRwd, novelPenn
