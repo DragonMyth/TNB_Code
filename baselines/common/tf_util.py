@@ -431,3 +431,15 @@ def launch_tensorboard_in_background(log_dir):
     tf.flags.FLAGS.logdir = log_dir
     t = threading.Thread(target=tb.main, args=([]))
     t.start()
+
+
+
+# Functions in old versions
+def dense_wparams(x, size, name, weight_init=None, bias=True):
+    w = tf.get_variable(name + "/w", [x.get_shape()[1], size], initializer=weight_init)
+    ret = tf.matmul(x, w)
+    if bias:
+        b = tf.get_variable(name + "/b", [size], initializer=tf.zeros_initializer())
+        return ret + b, w,b
+    else:
+        return ret,w

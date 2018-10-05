@@ -120,6 +120,7 @@ def learn(env, policy_fn, *,
           callback=None,  # you can do anything in the callback, since it takes locals(), globals()
           adam_epsilon=1e-5,
           schedule='constant',  # annealing for stepsize parameters (epsilon and adam)
+          sym_loss_weight=0.0,
           **kwargs,
           ):
     # Setup losses and stuff
@@ -153,6 +154,7 @@ def learn(env, policy_fn, *,
     meanent = tf.reduce_mean(ent)
     pol_entpen = (-entcoeff) * meanent
 
+    sym_loss = sym_loss_weight * tf.reduce_mean(tf.square(pi.mean - pi.mirr_mean))
     ratio = tf.exp(pi.pd.logp(ac) - oldpi.pd.logp(ac))  # pnew / pold
 
     surr1 = ratio * atarg  # surrogate from conservative policy iteration
@@ -162,19 +164,20 @@ def learn(env, policy_fn, *,
     surr2_novel = tf.clip_by_value(ratio, 1.0 - clip_param,
                                    1.0 + clip_param) * atarg_novel  # surrogate loss of the novelty term
 
-    pol_surr = - tf.reduce_mean(tf.minimum(surr1, surr2))  # PPO's pessimistic surrogate (L^CLIP)
-    pol_surr_novel = -tf.reduce_mean(tf.minimum(surr1_novel, surr2_novel))  # PPO's surrogate for the novelty part
+    pol_surr = - tf.reduce_mean(tf.minimum(surr1, surr2)) + sym_loss  # PPO's pessimistic surrogate (L^CLIP)
+    pol_surr_novel = -tf.reduce_mean(
+        tf.minimum(surr1_novel, surr2_novel)) + sym_loss  # PPO's surrogate for the novelty part
 
     vf_loss = tf.reduce_mean(tf.square(pi.vpred - ret))
     vf_loss_novel = tf.reduce_mean(tf.square(pi.vpred_novel - ret_novel))
 
     total_loss = pol_surr + pol_entpen + vf_loss
-    losses = [pol_surr, pol_entpen, vf_loss, meankl, meanent]
+    losses = [pol_surr, pol_entpen, vf_loss, meankl, meanent, sym_loss]
 
     total_loss_novel = pol_surr_novel + pol_entpen + vf_loss_novel
-    losses_novel = [pol_surr_novel, pol_entpen, vf_loss_novel, meankl, meanent]
+    losses_novel = [pol_surr_novel, pol_entpen, vf_loss_novel, meankl, meanent, sym_loss]
 
-    loss_names = ["pol_surr", "pol_entpen", "vf_loss", "kl", "ent"]
+    loss_names = ["pol_surr", "pol_entpen", "vf_loss", "kl", "ent", 'symm']
 
     policy_var_list = pi.get_trainable_variables(scope='pi/pol')
 
@@ -202,7 +205,7 @@ def learn(env, policy_fn, *,
 
     compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
     compute_losses_novel = U.function([ob, ac, atarg_novel, ret_novel, lrmult], losses_novel)
-
+    comp_sym_loss = U.function([], sym_loss)
     U.initialize()
     adam.sync()
     adam_novel.sync()
@@ -329,7 +332,6 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpLenMean", np.mean(lenbuffer))
         logger.record_tabular("EpRewMean", np.mean(rewbuffer))
         logger.record_tabular("EpRNoveltyRewMean", np.mean(rewnovelbuffer))
-
         logger.record_tabular("EpThisIter", len(lens))
         episodes_so_far += len(lens)
         timesteps_so_far += sum(lens)

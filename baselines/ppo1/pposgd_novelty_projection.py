@@ -187,6 +187,8 @@ def learn(env, policy_fn, *,
 
     var_list = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf/')
     var_list_novel = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf_novel/')
+    var_list_pi = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(
+        scope='pi/vf/') + pi.get_trainable_variables(scope='pi/vf_novel/')
 
     lossandgrad = U.function([ob, ac, atarg, ret, lrmult], losses + [U.flatgrad(total_loss, var_list)])
 
@@ -195,6 +197,7 @@ def learn(env, policy_fn, *,
 
     adam = MpiAdam(var_list, epsilon=adam_epsilon)
     adam_novel = MpiAdam(var_list_novel, epsilon=adam_epsilon)
+    adam_all = MpiAdam(var_list_pi, epsilon=adam_epsilon)
 
     assign_old_eq_new = U.function([], [], updates=[tf.assign(oldv, newv)
                                                     for (oldv, newv) in
@@ -204,8 +207,10 @@ def learn(env, policy_fn, *,
     compute_losses_novel = U.function([ob, ac, atarg_novel, ret_novel, lrmult], losses_novel)
 
     U.initialize()
+
     adam.sync()
     adam_novel.sync()
+    adam_all.sync()
 
     # Prepare for rollouts
     # ----------------------------------------
@@ -227,7 +232,15 @@ def learn(env, policy_fn, *,
     assert sum([max_iters > 0, max_timesteps > 0, max_episodes > 0,
                 max_seconds > 0]) == 1, "Only one time constraint permitted"
 
+    # This for debug purpose
+    # from collections import defaultdict
+    # sum_batch = {}
+    # sum_batch = defaultdict(lambda: 0, sum_batch)
+
     while True:
+        # if iters_so_far == 5:
+        #     print("BREAK PLACEHOLDER")
+
         if callback: callback(locals(), globals())
         if max_timesteps and timesteps_so_far >= max_timesteps:
             break
@@ -248,6 +261,7 @@ def learn(env, policy_fn, *,
         logger.log("********** Iteration %i ************" % iters_so_far)
 
         seg = seg_gen.__next__()
+
         add_vtarg_and_adv(seg, gamma, lam)
 
         # ob, ac, atarg, ret, td1ret = map(np.concatenate, (obs, acs, atargs, rets, td1rets))
@@ -272,9 +286,12 @@ def learn(env, policy_fn, *,
         assign_old_eq_new()  # set old parameter values to new parameter values
         logger.log("Optimizing...")
         logger.log(fmt_row(13, loss_names))
+        same_update_direction = True
         # Here we do a bunch of optimization epochs over the data
+
         for _ in range(optim_epochs):
             losses = []  # list of tuples, each of which gives the loss for a minibatch
+
             for batch in d.iterate_once(optim_batchsize):
                 *newlosses, g = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
 
@@ -282,26 +299,49 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
-                # pol_g = g[0:policy_var_count]
-                # pol_g_novel = g_novel[0:policy_var_count]
-                #
-                # if (np.dot(pol_g, pol_g_novel) > 0):
-                #     adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
-                #
-                # else:
-                #
-                #     parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
-                #     final_pol_gradient = pol_g - parallel_g
-                #
-                #     final_gradient = np.zeros(len(g))
-                #     final_gradient[0:policy_var_count] = final_pol_gradient
-                #     final_gradient[policy_var_count::] = g[policy_var_count::]
-                #
-                #     adam.update(final_gradient, optim_stepsize * cur_lrmult)
+                pol_g = g[0:policy_var_count]
+                pol_g_novel = g_novel[0:policy_var_count]
 
-                # zigzag_update(novelty_update, adam, adam_novel, g, g_novel, step)
+                comm = MPI.COMM_WORLD
 
-                adam.update(g, optim_stepsize * cur_lrmult)
+                pol_g_reduced = np.zeros_like(pol_g)
+                pol_g_novel_reduced = np.zeros_like(pol_g_novel)
+
+                comm.Allreduce(pol_g, pol_g_reduced, op=MPI.SUM)
+                pol_g_reduced /= comm.Get_size()
+                comm.Allreduce(pol_g_novel, pol_g_novel_reduced, op=MPI.SUM)
+                pol_g_novel_reduced /= comm.Get_size()
+
+                final_gradient = np.zeros(len(g) + len(g_novel) - policy_var_count)
+                final_gradient[policy_var_count::] = np.concatenate(
+                    (g[policy_var_count::], g_novel[policy_var_count::]))
+
+                if (np.dot(pol_g_reduced, pol_g_novel_reduced) > 0):
+
+                    final_gradient[0:policy_var_count] = pol_g_novel
+                    # final_gradient[0:policy_var_count] = pol_g
+
+                    adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
+                    same_update_direction = True
+                else:
+
+                    parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
+                    # parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g)) * pol_g
+
+                    # final_pol_gradient = pol_g_novel - parallel_g
+                    final_pol_gradient = pol_g - parallel_g
+
+                    final_gradient[0:policy_var_count] = final_pol_gradient
+
+                    # adam_novel.update(final_gradient, optim_stepsize * cur_lrmult)
+                    adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
+
+                    # adam.update(final_gradient, optim_stepsize * cur_lrmult)
+                    same_update_direction = False
+
+                # step = optim_stepsize * cur_lrmult
+
+                # adam.update(g, optim_stepsize * cur_lrmult)
 
                 # adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
 
@@ -340,18 +380,11 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
-        logger.record_tabular("NoveltyUpdate", novelty_update)
+        logger.record_tabular("SameUpdateDirection", same_update_direction)
         if MPI.COMM_WORLD.Get_rank() == 0:
             logger.dump_tabular()
 
     return pi
-
-
-def zigzag_update(novelty_update, adam, adam_novel, g, g_novel, step):
-    if novelty_update:
-        adam_novel.update(g_novel, step)
-    else:
-        adam.update(g, step)
 
 
 # def projection_update()
