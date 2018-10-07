@@ -35,7 +35,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         self.qLim = np.pi / 2
 
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
         init_obs = self._get_obs()
         self.novelty_window_size = 15
@@ -45,7 +45,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 10
+        self.novelty_factor = 5
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -82,12 +82,12 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         novelRwd, novelPenn = self.calc_novelty_from_autoencoder(ob)
         angs = np.abs(self.robot_skeleton.q[6::])
 
-        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 500
+        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
         orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
         rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
         # mirror_enforce
-        reward = 3 + horizontal_pos_rwd - rotate_pen - orth_pen
+        reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
 
         valid = np.isfinite(ob[5::]).all()
         done = not valid
