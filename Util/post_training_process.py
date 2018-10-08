@@ -24,6 +24,7 @@ import baselines.common.tf_util as U
 
 import itertools
 from keras.models import load_model
+from gym import wrappers
 
 
 def perform_rollout(policy,
@@ -36,7 +37,9 @@ def perform_rollout(policy,
                     stochastic=True,
                     debug=False,
                     saved_rollout_path=None,
-                    num_repeat=1
+                    num_repeat=1,
+                    record=False
+
                     ):
     # all_reward_data = dict(rewards=[], horizontal_pos_rwds=[], horizontal_vel_rwds=[], rotate_pens=[], orth_pens=[],
     #                        energy_consumed_pen=[], tau=[], symm_pos_pens=[], novelty=[])
@@ -48,7 +51,6 @@ def perform_rollout(policy,
     all_reward_info = []
 
     for _ in range(num_repeat):
-        observation = env.reset()
 
         path = {'observations': [], 'actions': []}
         last_action = None
@@ -56,14 +58,18 @@ def perform_rollout(policy,
         horizon = env._max_episode_steps
         if costum_horizon != None:
             horizon = costum_horizon
+        if animate:
+            # env.env.env.
+            if hasattr(env.env, 'disableViewer'):
+                env.env.disableViewer = False
+            if record:
+                env = wrappers.Monitor(env, snapshot_dir + '/policy_runs', force=True)
+        observation = env.reset()
 
         for i in range(horizon):
             if i % 200 == 0 and debug:
                 print("Current Timestep:", i)
             if animate:
-                # env.env.env.
-                if hasattr(env.env, 'disableViewer'):
-                    env.env.disableViewer = False
                 env.render()
             if policy is None:
                 action_taken = (np.random.rand(env.unwrapped.action_dim) - 0.5 * np.ones(
@@ -275,7 +281,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
 
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
-                  save_video=False):
+                  record=False):
     openFileOption = {}
     openFileOption['initialdir'] = '../data/ppo_' + env
     filename = askopenfilename(**openFileOption)
@@ -311,7 +317,8 @@ def render_policy(env, action_skip=1, save_path=False, save_filename="path_findi
         path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
                                stochastic=stoch,
                                control_step_skip=action_skip,
-                               saved_rollout_path=None
+                               saved_rollout_path=None,
+                               record=record
 
                                )
     if save_path:
@@ -455,11 +462,11 @@ def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
                                                             num_hid_layers=3,
                                                             mirror_loss=True,
                                                             observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                                                                         10,
-                                                                                         15, 16, 17, 18,
-                                                                                         11, 12, 13, 14,
-                                                                                         23, 24, 25, 26,
-                                                                                         19, 20, 21, 22],
+                                                                                     10,
+                                                                                     15, 16, 17, 18,
+                                                                                     11, 12, 13, 14,
+                                                                                     23, 24, 25, 26,
+                                                                                     19, 20, 21, 22],
 
                                                             action_permutation=[4, 5, 6, 7, 0, 1, 2, 3]
                                                             )
