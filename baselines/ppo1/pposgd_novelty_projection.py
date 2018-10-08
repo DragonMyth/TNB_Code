@@ -316,7 +316,7 @@ def learn(env, policy_fn, *,
                 final_gradient[policy_var_count::] = np.concatenate(
                     (g[policy_var_count::], g_novel[policy_var_count::]))
 
-                same_update_direction = np.dot(pol_g_reduce,pol_g_novel_reduced)
+                same_update_direction = np.dot(pol_g_reduced,pol_g_novel_reduced)
                 if (np.dot(pol_g_reduced, pol_g_novel_reduced) > 0):
 
                     #final_gradient[0:policy_var_count] = pol_g_novel
@@ -326,11 +326,11 @@ def learn(env, policy_fn, *,
                     #same_update_direction = True
                 else:
 
-                    # parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
+                    #parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
                     parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g)) * pol_g
 
                     final_pol_gradient = pol_g_novel - parallel_g
-                    # final_pol_gradient = pol_g - parallel_g
+                    #final_pol_gradient = pol_g - parallel_g
 
                     final_gradient[0:policy_var_count] = final_pol_gradient
 
