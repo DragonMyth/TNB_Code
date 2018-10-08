@@ -10,7 +10,7 @@ from keras.models import load_model
 class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
-        self.action_scale = np.pi  # / 2.0
+        self.action_scale = np.pi   / 2.0
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 21, control_bounds, dt=0.002,
                                   disableViewer=True,
@@ -86,8 +86,8 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
         energy_rwd = 3 * sum(np.abs(old_angs - angs))
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
-        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen
 
