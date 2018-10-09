@@ -7,33 +7,33 @@ from Util.post_training_process import *
 
 if __name__ == '__main__':
     cpu_count = multiprocessing.cpu_count()
-
+    print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='DartTurtle-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
-                        help='Number of samples collected for each process at each iteration', default=1500)
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=400)
+                        help='Number of samples collected for each process at each iteration', default=800)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=600)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v2')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=300)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=500)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
-                        default=40)
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
+                        default=20)
 
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=5)
     args = parser.parse_args()
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 300
+    num_epoch = 400
     batch_size = 1024
     qnorm = np.pi
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(5):
+    for i in range(6):
         # i = 0
         curr_run = str(i)
 
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                                             + ' --curr_run ' + str(curr_run)
                                             + ' --qnorm ' + str(qnorm)
                                             + ' --dqnorm ' + str(dqnorm)
-                                            + ' --num_epoch' + str(num_epoch)
+                                            + ' --num_epoch ' + str(num_epoch)
                                             + ' --batch_size ' + str(batch_size)
                                             , shell=True
 
