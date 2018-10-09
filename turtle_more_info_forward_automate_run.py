@@ -7,15 +7,18 @@ from Util.post_training_process import *
 
 if __name__ == '__main__':
     cpu_count = multiprocessing.cpu_count()
+    num_sample_per_iter = 12000
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartTurtle-v0')
+    parser.add_argument('--env', help='environment ID', default='DartTurtle-v4')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
-                        help='Number of samples collected for each process at each iteration', default=800)
+                        help='Number of samples collected for each process at each iteration',
+                        default=int(num_sample_per_iter / cpu_count))
+    print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=600)
 
-    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v2')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v5')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=500)
