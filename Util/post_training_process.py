@@ -183,7 +183,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
-        obs_skip = 15#np.random.randint(7, 28)
+        obs_skip = 15  # np.random.randint(7, 28)
         num_datapoints = int(2500 / (instancesNum * 15))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
@@ -306,7 +306,7 @@ def render_policy(env, action_skip=1, save_path=False, save_filename="path_findi
 
         restore_policy(sess, pi, policy_param)
 
-        summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
+        # summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
 
         path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
                                stochastic=stoch,
