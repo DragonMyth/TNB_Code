@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=500)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
-                        default=20)
+                        default=30)
 
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
     args = parser.parse_args()
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(6):
+    for i in range(1,6,1):
         # i = 0
         curr_run = str(i)
 
