@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
         train_policy = subprocess.call(
             'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                cpu_count) + ' python ./running_regimes/turtle_two_objs_mirror_policy_train.py'
+                cpu_count) + ' python ./running_regimes/turtle_more_info_two_objs_mirror_policy_train.py'
             + ' --env ' + args.env
             + ' --seed ' + str(seed)
             + ' --curr_run ' + curr_run

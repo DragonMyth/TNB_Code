@@ -1,4 +1,5 @@
 from Util.post_training_process import *
+
 #
 # render_policy('SimplerPathFinding-v0',stoch=False)
 
@@ -11,4 +12,4 @@ from Util.post_training_process import *
 # plot_path_data(save_dir)
 # plot_path_data()
 
-render_policy('DartTurtle-v2',stoch=False)
+render_policy('DartTurtle-v0', stoch=True)
