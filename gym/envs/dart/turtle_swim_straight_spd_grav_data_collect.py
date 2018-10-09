@@ -7,12 +7,13 @@ from .simple_water_world import BaseFluidEnhancedAllDirSimulator
 from keras.models import load_model
 
 
-class DartTurtleSwimStraighSPDEnvMoreAbs(dart_env.DartEnv, utils.EzPickle):
+class DartTurtleSwimStraighSPDEnvGravDataCollect(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
         self.action_scale = np.pi / 2.0
-        self.frame_skip = 5
-        dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 16, control_bounds, dt=0.002,
+        self.frame_skip = 1
+        dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real_gravity.skel', self.frame_skip, 27, control_bounds,
+                                  dt=0.002,
                                   disableViewer=True,
                                   custom_world=BaseFluidEnhancedAllDirSimulator)
 
@@ -51,7 +52,7 @@ class DartTurtleSwimStraighSPDEnvMoreAbs(dart_env.DartEnv, utils.EzPickle):
         self.novelDiffRev = 0
         self.path_data = []
         self.ret = 0
-        self.ignore_obs = 0
+        self.ignore_obs = 11
 
     def _step(self, a):
         old_com = self.robot_skeleton.C
@@ -80,18 +81,21 @@ class DartTurtleSwimStraighSPDEnvMoreAbs(dart_env.DartEnv, utils.EzPickle):
         ob = self._get_obs()
 
         novelRwd, novelPenn = self.calc_novelty_from_autoencoder(ob)
+
         angs = np.abs(self.robot_skeleton.q[6::])
         old_angs = np.abs(old_q[6::])
 
-        energy_rwd = 3 * sum(np.abs(old_angs - angs))
+        energy_rwd = 5 * sum(np.abs(old_angs - angs))
+
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
-        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        orth_pen = 20 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 10 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen
 
-        valid = np.isfinite(ob[:]).all()
+        valid = np.isfinite(ob[self.ignore_obs::]).all()
         done = not valid
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
@@ -99,7 +103,7 @@ class DartTurtleSwimStraighSPDEnvMoreAbs(dart_env.DartEnv, utils.EzPickle):
                                                 'energy_rwd': energy_rwd}
 
     def _get_obs(self):
-        return np.concatenate([self.robot_skeleton.q[6::],
+        return np.concatenate([self.robot_skeleton.q[1:6], self.robot_skeleton.dq[0:6], self.robot_skeleton.q[6::],
                                self.robot_skeleton.dq[6::]]).ravel()
 
     def reset_model(self):
