@@ -322,23 +322,35 @@ register(
 )
 
 register(
-    id='DartTurtle-v2',
+    id='DartTurtle-v1',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvDataCollect',
     max_episode_steps=2500,
 )
-# # Mirror model
+
 register(
-    id='DartTurtle-v3',
+    id='DartTurtle-v2',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvGrav',
     max_episode_steps=500,
 )
 
-# Large model
 register(
-    id='DartTurtle-v5',
+    id='DartTurtle-v3',
     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnvGravDataCollect',
     max_episode_steps=2500,
 )
+
+register(
+    id='DartTurtle-v4',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighTorqueActuateEnv',
+    max_episode_steps=500,
+)
+
+register(
+    id='DartTurtle-v5',
+    entry_point='gym.envs.dart:DartTurtleSwimStraighTorqueActuateEnvDataCollect',
+    max_episode_steps=2500,
+)
+
 #
 # # This env is for turtle with classic pd controller that is used for enforcement training
 # register(
@@ -352,8 +364,6 @@ register(
 #     entry_point='gym.envs.dart:DartTurtleSwimStraighSPDEnv',
 #     max_episode_steps=500,
 # )
-
-
 
 
 register(
