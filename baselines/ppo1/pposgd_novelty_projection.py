@@ -316,8 +316,10 @@ def learn(env, policy_fn, *,
                 final_gradient[policy_var_count::] = np.concatenate(
                     (g[policy_var_count::], g_novel[policy_var_count::]))
 
-                same_update_direction = np.dot(pol_g_reduced, pol_g_novel_reduced)
-                if (np.dot(pol_g_reduced, pol_g_novel_reduced) > 0):
+                dot = np.dot(pol_g_reduced, pol_g_novel_reduced) / (np.linalg.norm(pol_g) * np.linalg.norm(pol_g_novel))
+
+                same_update_direction = dot
+                if (dot > 0):
 
                     final_gradient[0:policy_var_count] = pol_g_novel
                     #final_gradient[0:policy_var_count] = pol_g
@@ -386,7 +388,7 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
-        logger.record_tabular("SameUpdateDirection", same_update_direction)
+        logger.record_tabular("RelativeDirection", same_update_direction)
         if MPI.COMM_WORLD.Get_rank() == 0:
             logger.dump_tabular()
 
