@@ -24,14 +24,18 @@ with open(filename, newline='') as csvfile:
             continue
         if row:
             for j in range(len(row)):
-                data_lookup[j].append(row[j])
+                # if(row[j])
+                if row[j] != 'True' and row[j] != 'False':
+                    data_lookup[j].append(float(row[j]))
             # data_lookup[len(row)].append(i - 1)
 
-EpisodesSofar = data_lookup[category_idx_lookup['EpisodesSoFar']]
-
+EpisodesSofar = np.array(data_lookup[category_idx_lookup['EpisodesSoFar']])
+ItersSofar = np.arange(len(EpisodesSofar))
 indices = [i for i, x in enumerate(EpisodesSofar) if x == 0]
 
-AverageReturns = data_lookup[category_idx_lookup['EpRewMean']]
+AverageReturns = np.array(data_lookup[category_idx_lookup['EpRewMean']])
+EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
+# RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
 # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
 # MinReturns = data_lookup[category_idx_lookup['MinReturn']]
 
@@ -41,24 +45,33 @@ AverageReturns = data_lookup[category_idx_lookup['EpRewMean']]
 
 
 plot.figure()
+# print(AverageReturns)
+plot.plot(ItersSofar, AverageReturns, 'r', label='Average Return')
+plot.plot(ItersSofar, EpRNoveltyRewMean, 'b', label='Average Novelty Return')
 
-plot.plot(EpisodesSofar, AverageReturns, 'r', label='Average Return')
 # plot.plot(Iterations[begin:end], MinReturns[begin:end], 'g', label='Minimum Return')
 # plot.plot(Iterations[begin:end], MaxReturns[begin:end], 'b', label='Maximum Return')
-plot.xlabel('Iters')
+plot.xlabel('Iterations')
 plot.ylabel('Expected Return')
 # plot.title('Mirror Enforcement Larger Loss')
 # plot.yscale('symlog')
 plot.legend()
-plot.yscale('symlog')
+plot.yscale('linear')
+plot.xscale('linear')
+
 plot.savefig(snapshot_dir + '/progress' + '.jpg')
+plot.show()
+
 plot.figure()
 
-# MirroredLoss = data_lookup[category_idx_lookup['MirroredLoss']]
-# plot.plot(Iterations[begin:end],MirroredLoss[begin:end],label='Mirrored Loss')
-# plot.title('Mirror Enforcement Larger Loss')
-#
-# plot.legend()
+# plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
+plot.xlabel('Iterations')
 
+plot.legend()
+plot.yscale('linear')
+plot.xscale('linear')
+
+# plot.legend()
+plot.savefig(snapshot_dir + '/progress_2' + '.jpg')
 
 plot.show()
