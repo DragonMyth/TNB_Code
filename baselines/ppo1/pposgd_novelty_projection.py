@@ -316,21 +316,21 @@ def learn(env, policy_fn, *,
                 final_gradient[policy_var_count::] = np.concatenate(
                     (g[policy_var_count::], g_novel[policy_var_count::]))
 
-                dot = np.dot(pol_g_reduced, pol_g_novel_reduced) / (np.linalg.norm(pol_g) * np.linalg.norm(pol_g_novel))
+                pol_g_normalized = pol_g / np.linalg.norm(pol_g)
+                pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
 
+                dot = np.dot(pol_g_novel_normalized, pol_g_normalized)
                 same_update_direction = dot
                 if (dot > 0):
 
-                    final_gradient[0:policy_var_count] = pol_g_novel
-                    #final_gradient[0:policy_var_count] = pol_g
+                    bisector = (pol_g_normalized + pol_g_novel_normalized) / 2
+                    bisector_normalized = bisector / np.linalg.norm(bisector)
 
+                    final_gradient[0:policy_var_count] = np.dot(pol_g, bisector_normalized) * bisector_normalized
+                    # final_gradient[0:policy_var_count] = pol_g
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
                 else:
-
-
-                    pol_g_normalized = pol_g / np.linalg.norm(pol_g)
-                    pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
 
                     task_projection = np.dot(pol_g, pol_g_novel_normalized) * pol_g_novel_normalized
 
