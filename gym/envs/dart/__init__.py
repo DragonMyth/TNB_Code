@@ -25,6 +25,8 @@ from gym.envs.dart.eel_swim_straight_data_collect import DartEelSwimStraighDataC
 
 from gym.envs.dart.turtle_swim_straight_spd import DartTurtleSwimStraighSPDEnv
 from gym.envs.dart.turtle_swim_straight_spd_data_collect import DartTurtleSwimStraighSPDEnvDataCollect
+from gym.envs.dart.turtle_swim_straight_spd_grav import DartTurtleSwimStraighSPDEnvGrav
+from gym.envs.dart.turtle_swim_straight_spd_grav_data_collect import DartTurtleSwimStraighSPDEnvGravDataCollect
 
 from gym.envs.dart.flatworm_swim_straight import DartFlatwormSwimStraightEnv
 from gym.envs.dart.flatworm_swim_straight_reduced import DartFlatwormSwimStraightReducedEnv
