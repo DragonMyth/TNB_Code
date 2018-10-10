@@ -79,7 +79,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         angs = np.abs(self.robot_skeleton.q[6::])
         old_angs = np.abs(old_q[6::])
 
-        energy_rwd = 5 * sum(np.abs(old_angs - angs))
+        energy_rwd = sum(np.abs(old_angs - angs))
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
@@ -87,7 +87,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
 
         # mirror_enforce
-        reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen
+        reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
         # print(reward)
         valid = np.isfinite(ob[self.ignore_obs::]).all()
         done = not valid
