@@ -326,7 +326,7 @@ def learn(env, policy_fn, *,
                     bisector = (pol_g_normalized + pol_g_novel_normalized) / 2
                     bisector_normalized = bisector / np.linalg.norm(bisector)
 
-                    final_gradient[0:policy_var_count] = np.dot(pol_g, bisector_normalized) * bisector_normalized
+                    final_gradient[0:policy_var_count] = (np.dot(pol_g, bisector_normalized)+np.dot(pol_g_novel,bisector_normalized))*0.5 * bisector_normalized
                     # final_gradient[0:policy_var_count] = pol_g
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
