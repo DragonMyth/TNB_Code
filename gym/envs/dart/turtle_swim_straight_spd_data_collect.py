@@ -88,8 +88,8 @@ class DartTurtleSwimStraighSPDEnvDataCollect(dart_env.DartEnv, utils.EzPickle):
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
-        orth_pen = 20 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 10 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen

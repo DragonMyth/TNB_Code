@@ -161,7 +161,7 @@ class DartTurtleSwimStraighSPDEnvGrav(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 3 - min(self.novelDiff, 3)
+                self.novelDiffRev = 4 - min(self.novelDiff, 4)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
