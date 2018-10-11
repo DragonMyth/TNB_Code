@@ -96,7 +96,7 @@ class DartTurtleSwimStraighSPDEnvGrav(dart_env.DartEnv, utils.EzPickle):
         reward = 3 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen
 
         valid = np.isfinite(ob[self.ignore_obs::]).all() and cur_com[1] > -0.7
-        # print(cur_com[1])
+        # print(reward)
         done = not valid
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
