@@ -189,8 +189,8 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
-        obs_skip = 15  # np.random.randint(7, 28)
-        num_datapoints = int(2500 / (instancesNum * 15))
+        obs_skip = np.random.randint(7, 28)
+        num_datapoints = int(2500 / (instancesNum * 28))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
 

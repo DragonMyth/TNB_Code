@@ -13,4 +13,4 @@ from Util.post_training_process import *
 # plot_path_data()
 
 # render_policy('DartTurtle-v0', stoch=True, record=True)
-render_policy('DartTurtle-v4', stoch=True, record=False)
+render_policy('DartTurtle-v4', stoch=False, record=True)
