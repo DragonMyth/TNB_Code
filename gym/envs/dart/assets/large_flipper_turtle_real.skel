@@ -208,7 +208,10 @@
                 <transformation>0 0 -0.08 0 0 0</transformation>
                 <axis>
                     <xyz>1 0 0</xyz>
-
+                    <limit>
+                        <lower>-1.5</lower>
+                        <upper>1.5</upper>
+                    </limit>
                 </axis>
                 <axis2>
                     <xyz>0 0 1</xyz>
@@ -277,6 +280,7 @@
                 <parent>torso</parent>
                 <child>left_rear_limb</child>
             </joint>
+
             <!-- Here are front-arms joint with back-arms-->
             <joint name="right_arm_joint" type="weld">
                 <transformation>0 0 0 0 0 0</transformation>
