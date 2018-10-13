@@ -331,7 +331,7 @@ def learn(env, policy_fn, *,
                     quartersector_normalized = quartersector / np.linalg.norm(quartersector)
 
                     target_dir = quartersector_normalized
-                    final_gradient[0:policy_var_count] = (np.dot(pol_g_novel, target_dir)+np.dot(pol_g_novel,target_dir))*0.5 * target_dir
+                    final_gradient[0:policy_var_count] = (np.dot(pol_g_novel, target_dir)+np.dot(pol_g,target_dir))*0.5 * target_dir
                     # final_gradient[0:policy_var_count] = pol_g
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
