@@ -16,27 +16,27 @@ if __name__ == '__main__':
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
     print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=600)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=1000)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v5')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=500)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=900)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
-                        default=30)
+                        default=10)
 
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
     args = parser.parse_args()
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 400
+    num_epoch = 300
     batch_size = 1024
     qnorm = np.pi
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(1,6,1):
+    for i in range(6):
         # i = 0
         curr_run = str(i)
 
