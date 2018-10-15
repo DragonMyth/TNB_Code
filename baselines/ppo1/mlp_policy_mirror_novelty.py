@@ -79,6 +79,7 @@ class MlpPolicyMirrorNovelty(object):
                 params.append([pw, pb])
 
                 # self.mean = mean
+                mean = mean_orig
                 if mirror_loss:
 
                     mirrored_obz = tf.matmul(obz, obs_perm_mat)

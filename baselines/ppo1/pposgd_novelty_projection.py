@@ -348,7 +348,7 @@ def learn(env, policy_fn, *,
 
                     #novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
 
-                    #final_pol_gradient = pol_g_novel - novel_projection
+                    # final_pol_gradient = pol_g_novel - novel_projection
                     final_pol_gradient = pol_g - task_projection
 
                     final_gradient[0:policy_var_count] = final_pol_gradient

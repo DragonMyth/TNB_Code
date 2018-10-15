@@ -272,6 +272,8 @@ def learn(env, policy_fn, *,
         assign_old_eq_new()  # set old parameter values to new parameter values
         logger.log("Optimizing...")
         logger.log(fmt_row(13, loss_names))
+        task_gradient_mag = []
+
         # Here we do a bunch of optimization epochs over the data
         for _ in range(optim_epochs):
             losses = []  # list of tuples, each of which gives the loss for a minibatch
@@ -282,24 +284,8 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
-                # pol_g = g[0:policy_var_count]
-                # pol_g_novel = g_novel[0:policy_var_count]
-                #
-                # if (np.dot(pol_g, pol_g_novel) > 0):
-                #     adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
-                #
-                # else:
-                #
-                #     parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
-                #     final_pol_gradient = pol_g - parallel_g
-                #
-                #     final_gradient = np.zeros(len(g))
-                #     final_gradient[0:policy_var_count] = final_pol_gradient
-                #     final_gradient[policy_var_count::] = g[policy_var_count::]
-                #
-                #     adam.update(final_gradient, optim_stepsize * cur_lrmult)
-
-                # zigzag_update(novelty_update, adam, adam_novel, g, g_novel, step)
+                pol_g = g[0:policy_var_count]
+                task_gradient_mag.append(np.linalg.norm(pol_g))
 
                 adam.update(g, optim_stepsize * cur_lrmult)
 
@@ -340,6 +326,7 @@ def learn(env, policy_fn, *,
         logger.record_tabular("EpisodesSoFar", episodes_so_far)
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
+        logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         # logger.record_tabular("NoveltyUpdate", novelty_update)
         if MPI.COMM_WORLD.Get_rank() == 0:
             logger.dump_tabular()
