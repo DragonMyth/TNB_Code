@@ -282,25 +282,6 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
-                # pol_g = g[0:policy_var_count]
-                # pol_g_novel = g_novel[0:policy_var_count]
-                #
-                # if (np.dot(pol_g, pol_g_novel) > 0):
-                #     adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
-                #
-                # else:
-                #
-                #     parallel_g = (np.dot(pol_g, pol_g_novel) / np.linalg.norm(pol_g_novel)) * pol_g_novel
-                #     final_pol_gradient = pol_g - parallel_g
-                #
-                #     final_gradient = np.zeros(len(g))
-                #     final_gradient[0:policy_var_count] = final_pol_gradient
-                #     final_gradient[policy_var_count::] = g[policy_var_count::]
-                #
-                #     adam.update(final_gradient, optim_stepsize * cur_lrmult)
-
-                # zigzag_update(novelty_update, adam, adam_novel, g, g_novel, step)
-
                 adam.update(g, optim_stepsize * cur_lrmult)
 
                 # adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
