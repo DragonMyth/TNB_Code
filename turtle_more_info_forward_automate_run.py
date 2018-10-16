@@ -69,6 +69,7 @@ if __name__ == '__main__':
             + ' --collect_num_of_trajs ' + str(args.collect_num_of_trajs)
             + ' --policy_saving_path ' + str(data_saving_path)
             + ' --ignore_obs ' + str(args.ignore_obs)
+            + ' --policy_fn_type ' + 'normal'
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
