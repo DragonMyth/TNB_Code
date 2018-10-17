@@ -10,7 +10,7 @@ from keras.models import load_model
 class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
-        self.action_scale = np.array([5.0, 5.0, 0.01, 0.01, 5.0, 5.0, 0.01, 0.01])  # np.pi / 2.0
+        self.action_scale = np.array([7.0, 7.0, 0.04, 0.04, 7.0, 7.0, 0.04, 0.04])  # np.pi / 2.0
         self.frame_skip = 5
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 27, control_bounds, dt=0.002,
                                   disableViewer=True,
@@ -79,12 +79,12 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         angs = np.abs(self.robot_skeleton.q[6::])
         old_angs = np.abs(old_q[6::])
 
-        energy_rwd = sum(np.abs(old_angs - angs))
+        #energy_rwd = sum(np.abs(old_angs - angs))
 
-        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
+        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1500
 
-        orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
@@ -94,7 +94,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
-                                                'energy_rwd': energy_rwd}
+                                                }
 
     def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[1:6], self.robot_skeleton.dq[0:6], self.robot_skeleton.q[6::],
@@ -154,7 +154,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 5 - min(self.novelDiff, 5)
+                self.novelDiffRev = 3 - min(self.novelDiff, 3)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
