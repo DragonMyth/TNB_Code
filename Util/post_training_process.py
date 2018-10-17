@@ -27,6 +27,28 @@ from keras.models import load_model
 from gym import wrappers
 
 
+def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
+    return mlp_policy_novelty.MlpPolicyNovelty(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64,
+                                               num_hid_layers=3,
+                                               )
+
+
+def mirror_turtle_policy_fn(name, ob_space, ac_space):
+    return mlp_policy_mirror_novelty.MlpPolicyMirrorNovelty(name=name, ob_space=ob_space, ac_space=ac_space,
+                                                            hid_size=64,
+                                                            num_hid_layers=3,
+                                                            mirror_loss=True,
+                                                            observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                                                                                     10,
+                                                                                     15, 16, 17, 18,
+                                                                                     11, 12, 13, 14,
+                                                                                     23, 24, 25, 26,
+                                                                                     19, 20, 21, 22],
+
+                                                            action_permutation=[4, 5, 6, 7, 0, 1, 2, 3]
+                                                            )
+
+
 def perform_rollout(policy,
                     env,
                     snapshot_dir=None,
@@ -189,7 +211,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
-        obs_skip = 15#np.random.randint(7, 28)
+        obs_skip = 15  # np.random.randint(7, 28)
         num_datapoints = int(2500 / (instancesNum * 15))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
@@ -231,7 +253,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
 def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
                               traj_per_policy_per_process=100,
-                              policy_file_basename='itr_', data_dir=''):
+                              policy_file_basename='itr_', data_dir='', policy_func=policy_fn):
     comm = MPI.COMM_WORLD
     directory = data_dir
 
@@ -249,7 +271,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
         tf.reset_default_graph()
 
         with U.make_session(num_cpu=1) as sess:
-            pi = policy_fn('pi', env.observation_space, env.action_space)
+            pi = policy_func('pi', env.observation_space, env.action_space)
 
             restore_policy(sess, pi, policy_param)
             subsampled_paths = collect_rollout(pi, env, traj_per_policy_per_process, ignoreObs, animate=False,
@@ -281,7 +303,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
 
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
-                  record=False):
+                  record=False, policy_func=policy_fn):
     openFileOption = {}
     openFileOption['initialdir'] = '../data/ppo_' + env
     filename = askopenfilename(**openFileOption)
@@ -308,7 +330,7 @@ def render_policy(env, action_skip=1, save_path=False, save_filename="path_findi
         autoencoder_list = []  # [autoencoder1, autoencoder2, autoencoder3]
         env.env.novel_autoencoders = autoencoder_list
 
-        pi = policy_fn('pi', env.observation_space, env.action_space)
+        pi = policy_func('pi', env.observation_space, env.action_space)
 
         restore_policy(sess, pi, policy_param)
 
@@ -453,25 +475,6 @@ def restore_policy(sess, policy, policy_params):
         sess.run(assign_op)
 
 
-def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
-    # return mlp_policy_novelty.MlpPolicyNovelty(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=64,
-    #                                            num_hid_layers=3,
-    #                                            )
-    return mlp_policy_mirror_novelty.MlpPolicyMirrorNovelty(name=name, ob_space=ob_space, ac_space=ac_space,
-                                                            hid_size=64,
-                                                            num_hid_layers=3,
-                                                            mirror_loss=True,
-                                                            observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                                                                     10,
-                                                                                     15, 16, 17, 18,
-                                                                                     11, 12, 13, 14,
-                                                                                     23, 24, 25, 26,
-                                                                                     19, 20, 21, 22],
-
-                                                            action_permutation=[4, 5, 6, 7, 0, 1, 2, 3]
-                                                            )
-
-
 def create_manual_visitation():
     visitation_grid = np.zeros((27, 27), dtype=int)
 
@@ -508,7 +511,16 @@ if __name__ == '__main__':
     parser.add_argument('--policy_saving_path', help='Directory for saving the log files for this run')
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
+    parser.add_argument('--policy_fn_type', help='Length of the trajectory segment used for the autoencoder',
+                        default='turtle')
+
     args = parser.parse_args()
+
+    policy_func = None
+    if args.policy_fn_type == 'turtle':
+        policy_func = mirror_turtle_policy_fn
+    else:
+        policy_func = policy_fn
 
     save_dir = collect_rollouts_from_dir(args.data_collect_env, int(args.collect_policy_num),
                                          args.data_collect_env + '_seed_' + str(
@@ -518,4 +530,5 @@ if __name__ == '__main__':
                                          policy_file_basename='policy_params_',
                                          start_num=int(args.collect_policy_start),
                                          traj_per_policy_per_process=int(args.collect_num_of_trajs),
-                                         data_dir=args.policy_saving_path)
+                                         data_dir=args.policy_saving_path,
+                                         policy_func=policy_func)

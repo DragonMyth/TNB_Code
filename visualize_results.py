@@ -1,7 +1,7 @@
 from Util.post_training_process import *
 
 #
-# render_policy('SimplerPathFinding-v0',stoch=False)
+# render_policy('SimplerPathFinding-v0', stoch=False)
 
 # save_dir = collect_rollouts_from_dir('SimplerPathFinding-v2', 1, 'test.pkl', 0,
 #                                      policy_gap=5,
@@ -13,4 +13,5 @@ from Util.post_training_process import *
 # plot_path_data()
 
 # render_policy('DartTurtle-v0', stoch=True, record=True)
-render_policy('DartTurtle-v4', stoch=False, record=True)
+render_policy('DartTurtle-v4', stoch=True, record=True, policy_func=mirror_turtle_policy_fn)
+# render_policy('DartTurtle-v5', action_skip=5, stoch=True, record=True)

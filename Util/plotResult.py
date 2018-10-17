@@ -35,14 +35,11 @@ indices = [i for i, x in enumerate(EpisodesSofar) if x == 0]
 
 AverageReturns = np.array(data_lookup[category_idx_lookup['EpRewMean']])
 EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
-# RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
+RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
+TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
+NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
 # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
 # MinReturns = data_lookup[category_idx_lookup['MinReturn']]
-
-# AverageReturns = np.clip(AverageReturns)
-# MaxReturns = np.clip(MaxReturns, -35000, 35000)
-# MinReturns = np.clip(MinReturns, -35000, 35000)
-
 
 plot.figure()
 # print(AverageReturns)
@@ -56,7 +53,7 @@ plot.ylabel('Expected Return')
 # plot.title('Mirror Enforcement Larger Loss')
 # plot.yscale('symlog')
 plot.legend()
-plot.yscale('linear')
+plot.yscale('symlog')
 plot.xscale('linear')
 
 plot.savefig(snapshot_dir + '/progress' + '.jpg')
@@ -64,7 +61,7 @@ plot.show()
 
 plot.figure()
 
-# plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
+plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
 plot.xlabel('Iterations')
 
 plot.legend()
@@ -73,5 +70,35 @@ plot.xscale('linear')
 
 # plot.legend()
 plot.savefig(snapshot_dir + '/progress_2' + '.jpg')
+
+plot.show()
+
+plot.figure()
+
+plot.hist(RelativeDirection, stacked=True, bins=30)
+plot.xlabel('Relative Directions')
+plot.ylabel('Probability')
+
+plot.legend()
+plot.yscale('linear')
+plot.xscale('linear')
+# plot.legend()
+plot.savefig(snapshot_dir + '/relative_direction_prob' + '.jpg')
+
+plot.show()
+
+plot.figure()
+
+plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
+plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Task Gradient Magnitudes')
+
+plot.xlabel('Iterations')
+plot.ylabel('Gradient Magnitudes')
+
+plot.legend()
+plot.yscale('linear')
+plot.xscale('linear')
+# plot.legend()
+plot.savefig(snapshot_dir + '/gradient_magnitudes' + '.jpg')
 
 plot.show()

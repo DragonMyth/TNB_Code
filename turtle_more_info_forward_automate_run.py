@@ -6,7 +6,7 @@ import multiprocessing
 from Util.post_training_process import *
 
 if __name__ == '__main__':
-    cpu_count = multiprocessing.cpu_count()
+    cpu_count = 12#multiprocessing.cpu_count()
     num_sample_per_iter = 12000
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(6):
+    for i in range(1,6,1):
         # i = 0
         curr_run = str(i)
 
@@ -69,6 +69,7 @@ if __name__ == '__main__':
             + ' --collect_num_of_trajs ' + str(args.collect_num_of_trajs)
             + ' --policy_saving_path ' + str(data_saving_path)
             + ' --ignore_obs ' + str(args.ignore_obs)
+            + ' --policy_fn_type ' + 'turtle'
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
