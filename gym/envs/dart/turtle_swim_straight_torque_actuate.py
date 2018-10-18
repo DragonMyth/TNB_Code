@@ -85,12 +85,12 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         angs = np.abs(self.robot_skeleton.q[6::])
         old_angs = np.abs(old_q[6::])
 
-        #energy_rwd = sum(np.abs(old_angs - angs))
+        # energy_rwd = sum(np.abs(old_angs - angs))
 
-        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1500
+        horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
-        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 1 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
@@ -100,6 +100,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
+                                                'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn
                                                 }
 
     def _get_obs(self):
@@ -160,7 +161,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 3 - min(self.novelDiff, 3)
+                self.novelDiffRev = 1 - np.exp(self.novelDiff)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
