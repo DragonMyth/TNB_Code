@@ -8,7 +8,7 @@ from Util.post_training_process import *
 if __name__ == '__main__':
     cpu_count = multiprocessing.cpu_count()
     num_sample_per_iter = 12000
-    num_trajs_per_pol = 150
+    num_trajs_per_pol = 400
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='SimplerPathFinding-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)

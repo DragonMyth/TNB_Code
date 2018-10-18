@@ -90,7 +90,7 @@ plot.show()
 plot.figure()
 
 plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
-plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Task Gradient Magnitudes')
+plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
 
 plot.xlabel('Iterations')
 plot.ylabel('Gradient Magnitudes')
