@@ -10,9 +10,7 @@ from keras.models import load_model
 class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
-        # self.action_scale = np.array([7.0, 7.0, 0.1, 0.1, 7.0, 7.0, 0.1, 0.1])  # np.pi / 2.0
         self.action_scale = np.array([7.0, 7.0, 0.04, 0.04, 7.0, 7.0, 0.04, 0.04])  # np.pi / 2.0
-
         self.frame_skip = 1
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 27, control_bounds, dt=0.002,
                                   disableViewer=True,
