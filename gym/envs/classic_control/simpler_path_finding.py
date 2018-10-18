@@ -115,10 +115,10 @@ class SimplerPathFinding(gym.Env):
         self.qLim = 5
 
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
         init_obs = self._get_obs()
-        self.novelty_window_size = 10
+        self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
