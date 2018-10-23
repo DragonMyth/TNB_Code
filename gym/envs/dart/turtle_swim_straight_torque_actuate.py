@@ -53,6 +53,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         }
 
     def _step(self, a):
+
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
@@ -97,9 +98,11 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         # print(reward)
         valid = np.isfinite(ob[self.ignore_obs::]).all()
         done = not valid
-        self.stepNum+=1
+        self.stepNum += 1
+
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
-                                                'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
+                                                'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],
+                                                'states': ob[11::],
                                                 'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn
                                                 }
 
@@ -138,6 +141,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                     self.traj_buffer.append(obs[self.ignore_obs:])
 
             if (len(self.traj_buffer) == self.novelty_window_size):
+                # print(self.stepNum)
                 novelDiffList = []
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
@@ -161,8 +165,8 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                #self.novelDiffRev = 4-min(self.novelDiff,4)
                 self.novelDiffRev = np.exp(-self.novelDiff)
+                # self.novelDiffRev = 4 - min(self.novelDiff, 4)
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
             novelRwd = self.novelty_factor * self.novelDiff
