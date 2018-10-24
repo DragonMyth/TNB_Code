@@ -127,7 +127,7 @@ class SimplerPathFinding(gym.Env):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 50
+        self.novelty_factor = 5
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -518,5 +518,5 @@ class SimplerPathFinding(gym.Env):
                 self.sum_of_new += self.novelDiff
 
             novelRwd = self.novelty_factor * self.novelDiff
-            novelPenn = self.novelty_factor * self.novelDiffRev * 0.1
+            novelPenn = self.novelty_factor * self.novelDiffRev
         return novelRwd, novelPenn
