@@ -1,4 +1,6 @@
 import random
+
+from matplotlib import cm
 from mpi4py import MPI
 
 import gym
@@ -13,6 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plot
 from boltons import iterutils
 import multiprocessing
+import matplotlib.colors
 import os.path as osp
 
 from baselines import bench as bc
@@ -168,10 +171,31 @@ def perform_rollout(policy,
         random.seed = 41
         cnt = 0
 
+        plot.figure()
+
+        total_ret = np.sum(data_list['rwd'])
+        print("Total return of the trajectory is: ", total_ret)
+
+        # # sns.set_palette('hls', len(data_list))
+        # for key in sorted(data_list.keys()):
+        #     # print(key)
+        #     if (key != 'tau'):
+        #         cnt += 1
+        #         plot.plot(iters, data_list[key],
+        #                   label=str(key))
+        #         plot.yscale('symlog')
+        #
+        # plot.xlabel('Time Steps')
+        # plot.ylabel('Step Reward')
+        # plot.legend()
+        # plot.savefig(snapshot_dir + '/rewardDecomposition.jpg')
+        #
+        # plot.figure()
+
         # sns.set_palette('hls', len(data_list))
         for key in sorted(data_list.keys()):
             # print(key)
-            if (key != 'tau'):
+            if (key != 'actions' and key != 'states'):
                 cnt += 1
                 plot.plot(iters, data_list[key],
                           label=str(key))
@@ -184,21 +208,42 @@ def perform_rollout(policy,
 
         plot.figure()
 
-        actionArr = np.array(data_list['tau'])
-        for i in range(len(actionArr[0])):
-            plot.plot(iters, actionArr[:, i], color=(random.random(), random.random(), random.random()),
-                      label='Joint_' + str(i))
+        actionArr = np.array(data_list['actions'])
+
+        norm = matplotlib.colors.SymLogNorm(np.min(abs(actionArr)), linscale=np.min(abs(actionArr)))
+        plot.imshow(actionArr.transpose(), norm=norm, aspect='auto')
+        plot.gray()
+        plot.grid(True)
 
         plot.xlabel('Time Steps')
-        plot.ylabel('Torque Value')
+        plot.ylabel('Dofs')
         plot.legend()
         plot.savefig(snapshot_dir + '/torqueDecomposition.jpg')
 
         plot.show()
+
+
+        plot.figure("q and dq plots")
+
+
+        statesArr = np.array(data_list['states'])
+
+        norm = matplotlib.colors.SymLogNorm(np.min(abs(statesArr)), linscale=np.min(abs(statesArr)))
+        plot.imshow(statesArr.transpose(), norm=norm, aspect='auto')
+        plot.gray()
+        plot.grid(True)
+
+        plot.xlabel('Time Steps')
+        plot.ylabel('Dofs')
+        plot.legend()
+        plot.savefig(snapshot_dir + '/stateDecomposition.jpg')
+
+        plot.show()
+
     return path
 
 
-def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15, **opt):
+def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15, obs_skip=15, **opt):
     # For Each rollout
     rank = MPI.COMM_WORLD.Get_rank()
     np.random.seed(42 + rank)
@@ -211,8 +256,8 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
-        obs_skip = 15  # np.random.randint(7, 28)
-        num_datapoints = int(2500 / (instancesNum * 15))
+        # obs_skip = 15  # np.random.randint(7, 28)
+        num_datapoints = int(2500 / (instancesNum * obs_skip))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
 
@@ -253,7 +298,8 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 
 def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
                               traj_per_policy_per_process=100,
-                              policy_file_basename='itr_', data_dir='', policy_func=policy_fn):
+                              policy_file_basename='itr_', data_dir='', policy_func=policy_fn, numState=15,
+                              obs_skip=15):
     comm = MPI.COMM_WORLD
     directory = data_dir
 
@@ -275,7 +321,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
             restore_policy(sess, pi, policy_param)
             subsampled_paths = collect_rollout(pi, env, traj_per_policy_per_process, ignoreObs, animate=False,
-                                               instancesNum=15)
+                                               instancesNum=numState, obs_skip=obs_skip)
 
             subsampled_path_per_proc.extend(subsampled_paths)
             # print("Shape of Path for this policy is ", numpyArr.shape)
@@ -303,7 +349,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
 
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
-                  record=False, policy_func=policy_fn):
+                  record=False, policy_func=policy_fn, autoencoder_name_list=[]):
     openFileOption = {}
     openFileOption['initialdir'] = '../data/ppo_' + env
     filename = askopenfilename(**openFileOption)
@@ -319,15 +365,10 @@ def render_policy(env, action_skip=1, save_path=False, save_filename="path_findi
     # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
     with U.single_threaded_session() as sess:
         env = gym.make(env)
+        autoencoder_list = []
+        for autoencoder_name in autoencoder_name_list:
+            autoencoder_list.append(load_model(autoencoder_name))
 
-        autoencoder_dir = "novelty_data/local/autoencoders/"
-
-        # autoencoder1 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_0_seed_102.h5")
-        # autoencoder2 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_1_seed_102.h5")
-        # autoencoder3 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_2_seed_102.h5")
-        # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
-
-        autoencoder_list = []  # [autoencoder1, autoencoder2, autoencoder3]
         env.env.novel_autoencoders = autoencoder_list
 
         pi = policy_func('pi', env.observation_space, env.action_space)
@@ -514,6 +555,11 @@ if __name__ == '__main__':
     parser.add_argument('--policy_fn_type', help='Length of the trajectory segment used for the autoencoder',
                         default='turtle')
 
+    parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
+                        default=15)
+    parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
+                        default=15)
+
     args = parser.parse_args()
 
     policy_func = None
@@ -531,4 +577,7 @@ if __name__ == '__main__':
                                          start_num=int(args.collect_policy_start),
                                          traj_per_policy_per_process=int(args.collect_num_of_trajs),
                                          data_dir=args.policy_saving_path,
-                                         policy_func=policy_func)
+                                         policy_func=policy_func,
+                                         numState=int(args.num_states_per_data),
+                                         obs_skip=int(args.obs_skip_per_state)
+                                         )

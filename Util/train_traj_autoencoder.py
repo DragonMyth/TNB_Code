@@ -1,6 +1,7 @@
 import random
 
 import joblib
+import matplotlib.colors
 import numpy as np
 import scipy.misc
 import sklearn.preprocessing
@@ -100,23 +101,32 @@ class Autoencoder():
         plt.figure(figsize=(40, 20))
         for i in range(n):
             # display original
+
             ax = plt.subplot(3, n, i + 1)
             img = (x_test[i * gap] ** 2).reshape(self.n_rows, self.n_cols)
-            plt.imshow(img)
+            norm = matplotlib.colors.SymLogNorm(np.min(abs(img)), linscale=np.min(abs(img)))
+
+            plt.imshow(img, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
             # display reconstruction
             ax = plt.subplot(3, n, i + 1 + n)
-            plt.imshow((decoded_traj[i * gap] ** 2).reshape(self.n_rows, self.n_cols))
+            img_recon = (decoded_traj[i * gap] ** 2).reshape(self.n_rows, self.n_cols)
+            norm = matplotlib.colors.SymLogNorm(np.min(abs(img_recon)), linscale=np.min(abs(img_recon)))
+            plt.imshow(img_recon, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
             # display Reconstruction Difference
             ax = plt.subplot(3, n, i + 1 + 2 * n)
-            plt.imshow(((decoded_traj[i * gap] - x_test[i * gap]) ** 2).reshape(self.n_rows, self.n_cols))
+
+            img_diff = ((decoded_traj[i * gap] - x_test[i * gap]) ** 2).reshape(self.n_rows, self.n_cols)
+            norm = matplotlib.colors.SymLogNorm(np.min(abs(img_diff)), linscale=np.min(abs(img_diff)))
+
+            plt.imshow(img_diff, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)

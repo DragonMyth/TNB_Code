@@ -13,5 +13,16 @@ from Util.post_training_process import *
 # plot_path_data()
 
 # render_policy('DartTurtle-v0', stoch=True, record=True)
-render_policy('DartTurtle-v4', stoch=True, record=True, policy_func=mirror_turtle_policy_fn)
+
+autoencoder_dir = "novelty_data/local/autoencoders/"
+
+# autoencoder0_name = autoencoder_dir + "MountainCarContinuous-v0_autoencoder_seed_0_run_0.h5"
+# autoencoder1_name = autoencoder_dir + "DartTurtle-v4_autoencoder_seed_0_run_1.h5"
+# autoencoder3 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_2_seed_102.h5")
+# autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
+autoencoder_list = []
+render_policy('DartTurtle-v4', stoch=False, record=True, policy_func=mirror_turtle_policy_fn,
+              autoencoder_name_list=autoencoder_list)
+
+# render_policy('MountainCarContinuous-v0', stoch=False,autoencoder_name_list=autoencoder_list)
 # render_policy('DartTurtle-v5', action_skip=5, stoch=True, record=True)

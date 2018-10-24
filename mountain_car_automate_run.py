@@ -7,33 +7,44 @@ from Util.post_training_process import *
 
 if __name__ == '__main__':
     cpu_count = multiprocessing.cpu_count()
+    num_sample_per_iter = 8000
+    num_trajs_per_pol = 400
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartTurtle-v3')
+    parser.add_argument('--env', help='environment ID', default='MountainCarContinuous-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
-                        help='Number of samples collected for each process at each iteration', default=800)
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=600)
+                        help='Number of samples collected for each process at each iteration',
+                        default=int(num_sample_per_iter / cpu_count))
+    print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=150)
 
-    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v5')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data',
+                        default='MountainCarContinuous-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
-    parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=500)
+    parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=100)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
-                        default=30)
+                        default=int(num_trajs_per_pol / cpu_count))
 
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
+
+    parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
+                        default=20)
+    parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
+                        default=3)
     args = parser.parse_args()
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 400
+    num_epoch = 200
     batch_size = 1024
-    qnorm = np.pi
-    dqnorm = 50
+
+    qnorm = 1.8
+    dqnorm = 0.14
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(6):
+    for i in range(0, 6, 1):
         # i = 0
         curr_run = str(i)
 
@@ -46,7 +57,7 @@ if __name__ == '__main__':
 
         train_policy = subprocess.call(
             'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                cpu_count) + ' python ./running_regimes/turtle_more_info_two_objs_mirror_policy_train.py'
+                cpu_count) + ' python ./running_regimes/two_objs_policy_train.py'
             + ' --env ' + args.env
             + ' --seed ' + str(seed)
             + ' --curr_run ' + curr_run
@@ -66,6 +77,9 @@ if __name__ == '__main__':
             + ' --collect_num_of_trajs ' + str(args.collect_num_of_trajs)
             + ' --policy_saving_path ' + str(data_saving_path)
             + ' --ignore_obs ' + str(args.ignore_obs)
+            + ' --policy_fn_type ' + 'normal'
+            + ' --num_states_per_data ' + str(args.num_states_per_data)
+            + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(

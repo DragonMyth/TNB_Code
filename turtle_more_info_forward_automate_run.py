@@ -6,7 +6,7 @@ import multiprocessing
 from Util.post_training_process import *
 
 if __name__ == '__main__':
-    cpu_count = 12#multiprocessing.cpu_count()
+    cpu_count = multiprocessing.cpu_count()
     num_sample_per_iter = 12000
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
-    for i in range(1,6,1):
+    for i in range(1, 6, 1):
         # i = 0
         curr_run = str(i)
 
