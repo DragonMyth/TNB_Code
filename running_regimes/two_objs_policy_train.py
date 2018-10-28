@@ -124,8 +124,9 @@ def main(env_name, seed, run_num, data_saving_path, batch_size_per_process, num_
         if mpi_rank == 0:
             env = gym.make(env_name)
             env.env.novel_autoencoders = autoencoder_list
-
-            env = wrappers.Monitor(env, logger.get_dir() + '/results', force=True)
+            if hasattr(env.env, 'disableViewer'):
+                env.env.disableViewer = False
+            env = wrappers.Monitor(env, logger.get_dir() + '/../results', force=True)
 
             obs = env.reset()
 

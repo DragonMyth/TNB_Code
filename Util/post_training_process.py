@@ -209,11 +209,11 @@ def perform_rollout(policy,
         plot.figure()
 
         actionArr = np.array(data_list['actions'])
-
+        plot.title('Torque changes along time')
         norm = matplotlib.colors.SymLogNorm(np.min(abs(actionArr)), linscale=np.min(abs(actionArr)))
         plot.imshow(actionArr.transpose(), norm=norm, aspect='auto')
         plot.gray()
-        plot.grid(True)
+        plot.colorbar()
 
         plot.xlabel('Time Steps')
         plot.ylabel('Dofs')
@@ -222,16 +222,16 @@ def perform_rollout(policy,
 
         plot.show()
 
-
-        plot.figure("q and dq plots")
-
-
+        plot.figure()
+        plot.title('State Vec changes along time')
         statesArr = np.array(data_list['states'])
 
         norm = matplotlib.colors.SymLogNorm(np.min(abs(statesArr)), linscale=np.min(abs(statesArr)))
         plot.imshow(statesArr.transpose(), norm=norm, aspect='auto')
         plot.gray()
-        plot.grid(True)
+        plot.colorbar()
+
+        # plot.grid(True)
 
         plot.xlabel('Time Steps')
         plot.ylabel('Dofs')

@@ -139,7 +139,7 @@ def main(env_name, seed, run_num, data_saving_path, batch_size_per_process, num_
             if hasattr(env.env, 'disableViewer'):
                 env.env.disableViewer = False
 
-            env = wrappers.Monitor(env, logger.get_dir() + '/results', force=True)
+            env = wrappers.Monitor(env, logger.get_dir() + '/../results', force=True)
 
             obs = env.reset()
 
