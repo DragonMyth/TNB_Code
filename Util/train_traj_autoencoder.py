@@ -118,9 +118,9 @@ class Autoencoder():
             plt.imshow(img_recon, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
+            # display Reconstruction Difference
             ax.get_yaxis().set_visible(False)
 
-            # display Reconstruction Difference
             ax = plt.subplot(3, n, i + 1 + 2 * n)
 
             img_diff = ((decoded_traj[i * gap] - x_test[i * gap]) ** 2).reshape(self.n_rows, self.n_cols)

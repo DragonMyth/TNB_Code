@@ -26,6 +26,7 @@ if __name__ == '__main__':
                         default=10)
 
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
+
     args = parser.parse_args()
     env_name = args.env
     seed = args.seed
@@ -36,16 +37,16 @@ if __name__ == '__main__':
     dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
+
     for i in range(1, 6, 1):
         # i = 0
         curr_run = str(i)
-
-        ts = time.time()
-        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-
         # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
         #     curr_run) + '/' + '2018-10-01_16:53:21'
-        data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(curr_run) + '/' + str(st)
+        data_saving_path = 'data/local/' + str(st) + '_' + env_name + '/ppo_' + env_name + '_seed_' + str(
+            seed) + '_run_' + str(curr_run)
 
         train_policy = subprocess.call(
             'OMP_NUM_THREADS="1" mpirun -np ' + str(
@@ -53,7 +54,7 @@ if __name__ == '__main__':
             + ' --env ' + args.env
             + ' --seed ' + str(seed)
             + ' --curr_run ' + curr_run
-            + ' --data_saving_path ' + data_saving_path
+            + ' --data_saving_path ' + data_saving_path + '/policy'
             + ' --batch_size_per_process ' + str(args.batch_size_per_process)
             + ' --num_iterations ' + str(args.num_iterations)
             , shell=True)
@@ -67,7 +68,7 @@ if __name__ == '__main__':
             + ' --collect_policy_num ' + str(args.collect_policy_num)
             + ' --collect_policy_start ' + str(args.collect_policy_start)
             + ' --collect_num_of_trajs ' + str(args.collect_num_of_trajs)
-            + ' --policy_saving_path ' + str(data_saving_path)
+            + ' --policy_saving_path ' + str(data_saving_path + '/policy')
             + ' --ignore_obs ' + str(args.ignore_obs)
             + ' --policy_fn_type ' + 'turtle'
             , shell=True)

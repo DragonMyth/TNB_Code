@@ -6,51 +6,54 @@ import multiprocessing
 from Util.post_training_process import *
 
 if __name__ == '__main__':
-    cpu_count = multiprocessing.cpu_count()
-    num_sample_per_iter = 12000
-    num_trajs_per_pol = 400
+    cpu_count = 8  # multiprocessing.cpu_count()
+    num_sample_per_iter = 8000
+    num_trajs_per_pol = 200
+    print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='SimplerPathFinding-v0')
+    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=250)
+    print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
-    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='SimplerPathFinding-v2')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data',
+                        default='DartReacher3d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
+
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=6)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
-                        default=10)
+                        default=5)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=15)
-
+                        default=2)
     args = parser.parse_args()
-
     env_name = args.env
     seed = args.seed
 
     num_epoch = 300
     batch_size = 1024
-    qnorm = 10
-    dqnorm = 10
+
+    qnorm = 50
+    dqnorm = 2 * np.pi
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
+
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-    for i in range(6):
+    for i in range(1, 6, 1):
         # i = 0
         curr_run = str(i)
 
-        # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
-        #     curr_run) + '/' + '2018-10-01_16:53:21'
         data_saving_path = 'data/local/' + str(st) + '_' + env_name + '/ppo_' + env_name + '_seed_' + str(
             seed) + '_run_' + str(curr_run)
+
         train_policy = subprocess.call(
             'OMP_NUM_THREADS="1" mpirun -np ' + str(
                 cpu_count) + ' python ./running_regimes/two_objs_policy_train.py'

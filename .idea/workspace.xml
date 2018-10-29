@@ -2,12 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/running_regimes/mountain_car_two_objs_policy_train.py" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Util/post_training_process.py" afterPath="$PROJECT_DIR$/Util/post_training_process.py" />
       <change beforePath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" afterPath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
+      <change beforePath="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" afterPath="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" />
+      <change beforePath="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" afterPath="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" />
+      <change beforePath="$PROJECT_DIR$/simper_path_finding_automate_run.py" afterPath="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" afterPath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/turtle_more_info_gravity_forward_automate_run.py" afterPath="$PROJECT_DIR$/mountain_car_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/visualize_results.py" afterPath="$PROJECT_DIR$/visualize_results.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,7 +20,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/NoveltyEnforcement$visualize_results.coverage" NAME="visualize_results Coverage Results" MODIFIED="1540417912664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoveltyEnforcement$visualize_results.coverage" NAME="visualize_results Coverage Results" MODIFIED="1540833673704" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$train_traj_autoencoder.coverage" NAME="train_traj_autoencoder Coverage Results" MODIFIED="1538746792439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Util" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$post_training_process.coverage" NAME="post_training_process Coverage Results" MODIFIED="1537985440940" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Util" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$run_2d_path_finding__1_.coverage" NAME="run_2d_path_finding (1) Coverage Results" MODIFIED="1537562239039" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/running_regimes" />
@@ -46,8 +48,8 @@
       <file leaf-file-name="post_training_process.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
-              <caret line="230" column="64" lean-forward="false" selection-start-line="230" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+            <state relative-caret-position="283">
+              <caret line="90" column="39" lean-forward="false" selection-start-line="90" selection-start-column="39" selection-end-line="90" selection-end-column="39" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
                 <element signature="e#3974#4032#0" expanded="false" />
@@ -56,83 +58,83 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="colors.py" pinned="false" current-in-tab="false">
-        <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/colors.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="1080" column="40" lean-forward="false" selection-start-line="1080" selection-start-column="40" selection-end-line="1080" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="1377" column="53" lean-forward="false" selection-start-line="1377" selection-start-column="49" selection-end-line="1377" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pyplot.py" pinned="false" current-in-tab="false">
-        <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/pyplot.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="3815" column="7" lean-forward="false" selection-start-line="3815" selection-start-column="7" selection-end-line="3815" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_axes.py" pinned="false" current-in-tab="false">
-        <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/axes/_axes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-497">
-              <caret line="5362" column="8" lean-forward="false" selection-start-line="5362" selection-start-column="8" selection-end-line="5362" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="train_traj_autoencoder.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="train_traj_autoencoder.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="116" column="46" lean-forward="true" selection-start-line="116" selection-start-column="46" selection-end-line="116" selection-end-column="46" />
+            <state relative-caret-position="-2249">
+              <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="turtle_swim_straight_torque_actuate.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="275">
+              <caret line="157" column="40" lean-forward="false" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="two_objs_policy_train.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/running_regimes/two_objs_policy_train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="128" column="61" lean-forward="false" selection-start-line="128" selection-start-column="61" selection-end-line="128" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="turtle_two_objs_mirror_policy_train.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="141" column="63" lean-forward="false" selection-start-line="141" selection-start-column="63" selection-end-line="141" selection-end-column="63" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="humanoid_swim_straight_tau_act.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/humanoid_swim_straight_tau_act.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#0#13#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="turtle_swim_straight_torque_actuate.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
+      <file leaf-file-name="turtle_more_info_forward_automate_run.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="104" column="55" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="55" />
+            <state relative-caret-position="357">
+              <caret line="70" column="73" lean-forward="false" selection-start-line="70" selection-start-column="73" selection-end-line="70" selection-end-column="73" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="continuous_mountain_car.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/continuous_mountain_car.py">
+      <file leaf-file-name="large_flipper_turtle.skel" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle.skel">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="56" column="40" lean-forward="false" selection-start-line="56" selection-start-column="40" selection-end-line="56" selection-end-column="40" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/__init__.py">
+      <file leaf-file-name="large_flipper_turtle_real.skel" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle_real.skel">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="76" column="25" lean-forward="false" selection-start-line="76" selection-start-column="25" selection-end-line="76" selection-end-column="25" />
+            <state relative-caret-position="405">
+              <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -141,8 +143,8 @@
       <file leaf-file-name="visualize_results.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/visualize_results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="34" lean-forward="false" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="34" />
+            <state relative-caret-position="466">
+              <caret line="48" column="15" lean-forward="false" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -159,9 +161,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>11</find>
-      <find>novelr</find>
-      <find>summ</find>
       <find>visual</find>
       <find>render_policy</find>
       <find>same</find>
@@ -189,6 +188,9 @@
       <find>colors</find>
       <find>plots</find>
       <find>pypl</find>
+      <find>ske</find>
+      <find>dartrea</find>
+      <find>num_states_per_data</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -197,9 +199,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../baselines/baselines/common/distributions.py" />
-        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/eel_swim_straight.py" />
-        <option value="$PROJECT_DIR$/../baselines/baselines/bench/monitor.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/monitoring/stats_recorder.py" />
         <option value="$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_simple.py" />
         <option value="$PROJECT_DIR$/running_regimes/run_turtle_swim_forward.py" />
@@ -225,7 +224,6 @@
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd_data_collect.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle_real_gravity.skel" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd_grav_data_collect.py" />
-        <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd_grav.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/__init__.py" />
@@ -235,19 +233,23 @@
         <option value="$PROJECT_DIR$/../baselines/baselines/ppo1/mlp_policy_mirror_novelty.py" />
         <option value="$PROJECT_DIR$/running_regimes/run_simple_eel_swim_forward.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding_data_collect.py" />
-        <option value="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
         <option value="$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty.py" />
         <option value="$PROJECT_DIR$/Util/plotResult.py" />
-        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py" />
-        <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
-        <option value="$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_projection.py" />
-        <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/mountain_car_automate_run.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/__init__.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/continuous_mountain_car.py" />
-        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py" />
-        <option value="$PROJECT_DIR$/Util/post_training_process.py" />
         <option value="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
+        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py" />
+        <option value="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
+        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py" />
+        <option value="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
+        <option value="$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_projection.py" />
+        <option value="$PROJECT_DIR$/visualize_results.py" />
+        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py" />
+        <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
+        <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" />
+        <option value="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" />
+        <option value="$PROJECT_DIR$/Util/post_training_process.py" />
       </list>
     </option>
   </component>
@@ -382,6 +384,16 @@
               <item name="envs" type="462c0819:PsiDirectoryNode" />
               <item name="dart" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="NoveltyEnforcement" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.6 (deepRL) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="MyDartEnv" type="462c0819:PsiDirectoryNode" />
+              <item name="gym" type="462c0819:PsiDirectoryNode" />
+              <item name="envs" type="462c0819:PsiDirectoryNode" />
+              <item name="dart" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -399,8 +411,8 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/running_regimes" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/running_regimes" />
       <recent name="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets" />
       <recent name="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart" />
       <recent name="$PROJECT_DIR$/../baselines/baselines/ppo1" />
@@ -741,18 +753,18 @@
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2039072" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="0" y="0" width="370" height="850" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2037855" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="0" y="0" width="370" height="850" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285568" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.283521" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32832617" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3530043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285568" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3015873" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30525032" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23504274" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14774115" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24969475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29068577" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2763562" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -837,6 +849,21 @@
           <line>213</line>
           <option name="timeStamp" value="106" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py</url>
+          <line>166</line>
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py</url>
+          <line>164</line>
+          <option name="timeStamp" value="108" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -845,7 +872,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="107" />
+      <option name="time" value="110" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -904,55 +931,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Library/Caches/PyCharm2017.3/python_stubs/-1826834310/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="3264" column="8" lean-forward="false" selection-start-line="3264" selection-start-column="8" selection-end-line="3264" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle.skel">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle_real_gravity.skel">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="28" lean-forward="false" selection-start-line="5" selection-start-column="28" selection-end-line="5" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../baselines/baselines/logger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/monitoring/stats_recorder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd_grav_data_collect.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="96" column="0" lean-forward="false" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_spd_grav.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="99" column="23" lean-forward="false" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/simple_water_world.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="518">
@@ -985,13 +963,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="241" column="0" lean-forward="false" selection-start-line="241" selection-start-column="0" selection-end-line="241" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle_real.skel">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3585">
-          <caret line="239" column="28" lean-forward="false" selection-start-line="239" selection-start-column="28" selection-end-line="239" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -1044,13 +1015,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="23" column="20" lean-forward="false" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_mirror_novelty_projection.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1062,13 +1026,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="31" column="24" lean-forward="false" selection-start-line="31" selection-start-column="24" selection-end-line="31" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/turtle_forward_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="36" column="15" lean-forward="false" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -1100,7 +1057,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1116,15 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="492">
           <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/running_regimes/two_objs_policy_train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-92">
-          <caret line="73" column="32" lean-forward="false" selection-start-line="73" selection-start-column="32" selection-end-line="73" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1132,15 +1079,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1201">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-112">
-          <caret line="51" column="77" lean-forward="false" selection-start-line="51" selection-start-column="56" selection-end-line="51" selection-end-column="77" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1148,14 +1086,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-546">
           <caret line="93" column="4" lean-forward="false" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="136" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -1172,23 +1102,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="181" column="26" lean-forward="false" selection-start-line="181" selection-start-column="26" selection-end-line="181" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="30" column="20" lean-forward="false" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_projection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="341" column="79" lean-forward="false" selection-start-line="341" selection-start-column="79" selection-end-line="341" selection-end-column="79" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1196,22 +1109,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="645">
           <caret line="311" column="30" lean-forward="false" selection-start-line="311" selection-start-column="30" selection-end-line="311" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mountain_car_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="46" column="21" lean-forward="false" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="76" column="25" lean-forward="false" selection-start-line="76" selection-start-column="25" selection-end-line="76" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -1228,23 +1125,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-497">
           <caret line="5362" column="8" lean-forward="false" selection-start-line="5362" selection-start-column="8" selection-end-line="5362" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/visualize_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="34" lean-forward="false" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/pyplot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="3815" column="7" lean-forward="false" selection-start-line="3815" selection-start-column="7" selection-end-line="3815" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1252,14 +1132,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="217">
           <caret line="1080" column="40" lean-forward="false" selection-start-line="1080" selection-start-column="40" selection-end-line="1080" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="104" column="55" lean-forward="false" selection-start-line="104" selection-start-column="49" selection-end-line="104" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -1272,10 +1144,167 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/dart_env.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="790">
+          <caret line="217" column="8" lean-forward="false" selection-start-line="217" selection-start-column="8" selection-end-line="217" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="267" column="8" lean-forward="true" selection-start-line="267" selection-start-column="8" selection-end-line="267" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turtle_forward_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="36" column="15" lean-forward="false" selection-start-line="36" selection-start-column="15" selection-end-line="36" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///anaconda3/envs/deepRL/lib/python3.6/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="3827" column="20" lean-forward="false" selection-start-line="3827" selection-start-column="20" selection-end-line="3827" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/reacher.skel">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-680">
+          <caret line="29" column="13" lean-forward="false" selection-start-line="29" selection-start-column="10" selection-end-line="29" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="36" column="23" lean-forward="false" selection-start-line="36" selection-start-column="23" selection-end-line="36" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mountain_car_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="46" column="21" lean-forward="false" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_projection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="311" column="22" lean-forward="false" selection-start-line="311" selection-start-column="22" selection-end-line="311" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="51" column="1" lean-forward="false" selection-start-line="51" selection-start-column="1" selection-end-line="52" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="283" column="23" lean-forward="false" selection-start-line="283" selection-start-column="23" selection-end-line="283" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/humanoid_swim_straight_tau_act.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle.skel">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/large_flipper_turtle_real.skel">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="19" lean-forward="false" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="466">
+          <caret line="48" column="15" lean-forward="false" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2249">
+          <caret line="22" column="13" lean-forward="false" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="70" column="73" lean-forward="false" selection-start-line="70" selection-start-column="73" selection-end-line="70" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/running_regimes/two_objs_policy_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="128" column="61" lean-forward="false" selection-start-line="128" selection-start-column="61" selection-end-line="128" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="141" column="63" lean-forward="false" selection-start-line="141" selection-start-column="63" selection-end-line="141" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="497">
-          <caret line="230" column="64" lean-forward="false" selection-start-line="230" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
+        <state relative-caret-position="283">
+          <caret line="90" column="39" lean-forward="false" selection-start-line="90" selection-start-column="39" selection-end-line="90" selection-end-column="39" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
             <element signature="e#3974#4032#0" expanded="false" />
@@ -1283,13 +1312,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="116" column="46" lean-forward="true" selection-start-line="116" selection-start-column="46" selection-end-line="116" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="275">
+          <caret line="157" column="40" lean-forward="false" selection-start-line="157" selection-start-column="40" selection-end-line="157" selection-end-column="40" />
+          <folding />
         </state>
       </provider>
     </entry>
