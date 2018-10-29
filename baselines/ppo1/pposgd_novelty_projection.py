@@ -334,12 +334,12 @@ def learn(env, policy_fn, *,
                     quartersector = (bisector_normalized + pol_g_normalized)
                     quartersector_normalized = quartersector / np.linalg.norm(quartersector)
 
-                    octsector = quartersector+pol_g_normalized
-                    octsector_normalized = octsector/np.linalg.norm(octsector)
+                    #octsector = quartersector+pol_g_normalized
+                    #octsector_normalized = octsector/np.linalg.norm(octsector)
 
-                    target_dir = octsector_normalized #quartersector_normalized
+                    target_dir =pol_g_novel_normalized#bisector_normalized#quartersector_normalized#pol_g_novel_normalized
                     final_gradient[0:policy_var_count] = (np.dot(pol_g_novel, target_dir)+np.dot(pol_g,target_dir))*0.5 * target_dir
-                    # final_gradient[0:policy_var_count] = pol_g
+                    #final_gradient[0:policy_var_count] = pol_g
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
                 else:
@@ -348,7 +348,7 @@ def learn(env, policy_fn, *,
 
                     #novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
 
-                    # final_pol_gradient = pol_g_novel - novel_projection
+                    #final_pol_gradient = pol_g_novel - novel_projection
                     final_pol_gradient = pol_g - task_projection
 
                     final_gradient[0:policy_var_count] = final_pol_gradient
