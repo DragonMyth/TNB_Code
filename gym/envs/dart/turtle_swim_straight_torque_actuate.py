@@ -13,6 +13,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         # self.action_scale = np.array([7.0, 7.0, 0.1, 0.1, 7.0, 7.0, 0.1, 0.1])  # np.pi / 2.0
         self.action_scale = np.array([7.0, 7.0, 0.04, 0.04, 7.0, 7.0, 0.04, 0.04])  # np.pi / 2.0
         self.frame_skip = 5
+
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 27, control_bounds, dt=0.002,
                                   disableViewer=True,
                                   custom_world=BaseFluidEnhancedAllDirSimulator)
@@ -46,6 +47,11 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         self.path_data = []
         self.ret = 0
         self.ignore_obs = 11
+        self.novelty_weight_mat = np.ones((self.novelty_window_size, len(init_obs[self.ignore_obs:])))
+
+        indexes = np.array([np.arange(2, 4), np.arange(6, 8), np.arange(10, 12), np.arange(14, 16)])
+
+        self.novelty_weight_mat[:, indexes] = 0
 
         self.metadata = {
             'render.modes': ['human', 'rgb_array'],
@@ -157,6 +163,10 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                     #     print("Reconstructed traj sum: ", np.sum(traj_recons))
 
                     diff = traj_recons - traj_seg
+                    diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
+                    diff = np.multiply(diff, self.novelty_weight_mat)
+
+                    diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
 
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
                     novelDiffList.append(normDiff)

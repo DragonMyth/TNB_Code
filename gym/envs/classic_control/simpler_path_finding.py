@@ -118,7 +118,7 @@ class SimplerPathFinding(gym.Env):
         self.recordGap = 3
 
         init_obs = self._get_obs()
-        self.novelty_window_size = 15
+        self.novelty_window_size = 10
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
@@ -512,7 +512,8 @@ class SimplerPathFinding(gym.Env):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 1 - min(self.novelDiff, 1)
+                # self.novelDiffRev = 1 - min(self.novelDiff, 1)
+                self.novelDiffRev = np.exp(-self.novelDiff)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
