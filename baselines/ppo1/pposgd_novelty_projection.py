@@ -357,13 +357,15 @@ def learn(env, policy_fn, *,
                     final_gradient[0:policy_var_count] = (np.dot(pol_g_novel, target_dir) + np.dot(pol_g_novel,
                                                                                                    target_dir)) * 0.5 * target_dir
                     # final_gradient[0:policy_var_count] = pol_g_novel_normalized
+
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
                 else:
 
                     task_projection = np.dot(pol_g, pol_g_novel_normalized) * pol_g_novel_normalized
-                    #
-                    # novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
+
+
+                    #novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
 
                     # final_pol_gradient = pol_g_novel - novel_projection
                     final_pol_gradient = pol_g - task_projection
