@@ -8,6 +8,8 @@ from baselines.common.mpi_moments import mpi_moments
 from mpi4py import MPI
 from collections import deque
 
+import joblib
+
 
 def traj_segment_generator(pi, env, horizon, stochastic):
     t = 0
@@ -236,7 +238,8 @@ def learn(env, policy_fn, *,
     # from collections import defaultdict
     # sum_batch = {}
     # sum_batch = defaultdict(lambda: 0, sum_batch)
-
+    total_task_gradients = []
+    total_novelty_gradients = []
     while True:
         # if iters_so_far == 5:
         #     print("BREAK PLACEHOLDER")
@@ -289,6 +292,8 @@ def learn(env, policy_fn, *,
         same_update_direction = []  # True
         task_gradient_mag = []
         novel_gradient_mag = []
+        task_gradients = []
+        novel_gradients = []
         # Here we do a bunch of optimization epochs over the data
 
         for _ in range(optim_epochs):
@@ -317,39 +322,50 @@ def learn(env, policy_fn, *,
                 final_gradient[policy_var_count::] = np.concatenate(
                     (g[policy_var_count::], g_novel[policy_var_count::]))
 
-                pol_g_normalized = pol_g / np.linalg.norm(pol_g)
+                pol_g_normalized = pol_g/np.linalg.norm(pol_g)
                 pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
 
-                dot = np.dot(pol_g_novel_normalized, pol_g_normalized)
+                pol_g_reduced_normalized = pol_g_reduced / np.linalg.norm(pol_g_reduced)
+                pol_g_novel_reduced_normalized = pol_g_novel_reduced / np.linalg.norm(pol_g_novel_reduced)
 
-                task_gradient_mag.append(np.linalg.norm(pol_g))
-                novel_gradient_mag.append(np.linalg.norm(pol_g_novel))
+                dot = np.dot(pol_g_novel_reduced_normalized, pol_g_reduced_normalized)
+
+                task_gradients.append(pol_g_reduced_normalized)
+                novel_gradients.append(pol_g_novel_reduced_normalized)
+
+                task_gradient_mag.append(np.linalg.norm(pol_g_reduced))
+                novel_gradient_mag.append(np.linalg.norm(pol_g_novel_reduced))
+
                 same_update_direction.append(dot)
+
+                pol_g_normalized = pol_g_reduced_normalized
+                pol_g_novel_normalized = pol_g_novel_reduced_normalized
 
                 if (dot > 0):
 
                     bisector = (pol_g_normalized + pol_g_novel_normalized)
                     bisector_normalized = bisector / np.linalg.norm(bisector)
 
-                    quartersector = (bisector_normalized + pol_g_normalized)
-                    quartersector_normalized = quartersector / np.linalg.norm(quartersector)
+                    quarterSecter = (pol_g_normalized+bisector_normalized)
+                    quarterSecter_normalized = quarterSecter/np.linalg.norm(quarterSecter)
 
-                    #octsector = quartersector+pol_g_normalized
-                    #octsector_normalized = octsector/np.linalg.norm(octsector)
+                    target_dir =quarterSecter_normalized# bisector_normalized
 
-                    target_dir =pol_g_novel_normalized#bisector_normalized#quartersector_normalized#pol_g_novel_normalized
-                    final_gradient[0:policy_var_count] = (np.dot(pol_g_novel, target_dir)+np.dot(pol_g,target_dir))*0.5 * target_dir
-                    #final_gradient[0:policy_var_count] = pol_g
+                    final_gradient[0:policy_var_count] = (np.dot(pol_g_reduced, target_dir) + np.dot(pol_g_novel_reduced,
+                                                                                                   target_dir)) * 0.5 * target_dir
+                    # final_gradient[0:policy_var_count] = pol_g_novel_normalized
+
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
                 else:
 
-                    task_projection = np.dot(pol_g, pol_g_novel_normalized) * pol_g_novel_normalized
+                    task_projection = np.dot(pol_g_reduced, pol_g_novel_normalized) * pol_g_novel_normalized
+
 
                     #novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
 
                     #final_pol_gradient = pol_g_novel - novel_projection
-                    final_pol_gradient = pol_g - task_projection
+                    final_pol_gradient = pol_g_reduced - task_projection
 
                     final_gradient[0:policy_var_count] = final_pol_gradient
 
@@ -404,8 +420,25 @@ def learn(env, policy_fn, *,
         logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         logger.record_tabular("NoveltyGradMag", np.array(novel_gradient_mag).mean())
 
+        # print('Gradient shape: ',np.array(task_gradients).shape)
+        task_gradients = np.array(task_gradients).mean(axis=0)
+        total_task_gradients.append(task_gradients)
+
+        novel_gradients = np.array(novel_gradients).mean(axis=0)
+        total_novelty_gradients.append(novel_gradients)
+
         if MPI.COMM_WORLD.Get_rank() == 0:
             logger.dump_tabular()
+
+    if MPI.COMM_WORLD.Get_rank() == 0:
+        gradient_info = {}
+
+        gradient_info['task_gradients'] = np.array(total_task_gradients)
+        gradient_info['novelty_gradients'] = np.array(total_novelty_gradients)
+        print(np.array(total_task_gradients).shape)
+        print(np.array(total_novelty_gradients).shape)
+
+        joblib.dump(gradient_info, logger.get_dir() + '/gradientinfo.pkl', compress=True)
 
     return pi
 
