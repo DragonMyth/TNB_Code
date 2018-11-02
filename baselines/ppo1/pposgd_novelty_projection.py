@@ -360,13 +360,13 @@ def learn(env, policy_fn, *,
 
                     target_dir = quarterSector_no_noise_normalized
 
-                    final_gradient[0:policy_var_count] = np.concatenate((np.dot(pol_g_reduced_no_noise_normalized,
+                    final_gradient[0:policy_var_count] = np.concatenate([np.dot(pol_g_reduced_no_noise_normalized,
                                                                                 target_dir) + np.dot(
                         pol_g_novel_reduced_no_noise_normalized,
-                        target_dir)) * 0.5 * target_dir, (pol_g_reduced[
-                                                          len(pol_g_reduced) - noise_count::] + pol_g_novel_reduced[
-                                                                                                len(
-                                                                                                    pol_g_reduced) - noise_count::]) / 2)
+                        target_dir) * 0.5 * target_dir, (pol_g_reduced[
+                                                         len(pol_g_reduced) - noise_count::] + pol_g_novel_reduced[
+                                                                                               len(
+                                                                                                   pol_g_reduced) - noise_count::]) / 2]).ravel()
 
                     # final_gradient[0:policy_var_count] = pol_g_novel_normalized
 
@@ -383,10 +383,10 @@ def learn(env, policy_fn, *,
                     final_pol_gradient_no_noise = pol_g_reduced_no_noise - task_projection_no_noise
 
                     final_gradient[0:policy_var_count] = np.concatenate(
-                        (final_pol_gradient_no_noise,
+                        [final_pol_gradient_no_noise,
                          (pol_g_reduced[len(pol_g_reduced) - noise_count::] + pol_g_novel_reduced[
                                                                               len(
-                                                                                  pol_g_reduced) - noise_count::]) / 2))
+                                                                                  pol_g_reduced) - noise_count::]) / 2]).ravel()
 
                     # adam_novel.update(final_gradient, optim_stepsize * cur_lrmult)
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
