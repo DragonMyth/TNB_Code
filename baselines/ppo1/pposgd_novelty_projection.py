@@ -187,6 +187,8 @@ def learn(env, policy_fn, *,
             count_in_var *= dim
         policy_var_count += count_in_var
 
+    noise_count = pi.get_trainable_variables(scope='pi/pol/logstd')[0].shape._dims[1]
+
     var_list = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf/')
     var_list_novel = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf_novel/')
     var_list_pi = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(
@@ -314,7 +316,9 @@ def learn(env, policy_fn, *,
                 pol_g_novel_reduced = np.zeros_like(pol_g_novel)
 
                 comm.Allreduce(pol_g, pol_g_reduced, op=MPI.SUM)
+
                 pol_g_reduced /= comm.Get_size()
+
                 comm.Allreduce(pol_g_novel, pol_g_novel_reduced, op=MPI.SUM)
                 pol_g_novel_reduced /= comm.Get_size()
 
@@ -322,52 +326,63 @@ def learn(env, policy_fn, *,
                 final_gradient[policy_var_count::] = np.concatenate(
                     (g[policy_var_count::], g_novel[policy_var_count::]))
 
-                pol_g_normalized = pol_g / np.linalg.norm(pol_g)
-                pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
+                # pol_g_normalized = pol_g / np.linalg.norm(pol_g)
+                # pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
 
-                pol_g_reduced_normalized = pol_g_reduced / np.linalg.norm(pol_g_reduced)
-                pol_g_novel_reduced_normalized = pol_g_novel_reduced / np.linalg.norm(pol_g_novel_reduced)
+                pol_g_reduced_no_noise = pol_g_reduced[:len(pol_g_reduced) - noise_count]
+                pol_g_novel_reduced_no_noise = pol_g_novel_reduced[:len(pol_g_reduced) - noise_count]
 
-                dot = np.dot(pol_g_novel_reduced_normalized, pol_g_reduced_normalized)
+                pol_g_reduced_no_noise_normalized = pol_g_reduced_no_noise / np.linalg.norm(
+                    pol_g_reduced_no_noise)
+                pol_g_novel_reduced_no_noise_normalized = pol_g_novel_reduced_no_noise / np.linalg.norm(
+                    pol_g_novel_reduced_no_noise)
 
-                task_gradients.append(pol_g_reduced_normalized)
-                novel_gradients.append(pol_g_novel_reduced_normalized)
+                dot = np.dot(pol_g_reduced_no_noise_normalized, pol_g_novel_reduced_no_noise_normalized)
 
-                task_gradient_mag.append(np.linalg.norm(pol_g_reduced))
-                novel_gradient_mag.append(np.linalg.norm(pol_g_novel_reduced))
+                task_gradients.append(pol_g_reduced_no_noise)
+                novel_gradients.append(pol_g_novel_reduced_no_noise)
+
+                task_gradient_mag.append(np.linalg.norm(pol_g_reduced_no_noise))
+                novel_gradient_mag.append(np.linalg.norm(pol_g_novel_reduced_no_noise))
 
                 same_update_direction.append(dot)
 
-                pol_g_normalized = pol_g_reduced_normalized
-                pol_g_novel_normalized = pol_g_novel_reduced_normalized
+                # pol_g_normalized = pol_g_reduced_normalized
+                # pol_g_novel_normalized = pol_g_novel_reduced_normalized
 
                 if (dot > 0):
 
-                    bisector = (pol_g_normalized + pol_g_novel_normalized)
-                    bisector_normalized = bisector / np.linalg.norm(bisector)
+                    bisector_no_noise = (pol_g_reduced_no_noise_normalized + pol_g_novel_reduced_no_noise_normalized)
+                    bisector_no_noise_normalized = bisector_no_noise / np.linalg.norm(bisector_no_noise)
 
-                    quarterSecter = (pol_g_normalized + bisector_normalized)
-                    quarterSecter_normalized = quarterSecter / np.linalg.norm(quarterSecter)
+                    quarterSecter_no_noise = (pol_g_reduced_no_noise_normalized + bisector_no_noise_normalized)
+                    quarterSecter_no_noise_normalized = quarterSecter_no_noise / np.linalg.norm(quarterSecter_no_noise)
 
-                    target_dir = bisector_normalized
+                    target_dir = quarterSecter_no_noise_normalized
 
-                    final_gradient[0:policy_var_count] = (np.dot(pol_g_reduced, target_dir) + np.dot(
-                        pol_g_novel_reduced,
-                        target_dir)) * 0.5 * target_dir
+                    final_gradient[0:policy_var_count] = np.concatenate((np.dot(pol_g_reduced_no_noise_normalized,
+                                                                                target_dir) + np.dot(
+                        pol_g_novel_reduced_no_noise_normalized,
+                        target_dir)) * 0.5 * target_dir, (pol_g_reduced[noise_count::] + pol_g_novel_reduced[
+                                                                                         noise_count::]) / 2)
+
                     # final_gradient[0:policy_var_count] = pol_g_novel_normalized
 
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                     # same_update_direction = True
                 else:
 
-                    task_projection = np.dot(pol_g_reduced, pol_g_novel_normalized) * pol_g_novel_normalized
+                    task_projection_no_noise = np.dot(pol_g_reduced_no_noise,
+                                                      pol_g_reduced_no_noise_normalized) * pol_g_reduced_no_noise_normalized
 
                     # novel_projection = np.dot(pol_g_normalized, pol_g_novel) * pol_g_normalized
 
                     # final_pol_gradient = pol_g_novel - novel_projection
-                    final_pol_gradient = pol_g_reduced - task_projection
+                    final_pol_gradient_no_noise = pol_g_reduced_no_noise - task_projection_no_noise
 
-                    final_gradient[0:policy_var_count] = final_pol_gradient
+                    final_gradient[0:policy_var_count] = np.concatenate(
+                        (final_pol_gradient_no_noise, (pol_g_reduced[noise_count::] + pol_g_novel_reduced[
+                                                                                      noise_count::]) / 2))
 
                     # adam_novel.update(final_gradient, optim_stepsize * cur_lrmult)
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)

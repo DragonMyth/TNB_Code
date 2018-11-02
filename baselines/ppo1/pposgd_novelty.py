@@ -185,6 +185,8 @@ def learn(env, policy_fn, *,
             count_in_var *= dim
         policy_var_count += count_in_var
 
+    noise_count = pi.get_trainable_variables(scope='pi/pol/logstd')[0].shape._dims[1]
+
     var_list = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf/')
     var_list_novel = pi.get_trainable_variables(scope='pi/pol') + pi.get_trainable_variables(scope='pi/vf_novel/')
 
