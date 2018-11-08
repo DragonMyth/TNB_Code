@@ -16,14 +16,14 @@ import joblib
 logger = logging.getLogger(__name__)
 
 
-class SimplerPathFinding(gym.Env):
+class PathFindingDeceptive(gym.Env):
     def __init__(self):
 
         # 0 for path
         # 1 for wall
         # 2,3,4,5 for goal
         # 6,7,8,9 for hints
-        self.grid_map = np.zeros((27, 27), dtype=int)
+        self.grid_map = np.zeros((23, 23), dtype=int)
         self.grid_map[0, :] = 1
         self.grid_map[-1, :] = 1
         self.grid_map[:, 0] = 1
@@ -31,47 +31,14 @@ class SimplerPathFinding(gym.Env):
 
         mid_idx = int(len(self.grid_map) / 2)
 
-        # self.grid_map[(int(len(self.grid_map) / 2)), 4:-4] = 1
-        # self.grid_map[(int(len(self.grid_map) / 4)), 4:-4] = 1
-        # self.grid_map[(int(len(self.grid_map) / 4)) * 3, 4:-4] = 1
+        self.grid_map[mid_idx + 5, mid_idx - 4:mid_idx + 5] = 1
+        self.grid_map[mid_idx - 5:mid_idx + 6, mid_idx + 4] = 1
+        self.grid_map[mid_idx - 5:mid_idx + 6, mid_idx - 4] = 1
 
-        self.grid_map[1:mid_idx - 1, 1:mid_idx - 1] = 1
-        self.grid_map[(mid_idx + 2):-1, 1:(mid_idx - 1)] = 1
+        self.grid_map[mid_idx - 5, mid_idx - 4:mid_idx - 1] = 1
+        self.grid_map[mid_idx - 5, mid_idx + 2:mid_idx + 5] = 1
 
-        self.grid_map[1:mid_idx - 1, (mid_idx + 2):-1] = 1
-        self.grid_map[(mid_idx + 2):-1, (mid_idx + 2):-1] = 1
-
-        # self.grid_map[mid_idx - 2, mid_idx - 2] = -1
-        # self.grid_map[mid_idx + 2, mid_idx - 2] = -1
-        # self.grid_map[mid_idx + 2, mid_idx + 2] = -1
-        # self.grid_map[mid_idx - 2, mid_idx + 2] = -1
-
-        # self.grid_map[mid_idx - 3:mid_idx - 1, mid_idx + 2: mid_idx + 4] = 0
-        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx + 2: mid_idx + 4] = 0
-        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx - 3: mid_idx - 1] = 0
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, 1] = 2
-        self.grid_map[mid_idx - 1:mid_idx + 2, -2] = 3
-        self.grid_map[1, mid_idx - 1:mid_idx + 2] = 4
-        self.grid_map[-2, mid_idx - 1:mid_idx + 2] = 5
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, 2:mid_idx - 1] = 6
-        self.grid_map[mid_idx, mid_idx - 1] = 6
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 7
-        self.grid_map[mid_idx, mid_idx + 1] = 7
-        # self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 1
-
-        self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 8
-        self.grid_map[mid_idx - 1, mid_idx] = 8
-        # self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 1
-
-        self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 9
-        self.grid_map[mid_idx + 1, mid_idx] = 9
-
-        # self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 1
-        # This is the goal grid
-        # self.grid_map[1:-1, -2] = 2
+        self.grid_map[mid_idx + 7:mid_idx + 10, mid_idx - 9:mid_idx - 6] = 5
 
         self.grid_size = 0.25
         self.grid_vis_size = 25
@@ -84,6 +51,8 @@ class SimplerPathFinding(gym.Env):
         self.point_vel = -np.zeros(2)
         self.point_acc_force = -np.zeros(2)
 
+        self.goal_pos = self.grid_idx_to_pos(mid_idx, mid_idx - 8)
+
         self.original_pos = self.point_pos
         self.dt = 0.002
         self.frameskip = 5
@@ -93,7 +62,7 @@ class SimplerPathFinding(gym.Env):
         # This scale is for torque output
         self.torque_scale = 250
 
-        self.obs_dim = 4
+        self.obs_dim = 6
 
         self.action_dim = 2
         action_high = np.ones(self.action_dim)
@@ -115,10 +84,12 @@ class SimplerPathFinding(gym.Env):
         self.qLim = 5
 
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
         init_obs = self._get_obs()
-        self.novelty_window_size = 10
+
+        self.novelty_window_size = 15
+
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
@@ -133,8 +104,20 @@ class SimplerPathFinding(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
+        self.ignore_obs = 2
 
         self.ret = 0
+        self.normScale = self.generateNormScaleArr([4, 10])
+
+    def generateNormScaleArr(self, norm_scales):
+        norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
+
+        cur_idx = 0
+        for i in range(0, len(norm_scales), 2):
+            num_repeat = int(norm_scales[i])
+            norms[cur_idx:cur_idx + num_repeat] = norm_scales[i + 1]
+            cur_idx += num_repeat
+        return norms
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -174,37 +157,27 @@ class SimplerPathFinding(gym.Env):
             self.path_data[-1][1] = self.novelDiff
 
         i, j = self.pos_to_grid_idx(pos_after)
-
-        alive_penalty = -1  # -1  # - self.stepNum
-
-        reward = alive_penalty
+        # print(pos_after)
+        # print(self.goal_pos)
+        alive_penalty = -2  # -1  # - self.stepNum
+        reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
+        reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
         # reward += novelRwd * 0.01
 
         # reward = novelRwd
         # novelRwd = (novelRwd) ** 2
         done = False
-        if 6 <= self.grid_map[i, j] <= 9:
-            reward += 50 * ((self.grid_map[i, j] - 5) / 4.0) ** 3
-            self.grid_map[i, j] = 0
 
-        if 2 <= self.grid_map[i, j] <= 5:
+        if self.grid_map[i, j] == 5:
             done = True
-            # print("Sum of Old: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
-            # if self.have_goal_rew:
-            # print("Sum of accumulated old penalty: ", self.sum_of_old)
-            reward += 500 * ((self.grid_map[i, j] - 1) / 4.0) ** 3
-            # etlse:
-            # print("Sum of accumulated old penalty: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
+
+            reward += 5000
             self.ret += reward
 
-            # print(self.ret)
-        # if self.grid_map[i, j] == -1:
-        #     reward -= 5
-        #     novelPenn += 10
         if wall_hit:
             reward -= 10
-            # done = True
+        # done = True
 
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
@@ -212,10 +185,11 @@ class SimplerPathFinding(gym.Env):
 
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
-                                                 'Total Reward': reward}
+                                                 'rwd': reward}
 
     def _get_obs(self):
-        return np.concatenate([[self.point_pos[0], self.point_pos[1]], [self.point_vel[0], self.point_vel[1]]]).ravel()
+        return np.concatenate([[self.goal_pos[0], self.goal_pos[1]], [self.point_pos[0], self.point_pos[1]],
+                               [self.point_vel[0], self.point_vel[1]]]).ravel()
 
     def do_simulation(self, tau, frameskip):
 
@@ -439,9 +413,18 @@ class SimplerPathFinding(gym.Env):
 
         return np.array([x, y])
 
-    def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
-        traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
-        traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    #
+    # def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
+    #     traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
+    #     traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    #     return traj
+
+    def normalizeTraj(self, traj):
+
+        # traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
+        # traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        traj[:, :, :] /= self.normScale
         return traj
 
     def calc_novelty_from_visitation(self, obs):
@@ -486,13 +469,13 @@ class SimplerPathFinding(gym.Env):
         if len(self.novel_autoencoders) > 0:
             if (self.stepNum % self.recordGap == 0):
                 if (np.isfinite(obs).all()):
-                    self.traj_buffer.append(obs[:])
+                    self.traj_buffer.append(obs[self.ignore_obs::])
 
             if (len(self.traj_buffer) == self.novelty_window_size):
                 novelDiffList = []
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -self.qLim, self.qLim, -self.dqLim, self.dqLim)
+                traj_seg = self.normalizeTraj(traj_seg)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 for i in range(len(self.novel_autoencoders)):

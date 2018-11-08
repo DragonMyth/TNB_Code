@@ -10,29 +10,43 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         self.target = np.array([0.8, -0.6, 0.6])
         self.action_scale = np.array([10, 10, 10, 10, 10])
         self.control_bounds = np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [-1.0, -1.0, -1.0, -1.0, -1.0]])
-        dart_env.DartEnv.__init__(self, 'reacher.skel', 4, 16, self.control_bounds, disableViewer=True)
+        dart_env.DartEnv.__init__(self, 'reacher.skel', 4, 26, self.control_bounds, disableViewer=True)
         utils.EzPickle.__init__(self)
 
         self.dqLim = 25
         self.qLim = np.pi
 
         self.stepNum = 0
-        self.recordGap = 3
+        self.recordGap = 2
 
-        self.novelty_window_size = 5
+        self.novelty_window_size = 10
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 5
+        self.novelty_factor = 1
 
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.path_data = []
         self.ret = 0
         self.ignore_obs = 6
+
+        self.normScale = self.generateNormScaleArr([10, 1, 5, 2 * np.pi, 5, 50])
+
+        self.longest_dist = 0
+
+    def generateNormScaleArr(self, norm_scales):
+        norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
+
+        cur_idx = 0
+        for i in range(0, len(norm_scales), 2):
+            num_repeat = int(norm_scales[i])
+            norms[cur_idx:cur_idx + num_repeat] = norm_scales[i + 1]
+            cur_idx += num_repeat
+        return norms
 
     def _step(self, a):
         self.stepNum += 1
@@ -61,8 +75,17 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         s = self.state_vector()
 
+        dist = np.linalg.norm(self.robot_skeleton.bodynodes[2].to_world(fingertip) - self.target)
+
         done = not (np.isfinite(s).all() and (-reward_dist > 0.1))
 
+        #
+        # if dist > self.longest_dist:
+        #     done = True
+        #     self.longest_dist = dist
+        #
+        # if done or self.stepNum == 500:
+        #     print(self.longest_dist)
         return ob, (reward, -novelPenn), done, {'rwd': reward,
                                                 'states': s, 'actions': tau,
                                                 'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn
@@ -72,7 +95,8 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         theta = self.robot_skeleton.q
         fingertip = np.array([0.0, -0.25, 0.0])
         vec = self.robot_skeleton.bodynodes[2].to_world(fingertip) - self.target
-        return np.concatenate([self.target, vec, self.robot_skeleton.q, self.robot_skeleton.dq]).ravel()
+        return np.concatenate(
+            [self.target, vec, np.cos(theta), np.sin(theta), self.robot_skeleton.q, self.robot_skeleton.dq]).ravel()
 
     def reset_model(self):
         self.stepNum = 0
@@ -94,9 +118,17 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         self._get_viewer().scene.tb._set_theta(0)
         self.track_skeleton_id = 0
 
-    def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
-        traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
-        traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    # def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
+    #     traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
+    #     traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    #     return traj
+
+    def normalizeTraj(self, traj):
+
+        # traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
+        # traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        traj[:, :, :] /= self.normScale
         return traj
 
     def calc_novelty_from_autoencoder(self, obs):
@@ -112,7 +144,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
                 novelDiffList = []
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -self.qLim, self.qLim, -self.dqLim, self.dqLim)
+                traj_seg = self.normalizeTraj(traj_seg)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 for i in range(len(self.novel_autoencoders)):
@@ -132,11 +164,11 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = np.exp(-self.novelDiff)
+                self.novelDiffRev = np.exp(-self.novelDiff * self.novelty_factor)
                 # self.novelDiffRev = 4 - min(self.novelDiff, 4)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
             novelRwd = self.novelty_factor * self.novelDiff
-            novelPenn = self.novelty_factor * self.novelDiffRev
+            novelPenn = self.novelDiffRev
         return novelRwd, novelPenn
