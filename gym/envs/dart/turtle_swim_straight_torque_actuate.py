@@ -163,10 +163,10 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                     #     print("Reconstructed traj sum: ", np.sum(traj_recons))
 
                     diff = traj_recons - traj_seg
-                    diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
-                    diff = np.multiply(diff, self.novelty_weight_mat)
+                    #diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
+                    #diff = np.multiply(diff, self.novelty_weight_mat)
 
-                    diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
+                    #diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
 
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
                     novelDiffList.append(normDiff)
