@@ -33,14 +33,20 @@ if __name__ == '__main__':
 
     num_epoch = 300
     batch_size = 1024
-    qnorm = np.pi
-    dqnorm = 50
+    # qnorm = np.pi
+    # dqnorm = 50
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
+
+    norm_scale = np.array([8, 2 * np.pi, 8, 50])
+    norm_scale_str = ''
+    for i in norm_scale:
+        norm_scale_str += str(i) + ' '
+
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
-    for i in range(1, 6, 1):
+    for i in range(0, 6, 1):
         # i = 0
         curr_run = str(i)
         # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
@@ -88,10 +94,12 @@ if __name__ == '__main__':
                                             + ' --seed ' + str(seed)
                                             + ' --data_collect_env ' + str(args.data_collect_env)
                                             + ' --curr_run ' + str(curr_run)
-                                            + ' --qnorm ' + str(qnorm)
-                                            + ' --dqnorm ' + str(dqnorm)
+                                            # + ' --qnorm ' + str(qnorm)
+                                            # + ' --dqnorm ' + str(dqnorm)
                                             + ' --num_epoch ' + str(num_epoch)
                                             + ' --batch_size ' + str(batch_size)
+                                            + ' --norm_scales ' + str(norm_scale_str)
+
                                             , shell=True
 
                                             )

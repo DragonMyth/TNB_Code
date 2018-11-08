@@ -152,9 +152,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('--env', help='environment ID', default='DartTurtle-v0')
+    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
-    parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=0)
+    parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=2)
     parser.add_argument('--data_saving_path', help='Directory for saving the log files for this run')
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration', default=1000)

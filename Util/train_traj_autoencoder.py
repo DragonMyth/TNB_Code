@@ -16,23 +16,39 @@ import matplotlib.pyplot as plt
 
 
 class Autoencoder():
-    def __init__(self, qnorm, dqnorm, model_name, input_dim, n_rows, n_cols):
+    def __init__(self, qnorm, dqnorm, norm_scales, model_name, input_dim, n_rows, n_cols):
         self.qnorm = qnorm
         self.dqnorm = dqnorm
         self.model_name = model_name
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.input_dim = input_dim
+        self.norm_scales = self.generateNormScaleArr(norm_scales)
+        # print(self.norm_scales)
         self.autoencoder = self.build_autoencoder()
 
+    def generateNormScaleArr(self, norm_scales):
+        norms = np.ones(self.n_cols)
+        cur_idx = 0
+        for i in range(0, len(norm_scales), 2):
+            num_repeat = int(norm_scales[i])
+            norms[cur_idx:cur_idx + num_repeat] = norm_scales[i + 1]
+            cur_idx += num_repeat
+        return norms
+
     def normalizeTraj(self, traj):
-        traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
-        traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        # traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
+        # traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        traj[:, :, :] /= self.norm_scales
+
         return traj
 
     def invNormalizeTraj(self, traj):
-        traj[:, 0:int(len(traj[0]) / 2)] *= (self.qnorm)
-        traj[:, int(len(traj[0]) / 2)::] *= (self.dqnorm)
+        # traj[:, 0:int(len(traj[0]) / 2)] *= (self.qnorm)
+        # traj[:, int(len(traj[0]) / 2)::] *= (self.dqnorm)
+        traj[:, :, :] *= self.norm_scales
         return traj
 
     def build_autoencoder(self):
@@ -165,16 +181,20 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('--env', help='environment ID', default='DartTurtle-v0')
+    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
-    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v2')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartReacher3d-v1')
     parser.add_argument('--curr_run', help='Current number of runs in the sequence', default=0)
     parser.add_argument('--qnorm', help='Scale of the q in the skel', default=np.pi)
     parser.add_argument('--dqnorm', help='Scale of the dq in the skel', default=50)
     parser.add_argument('--num_epoch', help='Scale of the dq in the skel', default=300)
     parser.add_argument('--batch_size', help='Scale of the dq in the skel', default=1024)
+    parser.add_argument('--norm_scales', help='List of scales used to normalize autoencoder input', nargs='*',
+                        default=[])
 
     args = parser.parse_args()
+
+    norm_scales = np.array(args.norm_scales, dtype=np.float32)
 
     model_filename = args.env + '_autoencoder_seed_' + str(args.seed) + '_run_' + str(args.curr_run) + '.h5'
 
@@ -188,7 +208,8 @@ if __name__ == '__main__':
     model_dim = len(dataset[0][0])
     traj_dim = len(dataset[0])
 
-    autoencoder = Autoencoder(float(args.qnorm), float(args.dqnorm), model_filename, model_dim * traj_dim, traj_dim,
+    autoencoder = Autoencoder(float(args.qnorm), float(args.dqnorm), norm_scales, model_filename,
+                              model_dim * traj_dim, traj_dim,
                               model_dim)
 
     dataset = autoencoder.normalizeTraj(dataset)

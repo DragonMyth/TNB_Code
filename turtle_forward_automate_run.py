@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
     num_epoch = 400
     batch_size = 1024
+
     qnorm = np.pi
     dqnorm = 50
     # for s in range(7):
