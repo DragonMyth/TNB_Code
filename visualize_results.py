@@ -32,6 +32,8 @@ from Util.post_training_process import *
 def render_reachers():
     render_policy('DartReacher3d-v1', stoch=False, record=True,
                   autoencoder_name_list=[])
+
+
 def render_turtles():
     autoencoder_dir = "novelty_data/rome/autoencoders/"
 
@@ -44,6 +46,12 @@ def render_turtles():
                   autoencoder_name_list=autoencoder_list)
 
 
-# render_reachers()
+def render_deceptive_path():
+    autoencoder_list = []
+    render_policy('PathFindingDeceptive-v0', stoch=False, record=True,
+                  autoencoder_name_list=[])
 
-render_turtles()
+
+# render_turtles()
+
+render_deceptive_path()

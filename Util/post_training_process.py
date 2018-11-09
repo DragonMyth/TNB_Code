@@ -88,7 +88,7 @@ def perform_rollout(policy,
             if hasattr(env.env, 'disableViewer'):
                 env.env.disableViewer = False
             if record:
-                env = wrappers.Monitor(env, snapshot_dir + '/policy_runs', force=True)
+                env = wrappers.Monitor(env, snapshot_dir + '/../policy_runs', force=True)
         observation = env.reset()
 
         for i in range(horizon):
@@ -226,7 +226,9 @@ def perform_rollout(policy,
         plot.title('State Vec changes along time')
         statesArr = np.array(data_list['states'])
 
-        norm = matplotlib.colors.SymLogNorm(np.min(abs(statesArr)), linscale=np.min(abs(statesArr)))
+        # norm = matplotlib.colors.SymLogNorm(np.min(abs(statesArr)), linscale=np.min(abs(statesArr)))
+        norm = matplotlib.colors.Normalize(-np.pi, np.pi)
+
         plot.imshow(statesArr.transpose(), norm=norm, aspect='auto')
         plot.gray()
         plot.colorbar()
