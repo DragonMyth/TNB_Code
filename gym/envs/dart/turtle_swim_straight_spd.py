@@ -72,7 +72,7 @@ class DartTurtleSwimStraighSPDEnv(dart_env.DartEnv, utils.EzPickle):
             tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
 
             tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-            print(np.max(tau))
+            # print(np.max(tau))
             self.do_simulation(tau, 1)
 
         cur_com = self.robot_skeleton.C

@@ -78,8 +78,6 @@ register(
     # reward_threshold=90.0,
 )
 
-
-
 register(
     id='Pendulum-v0',
     entry_point='gym.envs.classic_control:PendulumEnv',
@@ -125,6 +123,13 @@ register(
     entry_point='gym.envs.classic_control:SimplerPathFindingDataCollect',
     max_episode_steps=2500,
 
+)
+
+# PathFindingDeceptive
+register(
+    id='PathFindingDeceptive-v0',
+    entry_point='gym.envs.classic_control:PathFindingDeceptive',
+    max_episode_steps=500,
 )
 
 # Box2d

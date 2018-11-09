@@ -53,10 +53,22 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.novelty_weight_mat[:, indexes] = 0
 
+        self.normScale = self.generateNormScaleArr([8, 2 * np.pi, 8, 50])
+
         self.metadata = {
             'render.modes': ['human', 'rgb_array'],
             'video.frames_per_second': 30
         }
+
+    def generateNormScaleArr(self, norm_scales):
+        norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
+
+        cur_idx = 0
+        for i in range(0, len(norm_scales), 2):
+            num_repeat = int(norm_scales[i])
+            norms[cur_idx:cur_idx + num_repeat] = norm_scales[i + 1]
+            cur_idx += num_repeat
+        return norms
 
     def _step(self, a):
 
@@ -133,9 +145,12 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         self._get_viewer().scene.tb._set_theta(-60)
         self.track_skeleton_id = 0
 
-    def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
-        traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
-        traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    def normalizeTraj(self, traj):
+
+        # traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
+        # traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        traj[:, :, :] /= self.normScale
         return traj
 
     def calc_novelty_from_autoencoder(self, obs):
@@ -151,7 +166,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                 novelDiffList = []
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -self.qLim, self.qLim, -self.dqLim, self.dqLim)
+                traj_seg = self.normalizeTraj(traj_seg)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 for i in range(len(self.novel_autoencoders)):
@@ -163,6 +178,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                     #     print("Reconstructed traj sum: ", np.sum(traj_recons))
 
                     diff = traj_recons - traj_seg
+
                     diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
                     diff = np.multiply(diff, self.novelty_weight_mat)
 
