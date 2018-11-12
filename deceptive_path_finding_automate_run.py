@@ -41,7 +41,8 @@ if __name__ == '__main__':
     # qnorm = 10
     # dqnorm = 10
     # for s in range(7):
-    #     seed = s * 13 + 7 * (s ** 2)
+    s = 1
+    seed = s * 13 + 7 * (s ** 2)
 
     norm_scale = np.array([4, 10])
     norm_scale_str = ''

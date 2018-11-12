@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
-                        default=10)
+                        default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
                         default=10)
 
@@ -35,15 +35,20 @@ if __name__ == '__main__':
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 300
+    norm_scale = np.array([4, 10])
+    norm_scale_str = ''
+    for i in norm_scale:
+        norm_scale_str += str(i) + ' '
+
+    num_epoch = 200
     batch_size = 1024
-    qnorm = 10
-    dqnorm = 10
+    # qnorm = 10
+    # dqnorm = 10
     # for s in range(7):
     #     seed = s * 13 + 7 * (s ** 2)
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-    for i in range(1, 6, 1):
+    for i in range(0, 6, 1):
         # i = 0
         curr_run = str(i)
 
@@ -94,10 +99,12 @@ if __name__ == '__main__':
                                             + ' --seed ' + str(seed)
                                             + ' --data_collect_env ' + str(args.data_collect_env)
                                             + ' --curr_run ' + str(curr_run)
-                                            + ' --qnorm ' + str(qnorm)
-                                            + ' --dqnorm ' + str(dqnorm)
+                                            # + ' --qnorm ' + str(qnorm)
+                                            # + ' --dqnorm ' + str(dqnorm)
                                             + ' --num_epoch ' + str(num_epoch)
                                             + ' --batch_size ' + str(batch_size)
+                                            + ' --norm_scales ' + str(norm_scale_str)
+
                                             , shell=True
 
                                             )

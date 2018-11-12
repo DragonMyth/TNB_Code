@@ -43,12 +43,43 @@ def mirror_turtle_policy_fn(name, ob_space, ac_space):
                                                             mirror_loss=True,
                                                             observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                                                                                      10,
+
                                                                                      15, 16, 17, 18,
+
                                                                                      11, 12, 13, 14,
+
                                                                                      23, 24, 25, 26,
+
                                                                                      19, 20, 21, 22],
 
                                                             action_permutation=[4, 5, 6, 7, 0, 1, 2, 3]
+                                                            )
+
+
+def mirror_humanoid_policy_fn(name, ob_space, ac_space):
+    return mlp_policy_mirror_novelty.MlpPolicyMirrorNovelty(name=name, ob_space=ob_space, ac_space=ac_space,
+                                                            hid_size=64,
+                                                            num_hid_layers=3,
+                                                            mirror_loss=True,
+                                                            observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+                                                                                     10, 11, 12, 13, 14, 15,
+
+                                                                                     21, 22, 23, 24, 25, 16, 17, 18,
+                                                                                     19, 20,
+
+                                                                                     30, 31, 32, 33, 26, 27, 28, 29,
+
+                                                                                     39, 40, 41, 42, 43, 34, 35, 36,
+                                                                                     37, 38,
+
+                                                                                     48, 49, 50, 51, 44, 45, 46,
+                                                                                     47],
+
+                                                            action_permutation=[0, 1,
+
+                                                                                7, 8, 9, 10, 11, 2, 3, 4, 5, 6,
+
+                                                                                16, 17, 18, 19, 12, 13, 14, 15]
                                                             )
 
 
@@ -97,8 +128,8 @@ def perform_rollout(policy,
             if animate:
                 env.render()
             if policy is None:
-                action_taken = (np.random.rand(env.unwrapped.action_dim) - 0.5 * np.ones(
-                    env.unwrapped.action_dim)) * np.pi
+                action_taken = (np.random.rand(env.unwrapped.act_dim) - 0.5 * np.ones(
+                    env.unwrapped.act_dim)) * 2
             else:
                 if i % control_step_skip == 0:
 
@@ -351,43 +382,54 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
 
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
-                  record=False, policy_func=policy_fn, autoencoder_name_list=[]):
-    openFileOption = {}
-    openFileOption['initialdir'] = '../data/ppo_' + env
-    filename = askopenfilename(**openFileOption)
+                  record=False, policy_func=policy_fn, autoencoder_name_list=[], random_policy=False):
+    if not random_policy:
 
-    # DartFlatworm
-    # DartHumanSwim
-    # environment = "DartTurtle-v3"
-    print(filename)
-    policy_param = joblib.load(filename)
+        openFileOption = {}
+        openFileOption['initialdir'] = '../data/ppo_' + env
+        filename = askopenfilename(**openFileOption)
 
-    snapshot_dir = filename[0:filename.rfind('/') + 1]
+        # DartFlatworm
+        # DartHumanSwim
+        # environment = "DartTurtle-v3"
+        print(filename)
+        policy_param = joblib.load(filename)
 
-    # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
-    with U.single_threaded_session() as sess:
+        snapshot_dir = filename[0:filename.rfind('/') + 1]
+
+        # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
+        with U.single_threaded_session() as sess:
+            env = gym.make(env)
+            autoencoder_list = []
+            for autoencoder_name in autoencoder_name_list:
+                autoencoder_list.append(load_model(autoencoder_name))
+
+            env.env.novel_autoencoders = autoencoder_list
+
+            pi = policy_func('pi', env.observation_space, env.action_space)
+
+            restore_policy(sess, pi, policy_param)
+
+            # summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
+            path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
+                                   stochastic=stoch,
+                                   control_step_skip=action_skip,
+                                   saved_rollout_path=None,
+                                   record=record
+
+                                   )
+        if save_path:
+            joblib.dump(path, save_filename)
+    else:
         env = gym.make(env)
-        autoencoder_list = []
-        for autoencoder_name in autoencoder_name_list:
-            autoencoder_list.append(load_model(autoencoder_name))
 
-        env.env.novel_autoencoders = autoencoder_list
+        perform_rollout(None, env, snapshot_dir='.', animate=True, plot_result=False,
+                        stochastic=stoch,
+                        control_step_skip=action_skip,
+                        saved_rollout_path=None,
+                        record=False
 
-        pi = policy_func('pi', env.observation_space, env.action_space)
-
-        restore_policy(sess, pi, policy_param)
-
-        # summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
-
-        path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
-                               stochastic=stoch,
-                               control_step_skip=action_skip,
-                               saved_rollout_path=None,
-                               record=record
-
-                               )
-    if save_path:
-        joblib.dump(path, save_filename)
+                        )
 
 
 def create_visitation_from_dir(env, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
