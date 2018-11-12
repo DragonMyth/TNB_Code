@@ -118,7 +118,7 @@ class SimplerPathFinding(gym.Env):
         self.recordGap = 2
 
         init_obs = self._get_obs()
-        self.novelty_window_size = 10
+        self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []

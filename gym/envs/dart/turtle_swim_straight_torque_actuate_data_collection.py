@@ -21,7 +21,7 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         self.original_com = self.robot_skeleton.C
         self.original_q = self.robot_skeleton.q
 
-        num_of_dofs = len(self.robot_skeleton.dofs) - len(self.robot_skeleton.joints[0].dofs)
+        num_of_dofs = len(self.robot_skeleton.dofs) - 6
 
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
         self.dqLim = 25
@@ -84,7 +84,7 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
         orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 5 * (np.abs(cur_q[0]) + np.abs(cur_q[1]) + np.abs(cur_q[2]))
+        rotate_pen = 5 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen

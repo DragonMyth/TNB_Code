@@ -47,6 +47,7 @@ from gym.envs.dart.humanoid_swim_straight_upper import DartHumanoidSwimStraightU
 from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullEnforceEnv
 from gym.envs.dart.humanoid_swim_straight_full import DartHumanoidSwimStraightFullReleaseEnv
 from gym.envs.dart.humanoid_swim_straight_full_data_collection import DartHumanoidSwimStraightFullDataCollectionEnv
+from gym.envs.dart.humanoid_swim_straight_full_torque_actuated import DartHumanoidSwimStraightFullTorqueActuateEnv
 
 from gym.envs.dart.cube_path_finding import DartCubePathFindingEnforceEnv
 from gym.envs.dart.cube_path_finding import DartCubePathFindingReleaseEnv

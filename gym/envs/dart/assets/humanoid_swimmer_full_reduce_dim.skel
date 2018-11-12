@@ -10,7 +10,7 @@
         <skeleton name="reference_bar">
             <mobile>false</mobile>
             <body name="ground">
-                <transformation>0 0 -0.8 0 1.5 0.0</transformation>
+                <transformation>0 0 -0.8 0 1.57 0.0</transformation>
                 <visualization_shape>
                     <transformation>0 0 0 0 0 0</transformation>
                     <geometry>
@@ -28,7 +28,7 @@
             </joint>
         </skeleton>
  <skeleton name="skeleton">
-            <transformation>-1 0 0 0 0 -0</transformation>
+            <transformation>-1 0 0 1.57 0 -1.57</transformation>
             <body name="root">
                 <transformation>0 0 0 0 0 0</transformation>
                 <inertia>
@@ -526,9 +526,9 @@
                 <child>left_radius</child>
             </joint>
 
-            <joint name="left_carpals_radius_joint" type="revolute">
+            <joint name="left_carpals_radius_joint" type="weld">
                 <transformation>0 -0.1 0 0 0 0</transformation>
-                <axis>
+                <!-- <axis>
                     <xyz>0 0 1</xyz>
                     <limit>
                         <lower>-1.5</lower>
@@ -538,7 +538,7 @@
                         <damping>3.0</damping>
                     </dynamics>
 
-                </axis>
+                </axis> -->
 
                 <!--<axis2>-->
                 <!--<xyz>0 0 1</xyz>-->
@@ -620,9 +620,9 @@
                 <child>right_radius</child>
             </joint>
 
-            <joint name="right_carpals_radius_joint" type="revolute">
+            <joint name="right_carpals_radius_joint" type="weld">
                 <transformation>0 -0.1 0 0 0 0</transformation>
-                <axis>
+                <!-- <axis>
                     <xyz>0 0 -1</xyz>
                     <limit>
                         <lower>-1.5</lower>
@@ -631,7 +631,7 @@
                     <dynamics>
                         <damping>3.0</damping>
                     </dynamics>
-                </axis>
+                </axis> -->
 
                 <!--<axis2>-->
                 <!--<xyz>0 0 -1</xyz>-->
@@ -704,9 +704,9 @@
                 <child>left_tibia</child>
             </joint>
 
-            <joint name="left_tarsals_febula_joint" type="universal">
+            <joint name="left_tarsals_febula_joint" type="weld">
                 <transformation>0 0.125 0 0 0 0</transformation>
-                <axis>
+                <!-- <axis>
                     <xyz>1 0 0</xyz>
                     <limit>
                         <lower>-1.5</lower>
@@ -728,7 +728,7 @@
                         <damping>3.0</damping>
                     </dynamics>
                 </axis2>
-
+ -->
                 <parent>left_tibia</parent>
                 <child>left_tarsals</child>
             </joint>
@@ -787,9 +787,9 @@
                 <child>right_tibia</child>
             </joint>
 
-            <joint name="right_tarsals_febula_joint" type="universal">
+            <joint name="right_tarsals_febula_joint" type="weld">
                 <transformation>0 0.125 0 0 0 0</transformation>
-                <axis>
+                <!-- <axis>
                     <xyz>1 0 0</xyz>
                     <limit>
                         <lower>-1.5</lower>
@@ -810,7 +810,7 @@
                     <dynamics>
                         <damping>3.0</damping>
                     </dynamics>
-                </axis2>
+                </axis2> -->
 
                 <parent>right_tibia</parent>
                 <child>right_tarsals</child>

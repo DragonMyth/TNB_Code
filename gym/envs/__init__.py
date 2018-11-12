@@ -398,60 +398,15 @@ register(
 
 )
 
-# Regular 1 step spd
+# Regular torque actuated human
 register(
     id='DartHumanSwim-v0',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightEnv',
+    entry_point='gym.envs.dart:DartHumanoidSwimStraightFullTorqueActuateEnv',
     max_episode_steps=500,
 )
 
-# Used to collect big amount of data
-register(
-    id='DartHumanSwim-v01',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightEnv',
-    max_episode_steps=50,
-)
 
-# Used to visulize states fragments
-register(
-    id='DartHumanSwim-v02',
-    entry_point='gym.envs.dart:DartHumanoidVisualizationEnv',
-    max_episode_steps=1000,
-)
 
-# Direct action output
-register(
-    id='DartHumanSwim-v1',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightTauActEnv',
-    max_episode_steps=500,
-)
-
-# Only Legs with heavier pelvis
-register(
-    id='DartHumanSwim-v2',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightLegsEnv',
-    max_episode_steps=500,
-)
-
-register(
-    id='DartHumanSwim-v3',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightArmsEnv',
-    max_episode_steps=500,
-)
-
-# Only Arms and lock wrists
-register(
-    id='DartHumanSwim-v4',
-    entry_point='gym.envs.dart:DartHumanoidSwimStraightArmsLockWristEnv',
-    max_episode_steps=500,
-)
-
-# Only stablize waist
-register(
-    id='DartHumanSwim-v5',
-    entry_point='gym.envs.dart:DartHumanoidStableWaistEnv',
-    max_episode_steps=500,
-)
 
 register(
     id='DartHumanUpperSwim-v0',

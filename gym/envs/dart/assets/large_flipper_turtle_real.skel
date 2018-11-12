@@ -28,6 +28,13 @@
         </skeleton>
         <skeleton name="skeleton">
             <transformation>-2 0 0 0 0 0</transformation>
+            <body name="torso_aux">
+                <transformation> 0.0 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0</mass>
+                    <offset>0.0 0 0.0</offset>
+                </inertia>
+            </body>
             <body name="torso">
                 <transformation>0 0 0 0 0 0</transformation>
                 <inertia>
@@ -196,10 +203,20 @@
                     </geometry>
                 </collision_shape>
             </body>
-            <joint name="main_joint" type="free">
+
+
+            <joint name="main_joint_1" type="translational">
                 <parent>world</parent>
-                <child>torso</child>
+                <child>torso_aux</child>
             </joint>
+
+            <joint name="main_joint_2" type="euler">
+                <parent>torso_aux</parent>
+                <child>torso</child>
+                <axis_order>zyx</axis_order>
+            </joint>
+
+
             <joint name="head_joint" type="weld">
                 <parent>torso</parent>
                 <child>head</child>
