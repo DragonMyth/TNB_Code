@@ -48,19 +48,24 @@ def train(sess, env_id, num_timesteps, timesteps_per_actor, autoencoders, seed):
                                                                 num_hid_layers=3,
                                                                 mirror_loss=True,
                                                                 observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                                                                         10,
+                                                                                         10, 11, 12, 13, 14, 15,
 
-                                                                                         15, 16, 17, 18,
+                                                                                         21, 22, 23, 24, 25, 16, 17, 18,
+                                                                                         19, 20,
 
-                                                                                         11, 12, 13, 14,
+                                                                                         30, 31, 32, 33, 26, 27, 28, 29,
 
-                                                                                         23, 24, 25, 26,
+                                                                                         39, 40, 41, 42, 43, 34, 35, 36,
+                                                                                         37, 38,
 
-                                                                                         19, 20, 21, 22],
+                                                                                         48, 49, 50, 51, 44, 45, 46,
+                                                                                         47],
 
-                                                                action_permutation=[4, 5, 6, 7,
+                                                                action_permutation=[0, 1,
 
-                                                                                    0, 1, 2, 3]
+                                                                                    7, 8, 9, 10, 11, 2, 3, 4, 5, 6,
+
+                                                                                    16, 17, 18, 19, 12, 13, 14, 15]
                                                                 )
 
     env.env.novel_autoencoders = autoencoders
