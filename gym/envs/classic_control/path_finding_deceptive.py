@@ -38,7 +38,7 @@ class PathFindingDeceptive(gym.Env):
         self.grid_map[mid_idx - 5, mid_idx - 4:mid_idx - 1] = 1
         self.grid_map[mid_idx - 5, mid_idx + 2:mid_idx + 5] = 1
 
-        self.grid_map[mid_idx + 7:mid_idx + 10, mid_idx - 9:mid_idx - 6] = 5
+        self.grid_map[mid_idx + 1:mid_idx + 4, mid_idx - 9:mid_idx - 6] = 5
 
         self.grid_size = 0.25
         self.grid_vis_size = 25
@@ -51,7 +51,7 @@ class PathFindingDeceptive(gym.Env):
         self.point_vel = -np.zeros(2)
         self.point_acc_force = -np.zeros(2)
 
-        self.goal_pos = self.grid_idx_to_pos(mid_idx, mid_idx - 8)
+        self.goal_pos = self.grid_idx_to_pos(mid_idx + 2, mid_idx - 8)
 
         self.original_pos = self.point_pos
         self.dt = 0.002

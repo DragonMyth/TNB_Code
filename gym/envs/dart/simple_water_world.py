@@ -205,7 +205,7 @@ class BaseFluidEnhancedAllDirSimulator(BaseFluidSimulator):
         self.trail[1].append(c[1])
         self.trail[2].append(c[2])
 
-        for i in range(len(self.skeletons[-1].bodynodes)):
+        for i in range(1, len(self.skeletons[-1].bodynodes), 1):
             # self.forces[i] = self.calcFluidForce(self.skeletons[-1].bodynodes[i])
             self.forces[i] = self.calcFluidForceImproved(self.skeletons[-1].bodynodes[i])
 
