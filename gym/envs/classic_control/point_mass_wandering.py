@@ -16,7 +16,7 @@ import joblib
 logger = logging.getLogger(__name__)
 
 
-class SimplerPathFinding(gym.Env):
+class PointMassWanderingEnv(gym.Env):
     def __init__(self):
 
         # 0 for path
@@ -30,48 +30,6 @@ class SimplerPathFinding(gym.Env):
         self.grid_map[:, -1] = 1
 
         mid_idx = int(len(self.grid_map) / 2)
-
-        # self.grid_map[(int(len(self.grid_map) / 2)), 4:-4] = 1
-        # self.grid_map[(int(len(self.grid_map) / 4)), 4:-4] = 1
-        # self.grid_map[(int(len(self.grid_map) / 4)) * 3, 4:-4] = 1
-
-        self.grid_map[1:mid_idx - 1, 1:mid_idx - 1] = 1
-        self.grid_map[(mid_idx + 2):-1, 1:(mid_idx - 1)] = 1
-
-        self.grid_map[1:mid_idx - 1, (mid_idx + 2):-1] = 1
-        self.grid_map[(mid_idx + 2):-1, (mid_idx + 2):-1] = 1
-
-        # self.grid_map[mid_idx - 2, mid_idx - 2] = -1
-        # self.grid_map[mid_idx + 2, mid_idx - 2] = -1
-        # self.grid_map[mid_idx + 2, mid_idx + 2] = -1
-        # self.grid_map[mid_idx - 2, mid_idx + 2] = -1
-
-        # self.grid_map[mid_idx - 3:mid_idx - 1, mid_idx + 2: mid_idx + 4] = 0
-        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx + 2: mid_idx + 4] = 0
-        # self.grid_map[mid_idx + 2: mid_idx + 4, mid_idx - 3: mid_idx - 1] = 0
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, 1] = 2
-        self.grid_map[mid_idx - 1:mid_idx + 2, -2] = 3
-        self.grid_map[1, mid_idx - 1:mid_idx + 2] = 4
-        self.grid_map[-2, mid_idx - 1:mid_idx + 2] = 5
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, 2:mid_idx - 1] = 6
-        self.grid_map[mid_idx, mid_idx - 1] = 6
-
-        self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 7
-        self.grid_map[mid_idx, mid_idx + 1] = 7
-        # self.grid_map[mid_idx - 1:mid_idx + 2, mid_idx + 2:-2] = 1
-
-        self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 8
-        self.grid_map[mid_idx - 1, mid_idx] = 8
-        # self.grid_map[2:mid_idx - 1, mid_idx - 1:mid_idx + 2] = 1
-
-        self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 9
-        self.grid_map[mid_idx + 1, mid_idx] = 9
-
-        # self.grid_map[mid_idx + 2:-2, mid_idx - 1:mid_idx + 2] = 1
-        # This is the goal grid
-        # self.grid_map[1:-1, -2] = 2
 
         self.grid_size = 0.25
         self.grid_vis_size = 25
@@ -104,14 +62,8 @@ class SimplerPathFinding(gym.Env):
         obs_low = -obs_high
         self.observation_space = spaces.Box(obs_low, obs_high)
 
-        self._seed()
-        self.viewer = None
-        self.metadata = {
-            'render.modes': ['human', 'rgb_array'],
-            'video.frames_per_second': int(np.round(1.0 / self.dt)) / self.frameskip
-        }
-
         self.ignore_obs = 0
+
         self.normScale = self.generateNormScaleArr([4, 10])
 
         self.stepNum = 0
@@ -135,6 +87,13 @@ class SimplerPathFinding(gym.Env):
         self.have_goal_rew = True
 
         self.ret = 0
+
+        self._seed()
+        self.viewer = None
+        self.metadata = {
+            'render.modes': ['human', 'rgb_array'],
+            'video.frames_per_second': int(np.round(1.0 / self.dt)) / self.frameskip
+        }
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
@@ -175,54 +134,34 @@ class SimplerPathFinding(gym.Env):
 
         novelRwd, novelPenn = self.calc_novelty_from_autoencoder(obs)
 
-        # if self.stepNum >= 60:
-        #     novelRwd = 0
-
-        # print(self.novelDiff)
-
         if (self.novelDiff > 0):
             self.path_data[-1][1] = self.novelDiff
 
         i, j = self.pos_to_grid_idx(pos_after)
 
-        alive_penalty = -1  # -1  # - self.stepNum
+        reward_dist = np.linalg.norm(pos_after - self.init_pos)
 
-        reward = alive_penalty
+        reward = 0  # reward_dist
         # reward -= self.sum_of_old
         # reward += novelRwd * 0.01
 
         # reward = novelRwd
         # novelRwd = (novelRwd) ** 2
         done = False
-        if 6 <= self.grid_map[i, j] <= 9:
-            reward += 50 * ((self.grid_map[i, j] - 5) / 4.0) ** 3
-            self.grid_map[i, j] = 0
 
-        if 2 <= self.grid_map[i, j] <= 5:
-            done = True
-            # print("Sum of Old: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
-            # if self.have_goal_rew:
-            # print("Sum of accumulated old penalty: ", self.sum_of_old)
-            reward += 500 * ((self.grid_map[i, j] - 1) / 4.0) ** 3
-            # etlse:
-            # print("Sum of accumulated old penalty: ", self.sum_of_old, 'Sum of New', self.sum_of_new)
-            self.ret += reward
-
-            # print(self.ret)
+        # print(self.ret)
         # if self.grid_map[i, j] == -1:
         #     reward -= 5
         #     novelPenn += 10
-        if wall_hit:
-            reward -= 10
-            # done = True
+        # done = True
 
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
         self.ret += reward
 
-        return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
-                                                 'tau': tau, 'Novelty': novelRwd,
-                                                 'Total Reward': reward}
+        return obs, (reward, -novelPenn), done, {
+            'tau': tau, 'Novelty': novelRwd,
+            'Total Reward': reward}
 
     def _get_obs(self):
         return np.concatenate([[self.point_pos[0], self.point_pos[1]], [self.point_vel[0], self.point_vel[1]]]).ravel()
@@ -289,16 +228,13 @@ class SimplerPathFinding(gym.Env):
                             self.point_vel[1] *= -.01
 
                         wall_hit += 1
-                    # break
             self.point_pos = self.point_pos + self.dt * self.point_vel
         return wall_hit
 
     def _reset(self):
-        self.point_pos = self.init_pos  # + self.np_random.uniform(low=-0.05,
-        #                        high=0.05,
-        #                       size=(2))
+        self.point_pos = self.init_pos
 
-        self.point_vel = -np.zeros(2)  # + self.np_random.uniform(low=-0.05, high=0.05, size=(2))
+        self.point_vel = -np.zeros(2)
         self.point_acc_force = -np.zeros(2)
         self.stepNum = 0
         self.sum_of_old = 0

@@ -29,6 +29,14 @@
         </skeleton>
  <skeleton name="skeleton">
             <transformation>-1 0 0 1.57 0 -1.57</transformation>
+
+            <body name="root_aux">
+                <transformation>0 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0</mass>
+                </inertia>
+            </body>
+
             <body name="root">
                 <transformation>0 0 0 0 0 0</transformation>
                 <inertia>
@@ -409,9 +417,15 @@
             </body>
 
 
-            <joint name="main_joint" type="free">
+            <joint name="main_joint_1" type="translational">
                 <parent>world</parent>
+                <child>root_aux</child>
+            </joint>
+
+            <joint name="main_joint_2" type="euler">
+                <parent>root_aux</parent>
                 <child>root</child>
+                <axis_order>zyx</axis_order>
             </joint>
 
             <joint name="neck_chest_joint" type="weld">

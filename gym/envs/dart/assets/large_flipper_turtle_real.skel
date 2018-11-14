@@ -28,6 +28,7 @@
         </skeleton>
         <skeleton name="skeleton">
             <transformation>-2 0 0 0 0 0</transformation>
+
             <body name="torso_aux">
                 <transformation> 0.0 0 0 0 0 0</transformation>
                 <inertia>
