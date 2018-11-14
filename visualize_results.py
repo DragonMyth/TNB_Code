@@ -42,7 +42,7 @@ def render_turtles():
     # autoencoder3 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_2_seed_102.h5")
     # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
     autoencoder_list = [autoencoder0_name]
-    render_policy('DartTurtle-v4', stoch=True, record=True, policy_func=mirror_turtle_policy_fn,
+    render_policy('DartTurtle-v4', stoch=False, record=True, policy_func=mirror_turtle_policy_fn,
                   autoencoder_name_list=autoencoder_list,random_policy=False)
 
 
@@ -59,10 +59,14 @@ def render_four_way_maze():
 
 
 def render_humanoid():
-    render_policy('DartHumanSwim-v0', stoch=False, record=True,
-                  autoencoder_name_list=[], random_policy=True)
+    render_policy('DartHumanSwim-v0', stoch=False, record=True,policy_func=mirror_humanoid_policy_fn,
+                  autoencoder_name_list=[], random_policy=False)
 
+def render_point_mass_wandering():
+    render_policy('PointMassWandering-v0', stoch=False, record=True,
+                  autoencoder_name_list=[], random_policy=False)
 
-render_turtles()
+# render_point_mass_wandering()
 #
-# render_humanoid()
+render_humanoid()
+# render_turtles()

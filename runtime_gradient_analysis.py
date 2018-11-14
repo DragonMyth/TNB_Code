@@ -41,3 +41,9 @@ plot.show()
 aa_dot_full = np.dot(pol_g_reduced/np.linalg.norm(pol_g_reduced),pol_g_novel_reduced/np.linalg.norm(pol_g_novel_reduced))
 aa_dot_no_noise = np.dot(pol_g_reduced_no_noise/np.linalg.norm(pol_g_reduced_no_noise),pol_g_novel_reduced_no_noise/np.linalg.norm(pol_g_novel_reduced_no_noise))
 aa_dot_only_hidden = np.dot(pol_g_novel_reduced_no_noise[26*64:len(pol_g_novel_reduced_no_noise)-5*64]/np.linalg.norm(pol_g_novel_reduced_no_noise[26*64:len(pol_g_novel_reduced_no_noise)-5*64]),pol_g_reduced_no_noise[26*64:len(pol_g_reduced_no_noise)-5*64]/np.linalg.norm(pol_g_reduced_no_noise[26*64:len(pol_g_reduced_no_noise)-5*64]))
+
+adv_task = batch['atarg']
+adv_novel = batch['atarg_novel']
+adv_task_normalized = adv_task/np.linalg.norm(adv_task)
+adv_novel_normalized = adv_novel/np.linalg.norm(adv_novel)
+adv_dots = np.dot(adv_task_normalized,adv_novel_normalized)
