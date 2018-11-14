@@ -81,7 +81,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         tau = np.concatenate(([0.0] * 6, tau))
         # SPD Controller
-
+        prev_obs = self._get_obs()
         self.do_simulation(tau, self.frame_skip)
 
         cur_com = self.robot_skeleton.C
@@ -99,12 +99,23 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
         orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 3 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
+        rotate_pen = 0.5 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
+
+        if(np.isnan(reward)):
+            print('Horizontal',horizontal_pos_rwd)
+            print('Orth',orth_pen)
+            print('rotate', rotate_pen)
+            print('Obs', ob)
+            print('PrevObs',prev_obs)
+            print('ObsFinite?',np.isfinite(ob[:]).all())
+            print('Action',tau)
+            reward = 0
+            novelPenn=1
         # print(reward)
-        valid = np.isfinite(ob[self.ignore_obs::]).all()
+        valid = np.isfinite(ob[:]).all()
         done = not valid
         self.stepNum += 1
 
