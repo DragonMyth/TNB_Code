@@ -104,7 +104,7 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
         # print(reward)
-        valid = np.isfinite(ob[self.ignore_obs::]).all()
+        valid = np.isfinite(ob[:]).all() and (ob<10e3).all()
         done = not valid
         self.stepNum += 1
 
