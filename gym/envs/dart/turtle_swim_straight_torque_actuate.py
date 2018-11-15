@@ -81,7 +81,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         tau = np.concatenate(([0.0] * 6, tau))
         # SPD Controller
-
+        prev_obs = self._get_obs()
         self.do_simulation(tau, self.frame_skip)
 
         cur_com = self.robot_skeleton.C
@@ -103,9 +103,20 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
-        # print(reward)
-        valid = np.isfinite(ob[self.ignore_obs::]).all()
 
+        if(np.isnan(reward)):
+            print('Horizontal',horizontal_pos_rwd)
+            print('Orth',orth_pen)
+            print('rotate', rotate_pen)
+            print('Obs', ob)
+            print('PrevObs',prev_obs)
+            print('ObsFinite?',np.isfinite(ob[:]).all())
+            print('Action',tau)
+            reward = 0
+            novelPenn=1
+        # print(reward)
+
+        valid = np.isfinite(ob[:]).all()
         done = not valid
         self.stepNum += 1
 
@@ -169,11 +180,9 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
                     #     print("Reconstructed traj sum: ", np.sum(traj_recons))
 
                     diff = traj_recons - traj_seg
+                    #diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
+                    #diff = np.multiply(diff, self.novelty_weight_mat)
 
-                    # diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
-                    # diff = np.multiply(diff, self.novelty_weight_mat)
-                    #
-                    # diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
 
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
                     novelDiffList.append(normDiff)
