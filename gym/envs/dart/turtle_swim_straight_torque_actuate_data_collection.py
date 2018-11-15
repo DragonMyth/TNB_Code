@@ -10,8 +10,10 @@ from keras.models import load_model
 class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
         control_bounds = np.array([[1.0] * 8, [-1.0] * 8])
+        # self.action_scale = np.array([7.0, 7.0, 0.1, 0.1, 7.0, 7.0, 0.1, 0.1])  # np.pi / 2.0
         self.action_scale = np.array([7.0, 7.0, 0.04, 0.04, 7.0, 7.0, 0.04, 0.04])  # np.pi / 2.0
         self.frame_skip = 1
+
         dart_env.DartEnv.__init__(self, 'large_flipper_turtle_real.skel', self.frame_skip, 27, control_bounds, dt=0.002,
                                   disableViewer=True,
                                   custom_world=BaseFluidEnhancedAllDirSimulator)
@@ -24,8 +26,8 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         num_of_dofs = len(self.robot_skeleton.dofs) - 6
 
         self.simulation_dt = self.dt * 1.0 / self.frame_skip
-        self.dqLim = 25
-        self.qLim = np.pi / 2
+        # self.dqLim = 25
+        # self.qLim = np.pi / 2
 
         self.stepNum = 0
         self.recordGap = 3
@@ -46,7 +48,31 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         self.ret = 0
         self.ignore_obs = 11
 
+        self.novelty_weight_mat = np.ones((self.novelty_window_size, len(init_obs[self.ignore_obs:])))
+
+        # indexes = np.array([np.arange(2, 4), np.arange(6, 8), np.arange(10, 12), np.arange(14, 16)])
+
+        # self.novelty_weight_mat[:, indexes] = 0
+
+        self.normScale = self.generateNormScaleArr([8, 2 * np.pi, 8, 50])
+
+        self.metadata = {
+            'render.modes': ['human', 'rgb_array'],
+            'video.frames_per_second': 30
+        }
+
+    def generateNormScaleArr(self, norm_scales):
+        norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
+
+        cur_idx = 0
+        for i in range(0, len(norm_scales), 2):
+            num_repeat = int(norm_scales[i])
+            norms[cur_idx:cur_idx + num_repeat] = norm_scales[i + 1]
+            cur_idx += num_repeat
+        return norms
+
     def _step(self, a):
+
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
         old_dq = self.robot_skeleton.dq
@@ -57,17 +83,6 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         # SPD Controller
 
         self.do_simulation(tau, self.frame_skip)
-        # for i in range(self.frame_skip):
-        #     M = self.robot_skeleton.M + self.Kd * self.simulation_dt
-        #     p = -self.Kp.dot(self.robot_skeleton.q + self.robot_skeleton.dq * self.simulation_dt - target_pos)
-        #     d = -self.Kd.dot(self.robot_skeleton.dq)
-        #
-        #     qddot = np.linalg.solve(M, -self.robot_skeleton.c + p + d + self.robot_skeleton.constraint_forces())
-        #     tau = p + d - self.Kd.dot(qddot) * self.simulation_dt
-        #
-        #     tau[0:len(self.robot_skeleton.joints[0].dofs)] = 0
-        #     print(np.max(tau))
-        #     self.do_simulation(tau, 1)
 
         cur_com = self.robot_skeleton.C
         cur_q = self.robot_skeleton.q
@@ -79,22 +94,25 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         angs = np.abs(self.robot_skeleton.q[6::])
         old_angs = np.abs(old_q[6::])
 
-        energy_rwd = 5 * sum(np.abs(old_angs - angs))
+        # energy_rwd = sum(np.abs(old_angs - angs))
 
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
-        orth_pen = 5 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 5 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
+        orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
+        rotate_pen = 0.5 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
 
         # mirror_enforce
-        reward = 0 + horizontal_pos_rwd + energy_rwd - rotate_pen - orth_pen
+        reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
         # print(reward)
         valid = np.isfinite(ob[self.ignore_obs::]).all()
         done = not valid
+        self.stepNum += 1
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
-                                                'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'tau': tau,
-                                                'energy_rwd': energy_rwd}
+                                                'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],
+                                                'states': ob[self.ignore_obs::],
+                                                'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn
+                                                }
 
     def _get_obs(self):
         return np.concatenate([self.robot_skeleton.q[1:6], self.robot_skeleton.dq[0:6], self.robot_skeleton.q[6::],
@@ -117,9 +135,12 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
         self._get_viewer().scene.tb._set_theta(-60)
         self.track_skeleton_id = 0
 
-    def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
-        traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)
-        traj[:, :, int(len(traj[0, 0]) / 2)::] /= (maxdq - mindq)
+    def normalizeTraj(self, traj):
+
+        # traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (self.qnorm)
+        # traj[:, :, int(len(traj[0, 0]) / 2)::] /= (self.dqnorm)
+
+        traj[:, :, :] /= self.normScale
         return traj
 
     def calc_novelty_from_autoencoder(self, obs):
@@ -131,10 +152,11 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
                     self.traj_buffer.append(obs[self.ignore_obs:])
 
             if (len(self.traj_buffer) == self.novelty_window_size):
+                # print(self.stepNum)
                 novelDiffList = []
                 # Reshape to 1 dimension
                 traj_seg = np.array([self.traj_buffer])
-                traj_seg = self.normalizeTraj(traj_seg, -self.qLim, self.qLim, -self.dqLim, self.dqLim)
+                traj_seg = self.normalizeTraj(traj_seg)
                 traj_seg = traj_seg.reshape((len(traj_seg), np.prod(traj_seg.shape[1:])))
 
                 for i in range(len(self.novel_autoencoders)):
@@ -147,6 +169,11 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
 
                     diff = traj_recons - traj_seg
 
+                    diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
+                    diff = np.multiply(diff, self.novelty_weight_mat)
+
+                    diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
+
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
                     novelDiffList.append(normDiff)
                     # print("Novel diff is", nov elDiff)
@@ -154,8 +181,8 @@ class DartTurtleSwimStraighTorqueActuateEnvDataCollect(dart_env.DartEnv, utils.E
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = 5 - min(self.novelDiff, 5)
-
+                self.novelDiffRev = np.exp(-self.novelDiff)
+                # self.novelDiffRev = 4 - min(self.novelDiff, 4)
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
             novelRwd = self.novelty_factor * self.novelDiff

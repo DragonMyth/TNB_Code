@@ -46,6 +46,9 @@ class BaseFluidSimulator(pydart.World):
     def calcFluidForceImproved(self, bodynode):
         dq = self.skeletons[-1].dq
 
+        if len(bodynode.shapenodes) == 0:
+            return np.zeros(3)
+
         shape = bodynode.shapenodes[0]
         worldCenterPoint = bodynode.to_world([0, 0, 0])
 
@@ -205,7 +208,7 @@ class BaseFluidEnhancedAllDirSimulator(BaseFluidSimulator):
         self.trail[1].append(c[1])
         self.trail[2].append(c[2])
 
-        for i in range(1, len(self.skeletons[-1].bodynodes), 1):
+        for i in range(len(self.skeletons[-1].bodynodes)):
             # self.forces[i] = self.calcFluidForce(self.skeletons[-1].bodynodes[i])
             self.forces[i] = self.calcFluidForceImproved(self.skeletons[-1].bodynodes[i])
 

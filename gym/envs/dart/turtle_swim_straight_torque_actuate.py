@@ -99,12 +99,13 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         horizontal_pos_rwd = (cur_com[0] - old_com[0]) * 1000
 
         orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
-        rotate_pen = 3 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
+        rotate_pen = 0.5 * (np.abs(cur_q[3]) + np.abs(cur_q[4]) + np.abs(cur_q[5]))
 
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
         # print(reward)
         valid = np.isfinite(ob[self.ignore_obs::]).all()
+
         done = not valid
         self.stepNum += 1
 
@@ -169,10 +170,10 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
                     diff = traj_recons - traj_seg
 
-                    diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
-                    diff = np.multiply(diff, self.novelty_weight_mat)
-
-                    diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
+                    # diff = diff.reshape(self.novelty_window_size, len(obs[self.ignore_obs:]))
+                    # diff = np.multiply(diff, self.novelty_weight_mat)
+                    #
+                    # diff = diff.reshape((len(diff), np.prod(diff.shape[1:])))
 
                     normDiff = np.linalg.norm(diff[:], axis=1)[0]
                     novelDiffList.append(normDiff)

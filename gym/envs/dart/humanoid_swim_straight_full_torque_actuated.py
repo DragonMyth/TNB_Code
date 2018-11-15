@@ -46,6 +46,9 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
             'render.modes': ['human', 'rgb_array'],
             'video.frames_per_second': 30
         }
+        # q = self.robot_skeleton.q
+        # q[3] = 10
+        # self.robot_skeleton.set_positions(q)
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
@@ -81,7 +84,7 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
 
         orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
 
-        rotate_pen = 2 * np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
+        rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
 
         # energy_consumed_pen = 0.5 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
 
@@ -98,7 +101,7 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
                                                 }
 
     def _get_obs(self):
-        return np.concatenate([self.robot_skeleton.q[0:3], self.robot_skeleton.q[4:6], self.robot_skeleton.dq[0:6],
+        return np.concatenate([self.robot_skeleton.q[0:3],self.robot_skeleton.q[4:6], self.robot_skeleton.dq[0:6],
                                self.robot_skeleton.q[6:8], self.robot_skeleton.dq[6:8],
                                self.robot_skeleton.q[8::], self.robot_skeleton.dq[8::]]).ravel()
 
