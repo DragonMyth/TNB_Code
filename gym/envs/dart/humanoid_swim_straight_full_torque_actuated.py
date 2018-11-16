@@ -27,7 +27,7 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
         self.original_com = self.robot_skeleton.C
         self.original_q = self.robot_skeleton.q
 
-        num_of_dofs = len(self.robot_skeleton.dofs) - len(self.robot_skeleton.joints[0].dofs)
+        num_of_dofs = len(self.robot_skeleton.dofs) - 6
         #
         # self.Kp = np.diagflat([0.0] * len(self.robot_skeleton.joints[0].dofs) + [4000.0] * num_of_dofs)
         # self.Kd = 80 * self.simulation_dt * self.Kp
@@ -41,7 +41,8 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.ignore_obs = 11
-        self.normScale = self.generateNormScaleArr([1, 1])
+
+        self.normScale = self.generateNormScaleArr([2, np.pi, 2, 50, 18, np.pi, 18, 50])
         self.metadata = {
             'render.modes': ['human', 'rgb_array'],
             'video.frames_per_second': 30
@@ -84,14 +85,14 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
 
         orth_pen = 1 * (np.abs(cur_com[1] - self.original_com[1]) + np.abs(cur_com[2] - self.original_com[2]))
 
-        rotate_pen = np.sum(np.abs(cur_q[:3] - self.original_q[:3]))
+        rotate_pen = 0.5 * np.sum(np.abs(cur_q[3:6] - self.original_q[3:6]))
 
         # energy_consumed_pen = 0.5 * np.sum(np.abs(tau[8::] * old_dq[8::] * self.simulation_dt))
 
         # mirror_enforce
         reward = horizontal_pos_rwd - rotate_pen - orth_pen
 
-        valid = np.isfinite(ob[5::]).all()
+        valid = np.isfinite(ob[:]).all() and (ob < 10e3).all()
         done = not valid
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
@@ -101,7 +102,7 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
                                                 }
 
     def _get_obs(self):
-        return np.concatenate([self.robot_skeleton.q[0:3],self.robot_skeleton.q[4:6], self.robot_skeleton.dq[0:6],
+        return np.concatenate([self.robot_skeleton.q[1:6], self.robot_skeleton.dq[0:6],
                                self.robot_skeleton.q[6:8], self.robot_skeleton.dq[6:8],
                                self.robot_skeleton.q[8::], self.robot_skeleton.dq[8::]]).ravel()
 

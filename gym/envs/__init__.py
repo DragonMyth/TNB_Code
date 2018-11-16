@@ -132,6 +132,12 @@ register(
     max_episode_steps=500,
 )
 
+register(
+    id='PointMassWandering-v0',
+    entry_point='gym.envs.classic_control:PointMassWanderingEnv',
+    max_episode_steps=200,
+)
+
 # Box2d
 # ----------------------------------------
 
@@ -404,9 +410,6 @@ register(
     entry_point='gym.envs.dart:DartHumanoidSwimStraightFullTorqueActuateEnv',
     max_episode_steps=500,
 )
-
-
-
 
 register(
     id='DartHumanUpperSwim-v0',
