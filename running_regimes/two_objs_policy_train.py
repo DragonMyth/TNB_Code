@@ -166,4 +166,4 @@ if __name__ == '__main__':
     # batch_size_per_process = sys.argv[5]
     # num_iterations = sys.argv[6]
     main(args.env, args.seed, int(args.curr_run), args.data_saving_path, int(args.batch_size_per_process),
-         int(args.num_iterations))
+         int(args.num_iterations), autoencoder_base="./novelty_data/local/autoencoders/")

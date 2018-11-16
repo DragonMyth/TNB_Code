@@ -62,18 +62,18 @@ def mirror_humanoid_policy_fn(name, ob_space, ac_space):
                                                             num_hid_layers=3,
                                                             mirror_loss=True,
                                                             observation_permutation=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-                                                                                     10, 11, 12, 13, 14, 15,
+                                                                                     10, 11, 12, 13, 14,
 
-                                                                                     21, 22, 23, 24, 25, 16, 17, 18,
-                                                                                     19, 20,
+                                                                                     20, 21, 22, 23, 24, 15, 16, 17,
+                                                                                     18, 19,
 
-                                                                                     30, 31, 32, 33, 26, 27, 28, 29,
+                                                                                     29, 30, 31, 32, 25, 26, 27, 28,
 
-                                                                                     39, 40, 41, 42, 43, 34, 35, 36,
-                                                                                     37, 38,
+                                                                                     38, 39, 40, 41, 42, 33, 34, 35,
+                                                                                     36, 37,
 
-                                                                                     48, 49, 50, 51, 44, 45, 46,
-                                                                                     47],
+                                                                                     47, 48, 49, 50, 43, 44, 45,
+                                                                                     46],
 
                                                             action_permutation=[0, 1,
 
@@ -128,8 +128,8 @@ def perform_rollout(policy,
             if animate:
                 env.render()
             if policy is None:
-                action_taken = (np.random.rand(env.unwrapped.act_dim) - 0.5 * np.ones(
-                    env.unwrapped.act_dim)) * 2
+                action_taken = np.ones(env.unwrapped.act_dim)#(np.random.rand(env.unwrapped.act_dim) - 0.5 * np.ones(
+                    #env.unwrapped.act_dim)) * 2
             else:
                 if i % control_step_skip == 0:
 
@@ -609,6 +609,8 @@ if __name__ == '__main__':
     policy_func = None
     if args.policy_fn_type == 'turtle':
         policy_func = mirror_turtle_policy_fn
+    elif args.policy_fn_type == 'humanoid':
+        policy_func = mirror_humanoid_policy_fn
     else:
         policy_func = policy_fn
 
