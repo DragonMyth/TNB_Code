@@ -212,8 +212,8 @@ def learn(env, policy_fn, *,
 
     U.initialize()
 
-    adam.sync()
-    adam_novel.sync()
+    # adam.sync()
+    # adam_novel.sync()
     adam_all.sync()
 
     # Prepare for rollouts
@@ -277,6 +277,7 @@ def learn(env, policy_fn, *,
         vprednovelbefore = seg['vpred_novel']  # predicted novelty value function before update
 
         atarg = (atarg - atarg.mean()) / atarg.std()  # standardized advantage function estimate
+
         atarg_novel = (
                               atarg_novel - atarg_novel.mean()) / atarg_novel.std()  # standartized novelty advantage function estimate
 
@@ -330,6 +331,7 @@ def learn(env, policy_fn, *,
                 # pol_g_novel_normalized = pol_g_novel / np.linalg.norm(pol_g_novel)
 
                 pol_g_reduced_no_noise = pol_g_reduced[:(len(pol_g_reduced) - noise_count)]
+
                 pol_g_novel_reduced_no_noise = pol_g_novel_reduced[:(len(pol_g_novel_reduced) - noise_count)]
 
                 pol_g_reduced_no_noise_normalized = pol_g_reduced_no_noise / np.linalg.norm(
@@ -353,6 +355,13 @@ def learn(env, policy_fn, *,
                 pol_g_reduced_normalized = pol_g_reduced / np.linalg.norm(pol_g_reduced)
                 pol_g_novel_reduced_normalized = pol_g_novel_reduced / np.linalg.norm(pol_g_novel_reduced)
 
+                # adv_task = batch['atarg']
+                # adv_novel = batch['atarg_novel']
+                # adv_task_normalized = adv_task / np.linalg.norm(adv_task)
+                # adv_novel_normalized = adv_novel / np.linalg.norm(adv_novel)
+                # adv_dots = np.dot(adv_task_normalized, adv_novel_normalized)
+                # print('Dot',dot,'Adv_dot',adv_dots)
+
                 if (dot > 0):
 
                     bisector_no_noise = (pol_g_reduced_normalized + pol_g_novel_reduced_normalized)
@@ -364,17 +373,11 @@ def learn(env, policy_fn, *,
                     octSector_no_noise = (pol_g_reduced_normalized + quarterSector_no_noise_normalized)
                     octSector_no_noise_normalized = octSector_no_noise / np.linalg.norm(octSector_no_noise)
 
-                    target_dir = pol_g_novel_reduced_normalized
+                    target_dir = quarterSector_no_noise_normalized
 
                     final_gradient[0:policy_var_count] = 0.5 * (
                             np.dot(pol_g_reduced, target_dir) + np.dot(pol_g_novel_reduced,
                                                                        target_dir)) * target_dir
-
-                    # final_gradient[0:policy_var_count] = np.concatenate([np.dot(pol_g_reduced_no_noise,
-                    #                                                             target_dir) + np.dot(
-                    #     pol_g_novel_reduced_no_noise,
-                    #     target_dir) * 0.5 * target_dir, pol_g_reduced[
-                    #                                     len(pol_g_reduced) - noise_count::]])
 
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                 else:
@@ -382,17 +385,9 @@ def learn(env, policy_fn, *,
                     task_projection_no_noise = np.dot(pol_g_reduced,
                                                       pol_g_novel_reduced_normalized) * pol_g_novel_reduced_normalized
 
-                    # novel_projection_no_noise = np.dot(pol_g_novel_reduced,
-                    #                                    pol_g_reduced_normalized) * pol_g_reduced_normalized
-
-                    # final_pol_gradient_no_noise = pol_g_novel_reduced - novel_projection_no_noise
                     final_pol_gradient_no_noise = pol_g_reduced - task_projection_no_noise
 
                     final_gradient[0:policy_var_count] = final_pol_gradient_no_noise
-
-                    # final_gradient[0:policy_var_count] = np.concatenate(
-                    #     [final_pol_gradient_no_noise,
-                    #      pol_g_reduced[len(pol_g_reduced) - noise_count::]])
 
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
 
