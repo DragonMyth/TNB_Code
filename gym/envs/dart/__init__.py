@@ -4,8 +4,10 @@ from gym.envs.dart.dart_env import DartEnv
 
 from gym.envs.dart.cart_pole import DartCartPoleEnv
 from gym.envs.dart.hopper import DartHopperEnv
+from gym.envs.dart.hopper_deceptive import DartHopperDeceptiveEnv
 from gym.envs.dart.cartpole_swingup import DartCartPoleSwingUpEnv
 from gym.envs.dart.reacher import DartReacherEnv
+from gym.envs.dart.reacher_deceptive import DartReacherDeceptiveEnv
 from gym.envs.dart.cart_pole_img import DartCartPoleImgEnv
 from gym.envs.dart.walker2d import DartWalker2dEnv
 from gym.envs.dart.walker3d import DartWalker3dEnv

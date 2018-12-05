@@ -47,6 +47,9 @@ class DartHumanoidSwimStraightFullTorqueActuateEnv(dart_env.DartEnv, utils.EzPic
             'render.modes': ['human', 'rgb_array'],
             'video.frames_per_second': 30
         }
+
+        self.robot_skeleton.set_self_collision_check(True)
+        self.robot_skeleton.set_adjacent_body_check(False)
         # q = self.robot_skeleton.q
         # q[3] = 10
         # self.robot_skeleton.set_positions(q)

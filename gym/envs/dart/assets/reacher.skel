@@ -43,6 +43,13 @@
                         </box>
                     </geometry>
                 </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.1 0.5 0.1</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
             </body>
             <body name="link 2">
                 <transformation>0 -0.5 0 0 0 0</transformation>
@@ -57,6 +64,13 @@
                         </box>
                     </geometry>
                 </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.1 0.5 0.1</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
             </body>
             <body name="link 3">
                 <transformation>0 -1 0 0 0 0</transformation>
@@ -71,6 +85,13 @@
                         </box>
                     </geometry>
                 </visualization_shape>
+                                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.1 0.5 0.1</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
             </body>
             <joint type="universal" name="joint 1">
                 <parent>world</parent>
