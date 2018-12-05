@@ -39,7 +39,10 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     while True:
         prevac = ac
         ac, vpred, vpred_novel = pi.act(stochastic, ob)
-        # Slight weirdness here because we need value function at time T
+        if(np.isnan(vpred)):
+            print(ac)
+            print(ob)
+       # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
         if t > 0 and t % horizon == 0:
@@ -89,6 +92,8 @@ def add_vtarg_and_adv(seg, gamma, lam):
     """
     new = np.append(seg["new"], 0)  # last element is only used for last vtarg, but we already zeroed it if last new = 1
     vpred = np.append(seg["vpred"], seg["nextvpred"])
+    if(np.isnan(vpred).any()):
+        print("ac")
     vpred_novel = np.append(seg["vpred_novel"], seg["nextvpred_novel"])
 
     T = len(seg["rew"])
@@ -97,6 +102,8 @@ def add_vtarg_and_adv(seg, gamma, lam):
     seg["adv_novel"] = gaelam_novel = np.empty(T, 'float32')
 
     rew = seg["rew"]
+    if(np.isnan(rew).any()):
+        print("HAHAHAHAHA Reward EXPLODE!!!!!!!!!")
     rew_novel = seg["rew_novel"]
     lastgaelam = 0
     lastgaelam_novel = 0
@@ -104,6 +111,11 @@ def add_vtarg_and_adv(seg, gamma, lam):
     for t in reversed(range(T)):
         nonterminal = 1 - new[t + 1]
         delta = rew[t] + gamma * vpred[t + 1] * nonterminal - vpred[t]
+        if(np.isnan(delta)):
+            print('reward',rew[t])
+            print('vpred t+1',vpred[t+1])
+            print('vpred t',vpred[t])
+            print('nonterminal',nonterminal)
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
 
         delta_novel = rew_novel[t] + gamma * vpred_novel[t + 1] * nonterminal - vpred_novel[t]
@@ -199,8 +211,8 @@ def learn(env, policy_fn, *,
     lossandgrad_novel = U.function([ob, ac, atarg_novel, ret_novel, lrmult],
                                    losses_novel + [U.flatgrad(total_loss_novel, var_list_novel)])
 
-    adam = MpiAdam(var_list, epsilon=adam_epsilon)
-    adam_novel = MpiAdam(var_list_novel, epsilon=adam_epsilon)
+    #adam = MpiAdam(var_list, epsilon=adam_epsilon)
+    #adam_novel = MpiAdam(var_list_novel, epsilon=adam_epsilon)
     adam_all = MpiAdam(var_list_pi, epsilon=adam_epsilon)
 
     assign_old_eq_new = U.function([], [], updates=[tf.assign(oldv, newv)
@@ -212,8 +224,6 @@ def learn(env, policy_fn, *,
 
     U.initialize()
 
-    # adam.sync()
-    # adam_novel.sync()
     adam_all.sync()
 
     # Prepare for rollouts
@@ -308,6 +318,8 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
+                #if MPI.COMM_WORLD.Get_rank() == 0:
+                #    print(np.max(g[policy_var_count::]))
                 pol_g = g[0:policy_var_count]
                 pol_g_novel = g_novel[0:policy_var_count]
 
@@ -338,6 +350,18 @@ def learn(env, policy_fn, *,
                     pol_g_reduced_no_noise)
                 pol_g_novel_reduced_no_noise_normalized = pol_g_novel_reduced_no_noise / np.linalg.norm(
                     pol_g_novel_reduced_no_noise)
+
+
+                if(np.isnan(batch["ob"]).any()):
+                   print("OBS is NANANANANNANANANAN")
+                if(np.isnan(batch["ac"]).any()):
+                    print("ACT is NANANANANNANANANAN")
+                if(np.isnan(batch["atarg"]).any()):
+                    print("Atarg is NANANANANAN")
+                if(np.isnan(batch["vtarg"]).any()):
+                    print("Vtarg is NANANANANNANA")
+                if(np.isnan(final_gradient).any()):
+                    print("ValueNet has NANANANANANANNANANAN")
 
                 dot = np.dot(pol_g_reduced_no_noise_normalized, pol_g_novel_reduced_no_noise_normalized)
 
