@@ -34,6 +34,11 @@ def render_reachers():
                   autoencoder_name_list=[])
 
 
+def render_deceptive_reacher():
+    render_policy('DartReacher3d-v2', stoch=False, record=True,
+                  autoencoder_name_list=[])
+
+
 def render_turtles():
     autoencoder_dir = "novelty_data/rome/autoencoders/"
 
@@ -43,7 +48,7 @@ def render_turtles():
     # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
     autoencoder_list = [autoencoder0_name]
     render_policy('DartTurtle-v4', stoch=False, record=True, policy_func=mirror_turtle_policy_fn,
-                  autoencoder_name_list=autoencoder_list,random_policy=False)
+                  autoencoder_name_list=autoencoder_list, random_policy=False)
 
 
 def render_deceptive_path():
@@ -59,14 +64,29 @@ def render_four_way_maze():
 
 
 def render_humanoid():
-    render_policy('DartHumanSwim-v0', stoch=False, record=True,policy_func=mirror_humanoid_policy_fn,
+    render_policy('DartHumanSwim-v0', stoch=False, record=True, policy_func=mirror_humanoid_policy_fn,
                   autoencoder_name_list=[], random_policy=False)
+
 
 def render_point_mass_wandering():
-    render_policy('PointMassWandering-v0', stoch=False, record=True,
+    render_policy('PointMassWandering-v0', stoch=False, record=False,
                   autoencoder_name_list=[], random_policy=False)
 
+
+def render_hopper():
+    render_policy('DartHopper-v2', stoch=False, record=True,
+                  autoencoder_name_list=[], random_policy=False)
+
+def render_walker():
+    render_policy('DartWalker2d-v1', stoch=False, record=True,
+                  autoencoder_name_list=[], random_policy=True)
+
+
+# render_four_way_maze()
 # render_point_mass_wandering()
 #
-render_humanoid()
+# render_walker()
 # render_turtles()
+# render_humanoid()
+
+render_deceptive_reacher()

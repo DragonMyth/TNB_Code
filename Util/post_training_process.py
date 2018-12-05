@@ -8,7 +8,7 @@ import joblib
 from joblib import Parallel, delayed
 from tkinter.filedialog import askopenfilename
 from tkinter.filedialog import askopenfilenames
-
+import tkinter
 from tkinter.filedialog import askdirectory
 import numpy as np
 
@@ -128,8 +128,8 @@ def perform_rollout(policy,
             if animate:
                 env.render()
             if policy is None:
-                action_taken = np.ones(env.unwrapped.act_dim)#(np.random.rand(env.unwrapped.act_dim) - 0.5 * np.ones(
-                    #env.unwrapped.act_dim)) * 2
+                action_taken = (np.random.rand(env.unwrapped.act_dim) - 0.5 * np.ones(
+                    env.unwrapped.act_dim)) * 2
             else:
                 if i % control_step_skip == 0:
 
@@ -176,7 +176,7 @@ def perform_rollout(policy,
                     # print("Action taken is: ", action_taken)
             if predefined_actions:
                 action_taken = predefined_actions[i][::-1]
-
+            # print("MAX: ",np.max(action_taken),"MIN: ", np.min(action_taken))
             observation, reward, done, info = env.step(action_taken)
             # observation, reward, done, info = env.step(np.array([-1, 0]))
 
@@ -290,21 +290,21 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
         subsampled_paths_per_thread = []
         # print("Rollout number is ", i)
         # obs_skip = 15  # np.random.randint(7, 28)
-        num_datapoints = int(2500 / (instancesNum * obs_skip))
+        # num_datapoints = int(2500 / (instancesNum * obs_skip))
 
         path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
 
         useful_path_data = path['observations'][::]
         # useful_path_data_reverse = useful_path_data[::-1]
-
+        # print(len(useful_path_data))
         # useful_path_data_combined = useful_path_data + useful_path_data_reverse
         split_paths = list(iterutils.chunked_iter(useful_path_data, instancesNum * obs_skip))
 
         # Split a rollout in to segments of 50 time steps
-
-        if (num_datapoints > len(split_paths) - 1):
-            num_datapoints = len(split_paths) - 1
-            # print("WHYWHY")
+        # print(len(split_paths))
+        # if (num_datapoints > len(split_paths) - 1):
+        num_datapoints = len(split_paths) - 1
+        # print("WHYWHY")
 
         for j in range(num_datapoints):
 
@@ -384,10 +384,12 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
                   record=False, policy_func=policy_fn, autoencoder_name_list=[], random_policy=False):
     if not random_policy:
-
+        root = tkinter.Tk()
+        # root.update()
         openFileOption = {}
         openFileOption['initialdir'] = '../data/ppo_' + env
         filename = askopenfilename(**openFileOption)
+        root.update()
 
         # DartFlatworm
         # DartHumanSwim

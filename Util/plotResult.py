@@ -49,9 +49,9 @@ def plot_progress():
 
     AverageReturns = np.array(data_lookup[category_idx_lookup['EpRewMean']])
     EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
-    RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
+    # RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
     TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
-    NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
+    # NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
     # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
     # MinReturns = data_lookup[category_idx_lookup['MinReturn']]
 
@@ -75,7 +75,7 @@ def plot_progress():
 
     plot.figure()
 
-    plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
+    # plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
     plot.xlabel('Iterations')
 
     plot.legend()
@@ -89,7 +89,7 @@ def plot_progress():
 
     plot.figure()
 
-    plot.hist(RelativeDirection, stacked=True, bins=30)
+    # plot.hist(RelativeDirection, stacked=True, bins=30)
     plot.xlabel('Relative Directions')
     plot.ylabel('Probability')
 
@@ -104,7 +104,7 @@ def plot_progress():
     plot.figure()
 
     plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
-    plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
+    # plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
 
     plot.xlabel('Iterations')
     plot.ylabel('Gradient Magnitudes')
@@ -173,4 +173,4 @@ def plot_gradient():
 
 
 plot_progress()
-plot_gradient()
+# plot_gradient()
