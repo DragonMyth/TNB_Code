@@ -11,7 +11,7 @@ if __name__ == '__main__':
     num_trajs_per_pol = 100
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v2')
+    parser.add_argument('--env', help='environment ID', default='DartWalker2d-v1')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
@@ -20,14 +20,14 @@ if __name__ == '__main__':
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data',
-                        default='DartReacher3d-v2')
+                        default='DartWalker2d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=6)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=5)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=10)
@@ -44,19 +44,19 @@ if __name__ == '__main__':
     # qnorm = 2 * np.pi
     # dqnorm = 50
 
-    norm_scale = np.array([10, 1, 5, 2 * np.pi, 5, 50])
+    norm_scale = np.array([6, np.pi, 6, 10])
     norm_scale_str = ''
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(0, 20, 1):
+    for s in range(0, 1, 1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
         specified_time = None
-        for i in range(0, 4, 1):
+        for i in range(0, 5, 1):
             # i = 0
             curr_run = str(i)
             if i == 0:
@@ -114,8 +114,6 @@ if __name__ == '__main__':
                                                 + ' --seed ' + str(seed)
                                                 + ' --data_collect_env ' + str(args.data_collect_env)
                                                 + ' --curr_run ' + str(curr_run)
-                                                # + ' --qnorm ' + str(qnorm)
-                                                # + ' --dqnorm ' + str(dqnorm)
                                                 + ' --num_epoch ' + str(num_epoch)
                                                 + ' --batch_size ' + str(batch_size)
                                                 + ' --norm_scales ' + str(norm_scale_str)

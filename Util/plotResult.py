@@ -51,7 +51,7 @@ def plot_progress():
     EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
     # RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
     TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
-    # NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
+    NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
     # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
     # MinReturns = data_lookup[category_idx_lookup['MinReturn']]
 
@@ -104,7 +104,7 @@ def plot_progress():
     plot.figure()
 
     plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
-    # plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
+    plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
 
     plot.xlabel('Iterations')
     plot.ylabel('Gradient Magnitudes')
@@ -112,7 +112,7 @@ def plot_progress():
     plot.legend()
     plot.yscale('linear')
     plot.xscale('linear')
-    # plot.legend()
+    plot.legend()
     plot.savefig(snapshot_dir + '/gradient_magnitudes' + '.jpg')
 
     plot.show()
