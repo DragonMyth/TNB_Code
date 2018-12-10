@@ -9,7 +9,7 @@ if __name__ == '__main__':
     cpu_count = 8  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
 
-    num_trajs_per_pol = 1000
+    num_trajs_per_pol = 100
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='DartHopper-v2')
@@ -32,9 +32,11 @@ if __name__ == '__main__':
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
-                        default=10)
+                        default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
                         default=3)
+    parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
+                        default=1)
 
     args = parser.parse_args()
     env_name = args.env
@@ -100,6 +102,7 @@ if __name__ == '__main__':
             + ' --policy_fn_type ' + 'normal'
             + ' --num_states_per_data ' + str(args.num_states_per_data)
             + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
+            + ' --control_step_skip ' + str(args.control_step_skip)
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(

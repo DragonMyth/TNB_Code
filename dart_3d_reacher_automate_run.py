@@ -17,22 +17,24 @@ if __name__ == '__main__':
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
     print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=400)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data',
                         default='DartReacher3d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=350)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=6)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
-                        default=10)
+                        default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=2)
+                        default=3)
+    parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
+                        default=1)
 
     args = parser.parse_args()
     env_name = args.env
@@ -98,6 +100,7 @@ if __name__ == '__main__':
             + ' --policy_fn_type ' + 'normal'
             + ' --num_states_per_data ' + str(args.num_states_per_data)
             + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
+            + ' --control_step_skip ' + str(args.control_step_skip)
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(

@@ -6,7 +6,7 @@ import multiprocessing
 from Util.post_training_process import *
 
 if __name__ == '__main__':
-    cpu_count = 12#multiprocessing.cpu_count()
+    cpu_count = 12  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -16,16 +16,23 @@ if __name__ == '__main__':
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
     print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=1000)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=700)
 
-    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v5')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v4')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=900)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=650)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=10)
 
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=11)
+
+    parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
+                        default=15)
+    parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
+                        default=3)
+    parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
+                        default=1)
 
     args = parser.parse_args()
     env_name = args.env
@@ -77,6 +84,9 @@ if __name__ == '__main__':
             + ' --policy_saving_path ' + str(data_saving_path + '/policy')
             + ' --ignore_obs ' + str(args.ignore_obs)
             + ' --policy_fn_type ' + 'turtle'
+            + ' --num_states_per_data ' + str(args.num_states_per_data)
+            + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
+            + ' --control_step_skip ' + str(args.control_step_skip)
             , shell=True)
         #
         collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
@@ -94,8 +104,6 @@ if __name__ == '__main__':
                                             + ' --seed ' + str(seed)
                                             + ' --data_collect_env ' + str(args.data_collect_env)
                                             + ' --curr_run ' + str(curr_run)
-                                            # + ' --qnorm ' + str(qnorm)
-                                            # + ' --dqnorm ' + str(dqnorm)
                                             + ' --num_epoch ' + str(num_epoch)
                                             + ' --batch_size ' + str(batch_size)
                                             + ' --norm_scales ' + str(norm_scale_str)
