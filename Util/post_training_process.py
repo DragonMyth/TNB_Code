@@ -292,7 +292,8 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
         # obs_skip = 15  # np.random.randint(7, 28)
         # num_datapoints = int(2500 / (instancesNum * obs_skip))
 
-        path = perform_rollout(policy, environment, debug=False, animate=opt['animate'], control_step_skip=5)
+        path = perform_rollout(policy, environment, debug=False, animate=opt['animate'],
+                               control_step_skip=opt['action_skip'])
 
         useful_path_data = path['observations'][::]
         # useful_path_data_reverse = useful_path_data[::-1]
@@ -332,7 +333,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
                               traj_per_policy_per_process=100,
                               policy_file_basename='itr_', data_dir='', policy_func=policy_fn, numState=15,
-                              obs_skip=15):
+                              obs_skip=15, action_skip=5):
     comm = MPI.COMM_WORLD
     directory = data_dir
 
@@ -354,7 +355,7 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
 
             restore_policy(sess, pi, policy_param)
             subsampled_paths = collect_rollout(pi, env, traj_per_policy_per_process, ignoreObs, animate=False,
-                                               instancesNum=numState, obs_skip=obs_skip)
+                                               instancesNum=numState, obs_skip=obs_skip, action_skip=action_skip)
 
             subsampled_path_per_proc.extend(subsampled_paths)
             # print("Shape of Path for this policy is ", numpyArr.shape)
@@ -605,6 +606,8 @@ if __name__ == '__main__':
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
                         default=15)
+    parser.add_argument('--control_step_skip', help='Number of steps sharing the same control signal',
+                        default=5)
 
     args = parser.parse_args()
 
@@ -627,5 +630,6 @@ if __name__ == '__main__':
                                          data_dir=args.policy_saving_path,
                                          policy_func=policy_func,
                                          numState=int(args.num_states_per_data),
-                                         obs_skip=int(args.obs_skip_per_state)
+                                         obs_skip=int(args.obs_skip_per_state),
+                                         action_skip=int(args.control_step_skip)
                                          )

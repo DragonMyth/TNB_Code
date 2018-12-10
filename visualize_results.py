@@ -29,7 +29,7 @@ from Util.post_training_process import *
 # # render_policy('DartTurtle-v5', action_skip=5, stoch=True, record=True)
 
 
-def render_reachers():
+def render_reacher():
     render_policy('DartReacher3d-v1', stoch=False, record=True,
                   autoencoder_name_list=[])
 
@@ -44,14 +44,14 @@ def render_turtles():
 
     autoencoder0_name = autoencoder_dir + "DartTurtle-v4_autoencoder_seed_0_run_0.h5"
     # autoencoder1_name = autoencoder_dir + "DartTurtle-v4_autoencoder_seed_0_run_1.h5"
-    # autoencoder3 = load_model(autoencoder_dir + "SimplerPathFinding-v0_autoencoder_for_run_2_seed_102.h5")
+    # autoencoder3 = load_model(autoencoder_dir + "SimplerPa thFinding-v0_autoencoder_for_run_2_seed_102.h5")
     # autoencoder4 = load_model(autoencoder_dir + "new_path_finding_autoencoder_autoencoder_4_seed=54.h5")
     autoencoder_list = [autoencoder0_name]
     render_policy('DartTurtle-v4', stoch=False, record=True, policy_func=mirror_turtle_policy_fn,
                   autoencoder_name_list=autoencoder_list, random_policy=False)
 
 
-def render_deceptive_path():
+def render_deceptive_maze():
     autoencoder_list = []
     render_policy('PathFindingDeceptive-v0', stoch=False, record=True,
                   autoencoder_name_list=[])
@@ -77,16 +77,18 @@ def render_hopper():
     render_policy('DartHopper-v2', stoch=False, record=True,
                   autoencoder_name_list=[], random_policy=False)
 
-def render_walker():
-    render_policy('DartWalker2d-v1', stoch=False, record=True,
-                  autoencoder_name_list=[], random_policy=True)
+
+def render_2d_walker():
+    render_policy('DartWalker2d-v1', stoch=True, record=True,
+                  autoencoder_name_list=[], random_policy=False)
 
 
 # render_four_way_maze()
 # render_point_mass_wandering()
 #
-# render_walker()
+render_2d_walker()
 # render_turtles()
 # render_humanoid()
-
-render_deceptive_reacher()
+# render_deceptive_maze()
+# render_deceptive_reacher()
+# render_reacher()
