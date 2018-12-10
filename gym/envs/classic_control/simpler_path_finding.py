@@ -294,11 +294,11 @@ class SimplerPathFinding(gym.Env):
         return wall_hit
 
     def _reset(self):
-        self.point_pos = self.init_pos  # + self.np_random.uniform(low=-0.05,
-        #                        high=0.05,
-        #                       size=(2))
+        self.point_pos = self.init_pos + self.np_random.uniform(low=-0.001,
+                                                                high=0.001,
+                                                                size=(2))
 
-        self.point_vel = -np.zeros(2)  # + self.np_random.uniform(low=-0.05, high=0.05, size=(2))
+        self.point_vel = -np.zeros(2) + self.np_random.uniform(low=-0.001, high=0.001, size=(2))
         self.point_acc_force = -np.zeros(2)
         self.stepNum = 0
         self.sum_of_old = 0
