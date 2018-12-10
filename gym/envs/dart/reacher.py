@@ -17,7 +17,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         self.qLim = np.pi
 
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
         self.novelty_window_size = 10
         self.traj_buffer = []  # [init_obs] * 5
@@ -26,7 +26,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 1
+        self.novelty_factor =5
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -63,7 +63,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         reward_dist = - np.linalg.norm(vec)
         reward_ctrl = - np.square(tau).sum() * 0.001
-        alive_bonus = 0
+        alive_bonus = -1
 
         reward = reward_dist + reward_ctrl + alive_bonus
 
@@ -77,8 +77,10 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         dist = np.linalg.norm(self.robot_skeleton.bodynodes[2].to_world(fingertip) - self.target)
 
-        done = not (np.isfinite(s).all() and (-reward_dist > 0.1))
+        done = not (np.isfinite(s).all() and (-reward_dist > 0.12))
 
+        if (-reward_dist <= 0.12):
+            reward += 500
         #
         # if dist > self.longest_dist:
         #     done = True
@@ -169,6 +171,6 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
-            novelRwd = self.novelty_factor * self.novelDiff
+            novelRwd =  self.novelDiff
             novelPenn = self.novelDiffRev
         return novelRwd, novelPenn
