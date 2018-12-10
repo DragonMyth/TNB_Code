@@ -11,10 +11,6 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         self.action_scale = np.array([10, 10, 10, 10, 10])
         self.control_bounds = np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [-1.0, -1.0, -1.0, -1.0, -1.0]])
         dart_env.DartEnv.__init__(self, 'reacher.skel', 4, 26, self.control_bounds, disableViewer=True)
-        utils.EzPickle.__init__(self)
-
-        self.dqLim = 25
-        self.qLim = np.pi
 
         self.stepNum = 0
         self.recordGap = 2
@@ -65,7 +61,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         reward_ctrl = - np.square(tau).sum() * 0.001
         alive_bonus = 0
 
-        reward = reward_dist + reward_ctrl + alive_bonus
+        reward = -reward_dist ** 2 + reward_ctrl + alive_bonus
 
         self.do_simulation(tau, self.frame_skip)
 
@@ -77,7 +73,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         dist = np.linalg.norm(self.robot_skeleton.bodynodes[2].to_world(fingertip) - self.target)
 
-        done = not (np.isfinite(s).all() and (-reward_dist > 0.1))
+        done = not (np.isfinite(s).all() and (-reward_dist > 0.12))
 
         #
         # if dist > self.longest_dist:

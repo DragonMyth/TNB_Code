@@ -7,7 +7,7 @@ from gym.envs.dart import dart_env
 
 class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        self.target = np.array([0.8, -0.50, 0.1])
+        self.target = np.array([0.8, -0.55, 0.15])
         self.action_scale = np.array([10, 10, 10, 10, 10])
         self.control_bounds = np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [-1.0, -1.0, -1.0, -1.0, -1.0]])
         dart_env.DartEnv.__init__(self, 'reacher_deceptive.skel', 4, 26, self.control_bounds, disableViewer=True)
@@ -33,7 +33,7 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.path_data = []
         self.ret = 0
         self.ignore_obs = 6
-        
+
         self.normScale = self.generateNormScaleArr([10, 1, 5, 2 * np.pi, 5, 50])
 
         self.longest_dist = 0
@@ -75,9 +75,9 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         s = self.state_vector()
 
-        done = not (np.isfinite(s).all() and (-reward_dist > 0.1))
+        done = not (np.isfinite(s).all() and (-reward_dist > 0.12))
 
-        if (-reward_dist <= 0.1):
+        if (-reward_dist <= 0.12):
             reward += 500
         #
         # if dist > self.longest_dist:

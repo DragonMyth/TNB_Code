@@ -31,7 +31,7 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.novelDiff = 0
         self.novelDiffRev = 0
-        self.ignore_obs = 0
+        self.ignore_obs = 2
         self.normScale = self.generateNormScaleArr([5, np.pi, 6, 20])
 
         self.metadata = {
@@ -62,6 +62,8 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.do_simulation(tau, self.frame_skip)
 
     def _step(self, a):
+        self.stepNum += 1
+
         pre_state = [self.state_vector()]
 
         posbefore = self.robot_skeleton.q[0]

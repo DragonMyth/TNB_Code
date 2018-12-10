@@ -59,7 +59,7 @@ class DartHopperEnv(dart_env.DartEnv, utils.EzPickle):
                     (height > .7) and (height < 2.8) and (abs(ang) < .8))
         ob = self._get_obs()
 
-        return ob, (reward,0), done, {}
+        return ob, (reward, 0), done, {}
 
     def _get_obs(self):
         state = np.concatenate([
