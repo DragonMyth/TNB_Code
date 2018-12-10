@@ -89,7 +89,7 @@ class SimplerPathFinding(gym.Env):
         self.frameskip = 5
 
         # This scale is for direct velocity output
-        self.velocity_scale = 1
+        self.velocity_scale = 4
         # This scale is for torque output
         self.torque_scale = 250
 
@@ -127,7 +127,7 @@ class SimplerPathFinding(gym.Env):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 4
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -526,7 +526,7 @@ class SimplerPathFinding(gym.Env):
                 self.novelDiff = min(novelDiffList)
 
                 # self.novelDiffRev = 1 - min(self.novelDiff, 1)
-                self.novelDiffRev = np.exp(-self.novelDiff*self.novelty_factor)
+                self.novelDiffRev = np.exp(-self.novelDiff * self.novelty_factor)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
