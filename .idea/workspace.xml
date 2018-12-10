@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" afterPath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" afterPath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" afterPath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" afterPath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" afterPath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/simper_path_finding_automate_run.py" afterPath="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/turtle_forward_automate_run.py" afterPath="" />
       <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" afterPath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -67,7 +62,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dart_2d_walker_automate_run.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dart_2d_walker_automate_run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="435">
@@ -80,8 +75,8 @@
       <file leaf-file-name="dart_3d_reacher_automate_run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="316">
-              <caret line="25" column="109" lean-forward="false" selection-start-line="25" selection-start-column="109" selection-end-line="25" selection-end-column="109" />
+            <state relative-caret-position="601">
+              <caret line="117" column="80" lean-forward="false" selection-start-line="117" selection-start-column="80" selection-end-line="117" selection-end-column="80" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -114,8 +109,8 @@
       <file leaf-file-name="deceptive_path_finding_automate_run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1364">
-              <caret line="101" column="37" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+            <state relative-caret-position="-111">
+              <caret line="85" column="0" lean-forward="true" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -123,11 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="simper_path_finding_automate_run.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="simper_path_finding_automate_run.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="30" column="33" lean-forward="false" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
+            <state relative-caret-position="-257">
+              <caret line="42" column="38" lean-forward="true" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -136,8 +131,8 @@
       <file leaf-file-name="turtle_more_info_forward_automate_run.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="36" column="30" lean-forward="false" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
+            <state relative-caret-position="319">
+              <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -256,13 +251,13 @@
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py" />
         <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/Util/post_training_process.py" />
-        <option value="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" />
-        <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
-        <option value="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
+        <option value="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" />
+        <option value="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
+        <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
       </list>
     </option>
   </component>
@@ -1568,7 +1563,7 @@ adv_novel = batch['atarg_novel']</expression-string>
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1578,7 +1573,7 @@ adv_novel = batch['atarg_novel']</expression-string>
         <state relative-caret-position="-1555">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1633,34 +1628,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="36" column="30" lean-forward="false" selection-start-line="36" selection-start-column="30" selection-end-line="36" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="30" column="33" lean-forward="false" selection-start-line="30" selection-start-column="33" selection-end-line="30" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1364">
-          <caret line="101" column="37" lean-forward="false" selection-start-line="101" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="349">
@@ -1679,20 +1646,48 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="34" column="33" lean-forward="false" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="316">
-          <caret line="25" column="109" lean-forward="false" selection-start-line="25" selection-start-column="109" selection-end-line="25" selection-end-column="109" />
+        <state relative-caret-position="601">
+          <caret line="117" column="80" lean-forward="false" selection-start-line="117" selection-start-column="80" selection-end-line="117" selection-end-column="80" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="34" column="33" lean-forward="false" selection-start-line="34" selection-start-column="33" selection-end-line="34" selection-end-column="33" />
+        <state relative-caret-position="-111">
+          <caret line="85" column="0" lean-forward="true" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="36" column="0" lean-forward="true" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-257">
+          <caret line="42" column="38" lean-forward="true" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
           <folding />
         </state>
       </provider>
