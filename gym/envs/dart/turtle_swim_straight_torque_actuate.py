@@ -54,12 +54,12 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
         # self.novelty_weight_mat[:, indexes] = 0
 
-        self.normScale = self.generateNormScaleArr([8, 2 * np.pi, 8, 50])
+        self.normScale = self.generateNormScaleArr([8, np.pi, 8, 25])
 
-        self.metadata = {
-            'render.modes': ['human', 'rgb_array'],
-            'video.frames_per_second': 30
-        }
+        # self.metadata = {
+        #     'render.modes': ['human', 'rgb_array'],
+        #     'video.frames_per_second': 30
+        # }
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))

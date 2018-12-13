@@ -14,7 +14,6 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.stepNum = 0
         self.recordGap = 3
-
         self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
@@ -22,15 +21,15 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor =3
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.path_data = []
         self.ret = 0
-        self.ignore_obs = 6
 
-        self.normScale = self.generateNormScaleArr([10, 1, 5, 2 * np.pi, 5, 50])
+        self.ignore_obs = 16
+        self.normScale = self.generateNormScaleArr([5, np.pi, 5, 5])
 
         self.longest_dist = 0
 
@@ -167,6 +166,6 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
-            novelRwd =  self.novelDiff
+            novelRwd = self.novelDiff
             novelPenn = self.novelDiffRev
         return novelRwd, novelPenn

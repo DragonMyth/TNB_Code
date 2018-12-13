@@ -18,22 +18,22 @@ class DartWalker2dEnv(dart_env.DartEnv, utils.EzPickle):
         utils.EzPickle.__init__(self)
 
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
-        self.novelty_window_size = 10
+        self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 3
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.ignore_obs = 5
 
-        self.normScale = self.generateNormScaleArr([6, np.pi, 6, 10])
+        self.normScale = self.generateNormScaleArr([6, np.pi / 2.0, 6, 10])
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
