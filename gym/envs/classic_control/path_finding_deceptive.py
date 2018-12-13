@@ -98,7 +98,7 @@ class PathFindingDeceptive(gym.Env):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 5
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -496,11 +496,11 @@ class PathFindingDeceptive(gym.Env):
                 self.novelDiff = min(novelDiffList)
 
                 # self.novelDiffRev = 1 - min(self.novelDiff, 1)
-                self.novelDiffRev = np.exp(-self.novelDiff)
+                self.novelDiffRev = np.exp(-self.novelDiff*self.novelty_factor)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
 
             novelRwd = self.novelty_factor * self.novelDiff
-            novelPenn = self.novelty_factor * self.novelDiffRev
+            novelPenn =  self.novelDiffRev
         return novelRwd, novelPenn

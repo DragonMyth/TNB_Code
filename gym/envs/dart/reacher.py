@@ -61,7 +61,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         reward_ctrl = - np.square(tau).sum() * 0.001
         alive_bonus = -1
 
-        reward = -reward_dist ** 2 + reward_ctrl + alive_bonus
+        reward = -abs(reward_dist) + reward_ctrl + alive_bonus
 
         self.do_simulation(tau, self.frame_skip)
 
