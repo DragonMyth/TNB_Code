@@ -79,16 +79,17 @@ def render_hopper():
 
 
 def render_2d_walker():
-    render_policy('DartWalker2d-v1', stoch=True, record=True,
+    render_policy('DartWalker2d-v1', stoch=False, record=True,
                   autoencoder_name_list=[], random_policy=False)
 
 
 # render_four_way_maze()
 # render_point_mass_wandering()
 #
-render_2d_walker()
-# render_turtles()
+# render_2d_walker()
+render_turtles()
 # render_humanoid()
 # render_deceptive_maze()
 # render_deceptive_reacher()
 # render_reacher()
+# render_hopper()

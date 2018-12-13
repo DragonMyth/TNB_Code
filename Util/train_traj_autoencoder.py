@@ -62,14 +62,12 @@ class Autoencoder():
         encoded = Dense(128, activation='relu')(encoded)
         encoded = Dense(64, activation='relu')(encoded)
         encoded = Dense(32, activation='relu')(encoded)
-
         decoded = Dense(64, activation='relu')(encoded)
         decoded = Dense(128, activation='relu')(decoded)
         decoded = Dense(256, activation='relu')(decoded)
         decoded = Dense(512, activation='relu')(decoded)
         decoded = Dense(1024, activation='relu')(decoded)
-
-        decoded = Dense(self.input_dim, activation='tanh')(decoded)
+        decoded = Dense(self.input_dim, activation='linear')(decoded)
 
         autoencoder = Model(input_traj, decoded)
         autoencoder.compile(optimizer='adam', loss='mean_squared_error')
@@ -120,8 +118,8 @@ class Autoencoder():
 
             ax = plt.subplot(3, n, i + 1)
             img = (x_test[i * gap] ** 2).reshape(self.n_rows, self.n_cols)
-            norm = matplotlib.colors.SymLogNorm(np.min(abs(img)), linscale=np.min(abs(img)))
-
+            # norm = matplotlib.colors.SymLogNorm(np.min(abs(img)), linscale=np.min(abs(img)))
+            norm = matplotlib.colors.Normalize(vmin=np.min(img), vmax=np.max(img))
             plt.imshow(img, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
@@ -130,7 +128,7 @@ class Autoencoder():
             # display reconstruction
             ax = plt.subplot(3, n, i + 1 + n)
             img_recon = (decoded_traj[i * gap] ** 2).reshape(self.n_rows, self.n_cols)
-            norm = matplotlib.colors.SymLogNorm(np.min(abs(img_recon)), linscale=np.min(abs(img_recon)))
+            # norm = matplotlib.colors.SymLogNorm(np.min(abs(img_recon)), linscale=np.min(abs(img)))
             plt.imshow(img_recon, norm=norm, aspect='auto')
             plt.gray()
             ax.get_xaxis().set_visible(False)
@@ -140,7 +138,7 @@ class Autoencoder():
             ax = plt.subplot(3, n, i + 1 + 2 * n)
 
             img_diff = ((decoded_traj[i * gap] - x_test[i * gap]) ** 2).reshape(self.n_rows, self.n_cols)
-            norm = matplotlib.colors.SymLogNorm(np.min(abs(img_diff)), linscale=np.min(abs(img_diff)))
+            # norm = matplotlib.colors.SymLogNorm(np.min(abs(img_diff)), linscale=np.min(abs(img)))
 
             plt.imshow(img_diff, norm=norm, aspect='auto')
             plt.gray()
