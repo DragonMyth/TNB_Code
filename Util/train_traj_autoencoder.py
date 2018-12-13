@@ -121,7 +121,7 @@ class Autoencoder():
             # norm = matplotlib.colors.SymLogNorm(np.min(abs(img)), linscale=np.min(abs(img)))
             norm = matplotlib.colors.Normalize(vmin=np.min(img), vmax=np.max(img))
             plt.imshow(img, norm=norm, aspect='auto')
-            plt.gray()
+            # plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
@@ -130,7 +130,7 @@ class Autoencoder():
             img_recon = (decoded_traj[i * gap] ** 2).reshape(self.n_rows, self.n_cols)
             # norm = matplotlib.colors.SymLogNorm(np.min(abs(img_recon)), linscale=np.min(abs(img)))
             plt.imshow(img_recon, norm=norm, aspect='auto')
-            plt.gray()
+            # plt.gray()
             ax.get_xaxis().set_visible(False)
             # display Reconstruction Difference
             ax.get_yaxis().set_visible(False)
@@ -141,7 +141,7 @@ class Autoencoder():
             # norm = matplotlib.colors.SymLogNorm(np.min(abs(img_diff)), linscale=np.min(abs(img)))
 
             plt.imshow(img_diff, norm=norm, aspect='auto')
-            plt.gray()
+            # plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 

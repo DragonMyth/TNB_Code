@@ -1,13 +1,13 @@
 import subprocess, os
 import numpy as np
 
-# env = 'DartTurtle-v4'
+env = 'DartTurtle-v4'
 # env = 'DartHopper-v2'
-env = 'DartReacher3d-v2'  #
+# env = 'DartReacher3d-v2'  #
 
-# norm_scale = np.array([8, 2 * np.pi, 8, 50])
+norm_scale = np.array([8, np.pi, 8, 25])
 # norm_scale = np.array([3, np.pi/3.0, 3, 10])
-norm_scale = np.array([10, 10, 5, np.pi, 5, 5])
+# norm_scale = np.array([10, 10, 5, np.pi, 5, 5])
 
 norm_scale_str = ''
 for i in norm_scale:

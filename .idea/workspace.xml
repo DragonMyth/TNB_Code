@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" afterPath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
-      <change beforePath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" afterPath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" afterPath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" afterPath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" afterPath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
       <change beforePath="$PROJECT_DIR$/highDimDots.py" afterPath="$PROJECT_DIR$/highDimDots.py" />
-      <change beforePath="$PROJECT_DIR$/humanoid_forward_automate_run.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/mountain_car_automate_run.py" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/novelty_data/berlin/cp_autoencoders.sh" afterPath="$PROJECT_DIR$/novelty_data/berlin/cp_autoencoders.sh" />
-      <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" afterPath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
-      <change beforePath="$PROJECT_DIR$/visualize_results.py" afterPath="$PROJECT_DIR$/visualize_results.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -56,17 +44,7 @@
         <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="357">
-              <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="reacher.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="30" column="28" lean-forward="false" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
+              <caret line="48" column="26" lean-forward="false" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -102,22 +80,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dart_3d_reacher_automate_run.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
+      <file leaf-file-name="turtle_swim_straight_torque_actuate.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="47" column="42" lean-forward="false" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="42" />
+            <state relative-caret-position="259">
+              <caret line="40" column="27" lean-forward="false" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="turtle_swim_straight_torque_actuate.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
+      <file leaf-file-name="train_traj_autoencoder.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="40" column="27" lean-forward="true" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+            <state relative-caret-position="501">
+              <caret line="144" column="24" lean-forward="false" selection-start-line="144" selection-start-column="24" selection-end-line="144" selection-end-column="24" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="highDimDots.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/highDimDots.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="345">
+              <caret line="23" column="66" lean-forward="true" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -247,8 +237,6 @@
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/path_finding_deceptive.py" />
         <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
-        <option value="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
-        <option value="$PROJECT_DIR$/highDimDots.py" />
         <option value="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
         <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
@@ -258,6 +246,8 @@
         <option value="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher_deceptive.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/hopper_deceptive.py" />
+        <option value="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
+        <option value="$PROJECT_DIR$/highDimDots.py" />
       </list>
     </option>
   </component>
@@ -1614,24 +1604,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="204" column="0" lean-forward="false" selection-start-line="204" selection-start-column="0" selection-end-line="204" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/highDimDots.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="298">
@@ -1675,7 +1647,7 @@ adv_novel = batch['atarg_novel']</expression-string>
     <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+          <caret line="48" column="26" lean-forward="false" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
           <folding />
         </state>
       </provider>
@@ -1723,8 +1695,26 @@ adv_novel = batch['atarg_novel']</expression-string>
     <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
-          <caret line="40" column="27" lean-forward="true" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+          <caret line="40" column="27" lean-forward="false" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Util/train_traj_autoencoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="144" column="24" lean-forward="false" selection-start-line="144" selection-start-column="24" selection-end-line="144" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/highDimDots.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="66" lean-forward="true" selection-start-line="23" selection-start-column="66" selection-end-line="23" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
