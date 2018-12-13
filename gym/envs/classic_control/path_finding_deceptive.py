@@ -182,7 +182,7 @@ class PathFindingDeceptive(gym.Env):
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
         self.ret += reward
-
+        # reward -= 1000 * novelPenn
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
                                                  'rwd': reward}

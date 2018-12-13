@@ -22,17 +22,17 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
         self.recordGap = 3
 
-        self.novelty_window_size = 10
+        self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
 
-        self.novelty_factor = 1
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
-        self.ignore_obs = 2
-        self.normScale = self.generateNormScaleArr([5, np.pi, 6, 20])
+        self.ignore_obs = 5
+        self.normScale = self.generateNormScaleArr([3, np.pi / 3.0, 3, 10])
 
         self.metadata = {
             'render.modes': ['human', 'rgb_array'],
@@ -94,16 +94,16 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         s = self.state_vector()
         done = not (np.isfinite(s).all() and (np.abs(s[2:]) < 100).all() and
-                    (height > .7) and (height < 8.8) and (abs(ang) < 3))
+                    (height > .7) and (height < 8.8) and (abs(ang) < 2))
 
         ob = self._get_obs()
 
         return ob, (reward, -novelPenn), done, {}
 
     def _get_obs(self):
+        dq = np.clip(self.robot_skeleton.dq, -10, 10)
         state = np.concatenate([
-            self.robot_skeleton.q[1:],
-            np.clip(self.robot_skeleton.dq, -10, 10)
+            self.robot_skeleton.q[1:3], dq[0:3], self.robot_skeleton.q[3::], dq[3::]
         ])
         state[0] = self.robot_skeleton.bodynodes[2].com()[1]
 

@@ -13,28 +13,25 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         dart_env.DartEnv.__init__(self, 'reacher_deceptive.skel', 4, 26, self.control_bounds, disableViewer=True)
         utils.EzPickle.__init__(self)
 
-        self.dqLim = 25
-        self.qLim = np.pi
-
         self.stepNum = 0
-        self.recordGap = 2
+        self.recordGap = 3
 
-        self.novelty_window_size = 10
+        self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
         self.novel_autoencoders = []
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 1
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.path_data = []
         self.ret = 0
-        self.ignore_obs = 6
+        self.ignore_obs = 16
 
-        self.normScale = self.generateNormScaleArr([10, 1, 5, 2 * np.pi, 5, 50])
+        self.normScale = self.generateNormScaleArr([5, np.pi, 5, 5])
 
         self.longest_dist = 0
 
