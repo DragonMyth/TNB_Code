@@ -46,7 +46,7 @@ if __name__ == '__main__':
     # qnorm = 2 * np.pi
     # dqnorm = 50
 
-    norm_scale = np.array([6, np.pi, 6, 10])
+    norm_scale = np.array([6, np.pi / 2.0, 6, 10])
     norm_scale_str = ''
     for i in norm_scale:
         norm_scale_str += str(i) + ' '

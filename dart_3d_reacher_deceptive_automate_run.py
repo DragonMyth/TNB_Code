@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=6)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=16)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
@@ -46,12 +46,12 @@ if __name__ == '__main__':
     # qnorm = 2 * np.pi
     # dqnorm = 50
 
-    norm_scale = np.array([10, 1, 5, 2 * np.pi, 5, 50])
+    norm_scale = np.array([5, np.pi, 5, 5])
     norm_scale_str = ''
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(0, 20, 1):
+    for s in range(0, 10, 1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()

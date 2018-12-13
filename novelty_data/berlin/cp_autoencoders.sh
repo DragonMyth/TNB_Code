@@ -1,3 +1,3 @@
-scp -r yzhang@berlin.cc.gatech.edu:~/NoveltyEnforcement/novelty_data/local/autoencoders/ ./
+scp -r yzhang@berlin.cc.gatech.edu:~/NoveltyEnforcement/novelty_data/local/ ./
 
 
