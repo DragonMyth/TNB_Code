@@ -76,13 +76,8 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
 
         if (-reward_dist <= 0.12):
             reward += 500
-        #
-        # if dist > self.longest_dist:
-        #     done = True
-        #     self.longest_dist = dist
-        #
-        # if done or self.stepNum == 500:
-        #     print(self.longest_dist)
+
+        reward -= 5 * novelPenn
         return ob, (reward, -novelPenn), done, {'rwd': reward,
                                                 'states': s, 'actions': tau,
                                                 'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn
