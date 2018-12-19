@@ -384,18 +384,14 @@ def learn(env, policy_fn, *,
                 # adv_novel_normalized = adv_novel / np.linalg.norm(adv_novel)
                 # adv_dots = np.dot(adv_task_normalized, adv_novel_normalized)
                 # print('Dot',dot,'Adv_dot',adv_dots)
-
                 if (dot > 0):
-
                     bisector_no_noise = (pol_g_reduced_normalized + pol_g_novel_reduced_normalized)
                     bisector_no_noise_normalized = bisector_no_noise / np.linalg.norm(bisector_no_noise)
-
-                    quarterSector_no_noise = (pol_g_reduced_normalized + bisector_no_noise_normalized)
-                    quarterSector_no_noise_normalized = quarterSector_no_noise / np.linalg.norm(quarterSector_no_noise)
-
-                    octSector_no_noise = (pol_g_reduced_normalized + quarterSector_no_noise_normalized)
-                    octSector_no_noise_normalized = octSector_no_noise / np.linalg.norm(octSector_no_noise)
-
+                    # quarterSector_no_noise = (pol_g_reduced_normalized + bisector_no_noise_normalized)
+                    # quarterSector_no_noise_normalized = quarterSector_no_noise / np.linalg.norm(quarterSector_no_noise)
+                    #
+                    # octSector_no_noise = (pol_g_reduced_normalized + quarterSector_no_noise_normalized)
+                    # octSector_no_noise_normalized = octSector_no_noise / np.linalg.norm(octSector_no_noise)
                     target_dir = bisector_no_noise_normalized
 
                     final_gradient[0:policy_var_count] = 0.5 * (
