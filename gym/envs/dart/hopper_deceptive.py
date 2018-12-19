@@ -34,11 +34,6 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.ignore_obs = 5
         self.normScale = self.generateNormScaleArr([3, np.pi / 3.0, 3, 10])
 
-        self.metadata = {
-            'render.modes': ['human', 'rgb_array'],
-            'video.frames_per_second': 30
-        }
-
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
 

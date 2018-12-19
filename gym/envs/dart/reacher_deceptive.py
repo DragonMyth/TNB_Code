@@ -7,7 +7,7 @@ from gym.envs.dart import dart_env
 
 class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
     def __init__(self):
-        self.target = np.array([0.8, -0.55, 0.15])
+        self.target = np.array([0.8, 0.25, 0])
         self.action_scale = np.array([10, 10, 10, 10, 10])
         self.control_bounds = np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [-1.0, -1.0, -1.0, -1.0, -1.0]])
         dart_env.DartEnv.__init__(self, 'reacher_deceptive.skel', 4, 26, self.control_bounds, disableViewer=True)
@@ -23,16 +23,16 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 2
+        self.novelty_factor = 3
 
         self.novelDiff = 0
         self.novelDiffRev = 0
         self.path_data = []
         self.ret = 0
         self.ignore_obs = 16
+        self.robot_skeleton = self.dart_world.skeletons[0]
 
         self.normScale = self.generateNormScaleArr([5, np.pi, 5, 5])
-
         self.longest_dist = 0
 
     def generateNormScaleArr(self, norm_scales):
@@ -60,7 +60,7 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         reward_dist = - np.linalg.norm(vec)
         reward_ctrl = - np.square(tau).sum() * 0.001
-        alive_bonus = 0
+        alive_bonus = -1
 
         reward = reward_dist + reward_ctrl + alive_bonus
 
@@ -107,14 +107,14 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         #     self.target = self.np_random.uniform(low=-1, high=1, size=3)
         #     if np.linalg.norm(self.target) < 1.5: break
 
-        self.dart_world.skeletons[0].q = [0, 0, 0, self.target[0], self.target[1], self.target[2]]
+        self.dart_world.skeletons[1].q = [0, 0, 0, self.target[0], self.target[1], self.target[2]]
 
         return self._get_obs()
 
     def viewer_setup(self):
         self._get_viewer().scene.tb.trans[2] = -3.5
         self._get_viewer().scene.tb._set_theta(0)
-        self.track_skeleton_id = 0
+        self.track_skeleton_id = 1
 
     # def normalizeTraj(self, traj, minq, maxq, mindq, maxdq):
     #     traj[:, :, 0:int(len(traj[0, 0]) / 2)] /= (maxq - minq)

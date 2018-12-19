@@ -16,10 +16,11 @@
                 </inertia>
                 <visualization_shape>
                     <geometry>
-                        <box>
-                            <size>0.1 0.1 0.1</size>
-                        </box>
+                        <sphere>
+                            <radius>0.12</radius>
+                        </sphere>
                     </geometry>
+                    <color>1 0 0</color>
                 </visualization_shape>
             </body>
              <joint type="free" name="joint 1">

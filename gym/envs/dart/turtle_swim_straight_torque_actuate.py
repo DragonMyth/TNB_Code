@@ -72,6 +72,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         return norms
 
     def _step(self, a):
+        self.stepNum += 1
 
         old_com = self.robot_skeleton.C
         old_q = self.robot_skeleton.q
@@ -104,6 +105,12 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
 
+        # print(reward)
+
+        valid = np.isfinite(ob[:]).all() and (ob < 10e3).all()
+
+        done = not valid
+
         if (np.isnan(reward)):
             print('Horizontal', horizontal_pos_rwd)
             print('Orth', orth_pen)
@@ -114,12 +121,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
             print('Action', tau)
             reward = 0
             novelPenn = 1
-        # print(reward)
-
-        valid = np.isfinite(ob[:]).all() and (ob < 10e3).all()
-
-        done = not valid
-        self.stepNum += 1
+            done = True
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],
