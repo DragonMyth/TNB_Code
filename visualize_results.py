@@ -34,9 +34,9 @@ def render_reacher():
                   autoencoder_name_list=[])
 
 
-def render_deceptive_reacher():
+def render_deceptive_reacher(random=False):
     render_policy('DartReacher3d-v2', stoch=False, record=True,
-                  autoencoder_name_list=[])
+                  autoencoder_name_list=[], random_policy=random)
 
 
 def render_turtles():
@@ -85,9 +85,10 @@ def render_2d_walker():
 
 # render_four_way_maze()
 # render_point_mass_wandering()
-#
-# render_2d_walker()
-render_turtles()
+
+render_2d_walker()
+
+# render_turtles()
 # render_humanoid()
 # render_deceptive_maze()
 # render_deceptive_reacher()

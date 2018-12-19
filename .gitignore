@@ -1,4 +1,5 @@
 .idea/
+*.xml
 *.png
 *.mp4
 *.csv
@@ -21,6 +22,8 @@ vendor/
 videos/
 pydart2/
 data/
+novelty_data/
+Final_Results/
 good_videos/
 AutoEncoder/
 .DS_Store
