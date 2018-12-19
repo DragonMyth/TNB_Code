@@ -51,7 +51,7 @@ if __name__ == '__main__':
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(0, 1, 1):
+    for s in range(0, 5, 1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()

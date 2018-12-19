@@ -42,7 +42,7 @@ if __name__ == '__main__':
     num_epoch = 200
     batch_size = 1024
 
-    for s in range(5):
+    for s in range(1,5,1):
         seed = s * 13 + 7 * (s ** 2)
 
         norm_scale = np.array([8, np.pi, 8, 25])
@@ -60,7 +60,7 @@ if __name__ == '__main__':
             #     curr_run) + '/' + '2018-10-01_16:53:21'
             curr_run = str(i)
             if i == 0:
-                specified_time = '2018-12-12_10:52:56'
+                specified_time = None#'2018-12-12_10:52:56'
             else:
                 specified_time = None
 

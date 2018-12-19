@@ -39,7 +39,7 @@ if __name__ == '__main__':
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 200
+    num_epoch = 100
     batch_size = 1024
 
     # qnorm = 2 * np.pi
@@ -57,12 +57,12 @@ if __name__ == '__main__':
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
         specified_time = None
-        for i in range(1, 5, 1):
+        for i in range(0, 5, 1):
 
             # i = 0
             curr_run = str(i)
-            if i == 0:
-                specified_time = None  # '2018-12-06_18:53:39'
+            if i == 0 :
+                specified_time = None #'2018-12-13_16:59:58'
             else:
                 specified_time = None
 
