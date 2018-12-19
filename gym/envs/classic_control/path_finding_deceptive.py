@@ -98,7 +98,7 @@ class PathFindingDeceptive(gym.Env):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 2
+        self.novelty_factor = 3
 
         self.novelDiff = 0
         self.novelDiffRev = 0
