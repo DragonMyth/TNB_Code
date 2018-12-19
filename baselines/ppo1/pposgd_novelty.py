@@ -282,13 +282,6 @@ def learn(env, policy_fn, *,
             for batch in d.iterate_once(optim_batchsize):
                 *newlosses, g = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
 
-                *newlosses_novel, g_novel = lossandgrad_novel(batch["ob"], batch["ac"], batch["atarg_novel"],
-                                                              batch["vtarg_novel"],
-                                                              cur_lrmult)
-
-                pol_g = g[0:policy_var_count]
-                task_gradient_mag.append(np.linalg.norm(pol_g))
-
                 adam.update(g, optim_stepsize * cur_lrmult)
 
                 # adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
