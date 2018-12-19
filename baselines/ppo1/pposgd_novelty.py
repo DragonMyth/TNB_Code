@@ -293,14 +293,6 @@ def learn(env, policy_fn, *,
             for batch in d.iterate_once(optim_batchsize):
                 *newlosses, g = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
 
-                if not np.isfinite(batch["ob"]).all():
-                    print("OB not finite")
-                if not np.isfinite(batch["ac"]).all():
-                    print("AC not finite")
-                if not np.isfinite(batch["atarg"]).all():
-                    print("Atarg not finite")
-                if not np.isfinite(batch["vtarg"]).all():
-                    print("Vtarg not finite")
                 adam.update(g, optim_stepsize * cur_lrmult)
 
                 # adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
