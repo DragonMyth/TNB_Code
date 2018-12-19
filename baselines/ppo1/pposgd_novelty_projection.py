@@ -397,7 +397,11 @@ def learn(env, policy_fn, *,
                     octSector_no_noise = (pol_g_reduced_normalized + quarterSector_no_noise_normalized)
                     octSector_no_noise_normalized = octSector_no_noise / np.linalg.norm(octSector_no_noise)
 
-                    target_dir = quarterSector_no_noise_normalized
+                    ## Bisector for deceptive path
+                    ##          four way maze
+                    ##          Deceptive reacher
+
+                    target_dir = bisector_no_noise_normalized#quarterSector_no_noise_normalized
 
                     final_gradient[0:policy_var_count] = 0.5 * (
                             np.dot(pol_g_reduced, target_dir) + np.dot(pol_g_novel_reduced,

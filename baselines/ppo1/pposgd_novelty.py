@@ -104,6 +104,17 @@ def add_vtarg_and_adv(seg, gamma, lam):
         delta = rew[t] + gamma * vpred[t + 1] * nonterminal - vpred[t]
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
 
+        if(np.isnan(gaelam[t])):
+            print("GAELAM is nan at: ",t)
+            print("Delta: ",delta)
+            print("Lastgae: ", lastgaelam)
+            print("GAELAM at t+1 is: ",gaelam[t+1])
+            print("rew at t+1 is: ",rew[t+1])
+            print("vpred at t+1 is: ",vpred[t+1])
+            print("vpred at t+2 is: ",vpred[t+2])
+            print("Nonterminal is ", nonterminal)
+            break
+
         delta_novel = rew_novel[t] + gamma * vpred_novel[t + 1] * nonterminal - vpred_novel[t]
         gaelam_novel[t] = lastgaelam_novel = delta_novel + gamma * lam * nonterminal * lastgaelam_novel
 
@@ -274,7 +285,7 @@ def learn(env, policy_fn, *,
         assign_old_eq_new()  # set old parameter values to new parameter values
         logger.log("Optimizing...")
         logger.log(fmt_row(13, loss_names))
-        task_gradient_mag = []
+        task_gradient_mag = [0]
 
         # Here we do a bunch of optimization epochs over the data
         for _ in range(optim_epochs):
@@ -282,13 +293,14 @@ def learn(env, policy_fn, *,
             for batch in d.iterate_once(optim_batchsize):
                 *newlosses, g = lossandgrad(batch["ob"], batch["ac"], batch["atarg"], batch["vtarg"], cur_lrmult)
 
-                *newlosses_novel, g_novel = lossandgrad_novel(batch["ob"], batch["ac"], batch["atarg_novel"],
-                                                              batch["vtarg_novel"],
-                                                              cur_lrmult)
-
-                pol_g = g[0:policy_var_count]
-                task_gradient_mag.append(np.linalg.norm(pol_g))
-
+                if not np.isfinite(batch["ob"]).all():
+                    print("OB not finite")
+                if not np.isfinite(batch["ac"]).all():
+                    print("AC not finite")
+                if not np.isfinite(batch["atarg"]).all():
+                    print("Atarg not finite")
+                if not np.isfinite(batch["vtarg"]).all():
+                    print("Vtarg not finite")
                 adam.update(g, optim_stepsize * cur_lrmult)
 
                 # adam_novel.update(g_novel, optim_stepsize * cur_lrmult)
