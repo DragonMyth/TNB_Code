@@ -8,7 +8,7 @@ from Util.post_training_process import *
 if __name__ == '__main__':
     cpu_count = 8  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
-    num_trajs_per_pol = 200
+    num_trajs_per_pol = 100
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
         specified_time = None
-        for i in range(0, 5, 1):
+        for i in range(1, 5, 1):
 
             # i = 0
             curr_run = str(i)

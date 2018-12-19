@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v4')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
-    parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=15)
+    parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=650)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=10)
@@ -58,19 +58,30 @@ if __name__ == '__main__':
             curr_run = str(i)
             # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
             #     curr_run) + '/' + '2018-10-01_16:53:21'
-            data_saving_path = 'data/local/' + str(st) + '_' + env_name + '_seed_' + str(
-                seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
+            curr_run = str(i)
+            if i == 0:
+                specified_time = '2018-12-12_10:52:56'
+            else:
+                specified_time = None
 
-            train_policy = subprocess.call(
-                'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                    cpu_count) + ' python ./running_regimes/turtle_more_info_two_objs_mirror_policy_train.py'
-                + ' --env ' + args.env
-                + ' --seed ' + str(seed)
-                + ' --curr_run ' + curr_run
-                + ' --data_saving_path ' + data_saving_path + '/policy'
-                + ' --batch_size_per_process ' + str(args.batch_size_per_process)
-                + ' --num_iterations ' + str(args.num_iterations)
-                , shell=True)
+            if specified_time is None:
+                data_saving_path = 'data/local/' + str(st) + '_' + env_name + '_seed_' + str(
+                    seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
+                train_policy = subprocess.call(
+                    'OMP_NUM_THREADS="1" mpirun -np ' + str(
+                        cpu_count) + ' python ./running_regimes/turtle_more_info_two_objs_mirror_policy_train.py'
+                    + ' --env ' + args.env
+                    + ' --seed ' + str(seed)
+                    + ' --curr_run ' + curr_run
+                    + ' --data_saving_path ' + str(data_saving_path + '/policy')
+                    + ' --batch_size_per_process ' + str(args.batch_size_per_process)
+                    + ' --num_iterations ' + str(args.num_iterations)
+                    , shell=True)
+
+            else:
+                data_saving_path = 'data/local/' + str(specified_time) + '_' + env_name + '_seed_' + str(
+                    seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
+
 
             collect_data = subprocess.call(
                 'OMP_NUM_THREADS="1" mpirun -np ' + str(cpu_count) + ' python ./Util/post_training_process.py'
