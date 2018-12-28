@@ -84,6 +84,8 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         # if done or self.stepNum == 500:
         #     print(self.longest_dist)
 
+        # reward -= 100 * novelPenn
+
         return ob, (reward, -novelPenn), done, {'rwd': reward,
                                                 'states': s, 'actions': tau,
                                                 'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn

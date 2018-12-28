@@ -29,6 +29,326 @@
                     </geometry>
                 </collision_shape>                                
             </body>
+            <body name="landmark_0">
+		<transformation>0 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_1">
+		<transformation>5 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_2">
+		<transformation>10 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_3">
+		<transformation>15 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_4">
+		<transformation>20 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_5">
+		<transformation>25 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_6">
+		<transformation>30 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_7">
+		<transformation>35 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_8">
+		<transformation>40 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_9">
+		<transformation>45 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_10">
+		<transformation>50 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_11">
+		<transformation>55 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_12">
+		<transformation>60 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_13">
+		<transformation>65 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_14">
+		<transformation>70 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_15">
+		<transformation>75 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_16">
+		<transformation>80 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_17">
+		<transformation>85 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_18">
+		<transformation>90 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<body name="landmark_19">
+		<transformation>95 0 -5 0 0 0</transformation>
+		<visualization_shape>
+			<transformation>0 0 0 0 0 0</transformation>
+			<geometry>
+				<box>
+					<size>1 5 1</size>
+				</box>
+			</geometry>
+			<color>1 0 0 1</color>
+		</visualization_shape>
+	</body>
+	<joint name="landmark_joint_0" type="free">
+		<parent>world</parent>
+		<child>landmark_0</child>
+	</joint>
+	<joint name="landmark_joint_1" type="free">
+		<parent>world</parent>
+		<child>landmark_1</child>
+	</joint>
+	<joint name="landmark_joint_2" type="free">
+		<parent>world</parent>
+		<child>landmark_2</child>
+	</joint>
+	<joint name="landmark_joint_3" type="free">
+		<parent>world</parent>
+		<child>landmark_3</child>
+	</joint>
+	<joint name="landmark_joint_4" type="free">
+		<parent>world</parent>
+		<child>landmark_4</child>
+	</joint>
+	<joint name="landmark_joint_5" type="free">
+		<parent>world</parent>
+		<child>landmark_5</child>
+	</joint>
+	<joint name="landmark_joint_6" type="free">
+		<parent>world</parent>
+		<child>landmark_6</child>
+	</joint>
+	<joint name="landmark_joint_7" type="free">
+		<parent>world</parent>
+		<child>landmark_7</child>
+	</joint>
+	<joint name="landmark_joint_8" type="free">
+		<parent>world</parent>
+		<child>landmark_8</child>
+	</joint>
+	<joint name="landmark_joint_9" type="free">
+		<parent>world</parent>
+		<child>landmark_9</child>
+	</joint>
+	<joint name="landmark_joint_10" type="free">
+		<parent>world</parent>
+		<child>landmark_10</child>
+	</joint>
+	<joint name="landmark_joint_11" type="free">
+		<parent>world</parent>
+		<child>landmark_11</child>
+	</joint>
+	<joint name="landmark_joint_12" type="free">
+		<parent>world</parent>
+		<child>landmark_12</child>
+	</joint>
+	<joint name="landmark_joint_13" type="free">
+		<parent>world</parent>
+		<child>landmark_13</child>
+	</joint>
+	<joint name="landmark_joint_14" type="free">
+		<parent>world</parent>
+		<child>landmark_14</child>
+	</joint>
+	<joint name="landmark_joint_15" type="free">
+		<parent>world</parent>
+		<child>landmark_15</child>
+	</joint>
+	<joint name="landmark_joint_16" type="free">
+		<parent>world</parent>
+		<child>landmark_16</child>
+	</joint>
+	<joint name="landmark_joint_17" type="free">
+		<parent>world</parent>
+		<child>landmark_17</child>
+	</joint>
+	<joint name="landmark_joint_18" type="free">
+		<parent>world</parent>
+		<child>landmark_18</child>
+	</joint>
+	<joint name="landmark_joint_19" type="free">
+		<parent>world</parent>
+		<child>landmark_19</child>
+	</joint>
             <joint type="free" name="joint 1">
                 <parent>world</parent>
                 <child>ground</child>
