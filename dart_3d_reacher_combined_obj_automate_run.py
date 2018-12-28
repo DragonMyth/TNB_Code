@@ -32,7 +32,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=3)
+                        default=2)
     parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
                         default=1)
 
