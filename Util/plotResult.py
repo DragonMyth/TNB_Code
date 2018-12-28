@@ -49,73 +49,76 @@ def plot_progress():
 
     AverageReturns = np.array(data_lookup[category_idx_lookup['EpRewMean']])
     EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
-    # RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
-    TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
-    NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
+    # # RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
+    # TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
+    # NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
     # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
     # MinReturns = data_lookup[category_idx_lookup['MinReturn']]
-
-    plot.figure()
+    fig, axs = plot.subplots(2, 1)
+    # plot.figure()
     # print(AverageReturns)
-    plot.plot(ItersSofar, AverageReturns, 'r', label='Average Return')
-    plot.plot(ItersSofar, EpRNoveltyRewMean, 'b', label='Average Novelty Return')
+    axs[0].plot(ItersSofar, AverageReturns, 'r', label='Average Return')
 
     # plot.plot(Iterations[begin:end], MinReturns[begin:end], 'g', label='Minimum Return')
     # plot.plot(Iterations[begin:end], MaxReturns[begin:end], 'b', label='Maximum Return')
-    plot.xlabel('Iterations')
-    plot.ylabel('Expected Return')
+    axs[0].set_xlabel('Iterations')
+    axs[0].set_ylabel('Expected Return')
     # plot.title('Mirror Enforcement Larger Loss')
     # plot.yscale('symlog')
-    plot.legend()
-    plot.yscale('symlog')
-    plot.xscale('linear')
+    axs[0].legend()
+    axs[0].set_yscale('linear')
+    axs[0].set_xscale('linear')
 
-    plot.savefig(snapshot_dir + '/progress' + '.jpg')
-    plot.show()
+    # plot.savefig(snapshot_dir + '/TaskReturnTrainingCurve' + '.jpg')
+    # plot.show()
+    #
+    # plot.figure()
 
-    plot.figure()
+    axs[1].plot(ItersSofar, EpRNoveltyRewMean, 'b', label='Average Novelty Return')
 
-    # plot.plot(ItersSofar, RelativeDirection, 'r', label='Relative Direction')
-    plot.xlabel('Iterations')
+    axs[1].set_xlabel('Iterations')
+    axs[1].set_ylabel('Expected Return')
 
-    plot.legend()
-    plot.yscale('linear')
-    plot.xscale('linear')
+    axs[1].legend()
+    axs[1].set_yscale('linear')
+    axs[1].set_xscale('linear')
 
     # plot.legend()
-    plot.savefig(snapshot_dir + '/progress_2' + '.jpg')
+    fig.tight_layout()
+
+    plot.savefig(snapshot_dir + '/ReturnTrainingCurve' + '.jpg')
 
     plot.show()
 
-    plot.figure()
-
-    # plot.hist(RelativeDirection, stacked=True, bins=30)
-    plot.xlabel('Relative Directions')
-    plot.ylabel('Probability')
-
-    plot.legend()
-    plot.yscale('linear')
-    plot.xscale('linear')
+    # plot.figure()
+    #
+    # # plot.hist(RelativeDirection, stacked=True, bins=30)
+    # plot.xlabel('Relative Directions')
+    # plot.ylabel('Probability')
+    #
     # plot.legend()
-    plot.savefig(snapshot_dir + '/relative_direction_prob' + '.jpg')
-
-    plot.show()
-
-    plot.figure()
-
-    plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
-    plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
-
-    plot.xlabel('Iterations')
-    plot.ylabel('Gradient Magnitudes')
-
-    plot.legend()
-    plot.yscale('linear')
-    plot.xscale('linear')
-    plot.legend()
-    plot.savefig(snapshot_dir + '/gradient_magnitudes' + '.jpg')
-
-    plot.show()
+    # plot.yscale('linear')
+    # plot.xscale('linear')
+    # # plot.legend()
+    # plot.savefig(snapshot_dir + '/relative_direction_prob' + '.jpg')
+    #
+    # plot.show()
+    #
+    # plot.figure()
+    #
+    # plot.plot(ItersSofar, TaskGradientMag, 'r', label='Task Gradient Magnitudes')
+    # plot.plot(ItersSofar, NoveltyGradientMag, 'b', label='Novelty Gradient Magnitudes')
+    #
+    # plot.xlabel('Iterations')
+    # plot.ylabel('Gradient Magnitudes')
+    #
+    # plot.legend()
+    # plot.yscale('linear')
+    # plot.xscale('linear')
+    # plot.legend()
+    # plot.savefig(snapshot_dir + '/gradient_magnitudes' + '.jpg')
+    #
+    # plot.show()
 
 
 def plot_gradient():
@@ -140,8 +143,10 @@ def plot_gradient():
 
     max_relative_direction_timestep = np.argmax(RelativeDirection)
 
-    task_gradient_max = task_gradients[max_relative_direction_timestep]/np.linalg.norm(task_gradients[max_relative_direction_timestep])
-    novelty_gradient_max = novelty_gradients[max_relative_direction_timestep]/np.linalg.norm(novelty_gradients[max_relative_direction_timestep])
+    task_gradient_max = task_gradients[max_relative_direction_timestep] / np.linalg.norm(
+        task_gradients[max_relative_direction_timestep])
+    novelty_gradient_max = novelty_gradients[max_relative_direction_timestep] / np.linalg.norm(
+        novelty_gradients[max_relative_direction_timestep])
     # task_gradient_max = task_gradient_max / np.linalg.norm(task_gradient_max)
     # novelty_gradient_max = novelty_gradient_max / np.linalg.norm(novelty_gradient_max)
 
