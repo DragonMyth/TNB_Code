@@ -21,7 +21,6 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.stepNum = 0
         self.recordGap = 3
-
         self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 

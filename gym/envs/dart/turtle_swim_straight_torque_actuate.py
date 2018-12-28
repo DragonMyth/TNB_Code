@@ -105,13 +105,10 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         # mirror_enforce
         reward = 0 + horizontal_pos_rwd - rotate_pen - orth_pen
 
-        # print(reward)
-
         valid = np.isfinite(ob[:]).all() and (ob < 10e3).all()
-
         done = not valid
 
-        if (np.isnan(reward)):
+        if not np.isfinite(reward):
             print('Horizontal', horizontal_pos_rwd)
             print('Orth', orth_pen)
             print('rotate', rotate_pen)
@@ -122,6 +119,11 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
             reward = 0
             novelPenn = 1
             done = True
+
+        if np.abs(reward)>100:
+            reward = 0
+        # print(reward)
+
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],
