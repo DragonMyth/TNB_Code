@@ -80,6 +80,7 @@ def plot_progress():
     axs[1].set_ylabel('Expected Return')
 
     axs[1].legend()
+    # axs[1].set_yscale('symlog', linthreshy=1e-5)
     axs[1].set_yscale('linear')
     axs[1].set_xscale('linear')
 
