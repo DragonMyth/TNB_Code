@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualize_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualize_results.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,16 +53,16 @@
         <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_only_bisectors.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="457">
-              <caret line="390" lean-forward="true" selection-start-line="390" selection-end-line="390" />
+              <caret line="390" selection-start-line="390" selection-end-line="390" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="95" selection-start-line="95" selection-end-line="95" />
+            <state relative-caret-position="407">
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
               <folding>
                 <element signature="e#23#33#0" expanded="true" />
               </folding>
@@ -73,14 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="71" column="74" selection-start-line="71" selection-start-column="74" selection-end-line="71" selection-end-column="74" />
-              <folding>
-                <element signature="e#0#37#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="397">
+              <caret line="73" column="96" selection-start-line="73" selection-start-column="96" selection-end-line="73" selection-end-column="96" />
             </state>
           </provider>
         </entry>
@@ -120,7 +114,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
+            <state relative-caret-position="409">
               <caret line="74" column="96" selection-start-line="74" selection-start-column="64" selection-end-line="74" selection-end-column="96" />
             </state>
           </provider>
@@ -190,7 +184,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets/humanoid_swimmer_full_reduce_dim.skel" />
         <option value="$PROJECT_DIR$/humanoid_forward_automate_run.py" />
         <option value="$PROJECT_DIR$/running_regimes/humanoid_more_info_two_objs_mirror_policy_train.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/humanoid_swim_straight_full_torque_actuated.py" />
@@ -241,6 +234,7 @@
         <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" />
         <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" />
+        <option value="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" />
       </list>
     </option>
   </component>
@@ -359,8 +353,8 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/running_regimes" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/running_regimes" />
       <recent name="$PROJECT_DIR$/../baselines/baselines/ppo1" />
       <recent name="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/assets" />
       <recent name="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart" />
@@ -565,12 +559,12 @@
       <updated>1534450387895</updated>
       <workItem from="1546206537548" duration="18000" />
       <workItem from="1546206572534" duration="5154000" />
-      <workItem from="1546404135611" duration="1350000" />
+      <workItem from="1546404135611" duration="2051000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6522000" />
+    <option name="totallyTimeSpent" value="7223000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1118,13 +1112,6 @@ adv_novel = batch['atarg_novel']</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../baselines/baselines/common/misc_util.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_simple.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="410">
@@ -1437,13 +1424,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
-          <caret line="74" column="96" selection-start-line="74" selection-start-column="64" selection-end-line="74" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -1461,17 +1441,31 @@ adv_novel = batch['atarg_novel']</expression-string>
     <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty_only_bisectors.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="457">
-          <caret line="390" lean-forward="true" selection-start-line="390" selection-end-line="390" />
+          <caret line="390" selection-start-line="390" selection-end-line="390" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        <state relative-caret-position="407">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
           <folding>
             <element signature="e#23#33#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="409">
+          <caret line="74" column="96" selection-start-line="74" selection-start-column="64" selection-end-line="74" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="73" column="96" selection-start-line="73" selection-start-column="96" selection-end-line="73" selection-end-column="96" />
         </state>
       </provider>
     </entry>
