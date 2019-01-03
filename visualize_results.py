@@ -82,6 +82,7 @@ def render_2d_walker():
     render_policy('DartWalker2d-v1', stoch=False, record=True,
                   autoencoder_name_list=[], random_policy=False)
 
+
 # render_four_way_maze()
 # render_point_mass_wandering()
 
