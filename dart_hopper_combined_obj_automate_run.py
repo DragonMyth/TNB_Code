@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=16)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=5)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
@@ -63,7 +63,7 @@ if __name__ == '__main__':
             # i = 0
             curr_run = str(i)
             if i == 0:
-                specified_time = None  # '2018-12-06_18:53:39'
+                specified_time=None #'2018-12-28_16:13:17'
             else:
                 specified_time = None
 

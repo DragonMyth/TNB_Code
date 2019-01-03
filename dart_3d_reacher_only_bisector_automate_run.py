@@ -71,7 +71,7 @@ if __name__ == '__main__':
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
                 train_policy = subprocess.call(
                     'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                        cpu_count) + ' python ./running_regimes/two_objs_policy_train.py'
+                        cpu_count) + ' python ./running_regimes/two_objs_policy_train_only_bisector.py'
                     + ' --env ' + args.env
                     + ' --seed ' + str(seed)
                     + ' --curr_run ' + curr_run

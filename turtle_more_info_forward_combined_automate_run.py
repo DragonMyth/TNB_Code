@@ -17,12 +17,12 @@ if __name__ == '__main__':
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
     print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=700)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='DartTurtle-v4')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=650)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=10)
 
