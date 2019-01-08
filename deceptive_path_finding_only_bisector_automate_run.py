@@ -9,25 +9,22 @@ if __name__ == '__main__':
     cpu_count = 8  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
     num_trajs_per_pol = 100
-    print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v2')
+    parser.add_argument('--env', help='environment ID', default='PathFindingDeceptive-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
-    print("Number of samples per process is: ", int(num_sample_per_iter / cpu_count))
-    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
+    parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=250)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data',
-                        default='DartReacher3d-v2')
+                        default='PathFindingDeceptive-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
-
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=16)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=2)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
@@ -37,32 +34,35 @@ if __name__ == '__main__':
                         default=1)
 
     args = parser.parse_args()
+
     env_name = args.env
-    # seed = args.seed
-    seed = 13
+    seed = args.seed
+
     num_epoch = 200
     batch_size = 1024
-
-    # qnorm = 2 * np.pi
-    # dqnorm = 50
-
-    norm_scale = np.array([5, np.pi, 5, 5])
-    norm_scale_str = ''
-    for i in norm_scale:
-        norm_scale_str += str(i) + ' '
-
-    for s in range(10, 40, 1):
+    # qnorm = 10
+    # dqnorm = 10
+    for s in range(5):
+        # s = 1
         seed = s * 13 + 7 * (s ** 2)
+
+        norm_scale = np.array([4, 10])
+        norm_scale_str = ''
+        for i in norm_scale:
+            norm_scale_str += str(i) + ' '
 
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-
         specified_time = None
-        for i in range(0, 1, 1):
+        for i in range(0, 5, 1):
             # i = 0
             curr_run = str(i)
+
+            # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
+            #     curr_run) + '/' + '2018-10-01_16:53:21'
+
             if i == 0:
-                specified_time = None  # '2018-12-05_11:45:52'
+                specified_time = None  # '2018-11-08_17:42:27'
             else:
                 specified_time = None
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
                 train_policy = subprocess.call(
                     'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                        cpu_count) + ' python ./running_regimes/two_objs_policy_train.py'
+                        cpu_count) + ' python ./running_regimes/two_objs_policy_train_only_bisector.py'
                     + ' --env ' + args.env
                     + ' --seed ' + str(seed)
                     + ' --curr_run ' + curr_run
@@ -84,7 +84,6 @@ if __name__ == '__main__':
                 data_saving_path = 'data/local/' + str(specified_time) + '_' + env_name + '_seed_' + str(
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
 
-            # if i != 1:
             collect_data = subprocess.call(
                 'OMP_NUM_THREADS="1" mpirun -np ' + str(cpu_count) + ' python ./Util/post_training_process.py'
                 + ' --seed ' + str(seed)
@@ -100,6 +99,7 @@ if __name__ == '__main__':
                 + ' --num_states_per_data ' + str(args.num_states_per_data)
                 + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
                 + ' --control_step_skip ' + str(args.control_step_skip)
+
                 , shell=True)
             #
             collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
