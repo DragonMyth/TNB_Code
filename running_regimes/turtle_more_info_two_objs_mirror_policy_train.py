@@ -181,6 +181,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration', default=1000)
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=150)
+    parser.add_argument('--run_dir', help='Directory for saving the log files for the large run')
 
     args = parser.parse_args()
 
@@ -194,4 +195,4 @@ if __name__ == '__main__':
     # batch_size_per_process = sys.argv[5]
     # num_iterations = sys.argv[6]
     main(args.env, args.seed, int(args.curr_run), args.data_saving_path, int(args.batch_size_per_process),
-         int(args.num_iterations))
+         int(args.num_iterations), autoencoder_base=args.run_dir + "/autoencoders/")

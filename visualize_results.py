@@ -91,6 +91,6 @@ def render_2d_walker():
 # render_turtles()
 # render_humanoid()
 # render_deceptive_maze()
-# render_deceptive_reacher()
+render_deceptive_reacher()
 # render_reacher()
-render_hopper()
+# render_hopper()
