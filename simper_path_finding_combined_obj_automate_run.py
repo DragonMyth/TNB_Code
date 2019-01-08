@@ -110,7 +110,7 @@ if __name__ == '__main__':
                 seed) + '_run_' + str(
                 curr_run) + '.pkl'
 
-            plot_save_dir = 'novelty_data/local/sampled_paths/plots/' + args.data_collect_env + '_seed_' + str(
+            plot_save_dir = seed_root_dir + '/sampled_paths/plots/' + args.data_collect_env + '_seed_' + str(
                 seed) + '_run_' + str(
                 curr_run) + '_visited_plot.png'
 

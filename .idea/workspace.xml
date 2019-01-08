@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Util/post_training_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/post_training_process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/train_traj_autoencoder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" afterDir="false" />
@@ -15,17 +11,10 @@
       <change beforePath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/turtle_more_info_combined_mirror_policy_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/running_regimes/turtle_more_info_combined_mirror_policy_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/turtle_more_info_two_objs_mirror_policy_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/running_regimes/turtle_more_info_two_objs_mirror_policy_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" beforeDir="false" afterPath="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simper_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visualize_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualize_results.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,8 +54,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="516">
-              <caret line="80" column="96" selection-start-line="80" selection-start-column="96" selection-end-line="80" selection-end-column="96" />
+            <state relative-caret-position="633">
+              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="543">
+              <caret line="124" column="47" selection-start-line="124" selection-start-column="47" selection-end-line="124" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="543">
+              <caret line="118" column="47" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -74,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="79" column="99" selection-start-line="79" selection-start-column="99" selection-end-line="79" selection-end-column="99" />
+            <state relative-caret-position="543">
+              <caret line="121" column="47" selection-start-line="121" selection-start-column="47" selection-end-line="121" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -83,26 +90,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="80" column="96" selection-start-line="80" selection-start-column="96" selection-end-line="80" selection-end-column="96" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1281">
-              <caret line="138" column="49" selection-start-line="138" selection-start-column="49" selection-end-line="138" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="45" column="23" lean-forward="true" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+            <state relative-caret-position="528">
+              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -110,8 +99,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1526">
-              <caret line="139" column="49" selection-start-line="139" selection-start-column="49" selection-end-line="139" selection-end-column="49" />
+            <state relative-caret-position="543">
+              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -119,8 +108,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1200">
-              <caret line="131" column="49" selection-start-line="131" selection-start-column="49" selection-end-line="131" selection-end-column="49" />
+            <state relative-caret-position="543">
+              <caret line="114" column="47" selection-start-line="114" selection-start-column="47" selection-end-line="114" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -128,8 +117,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="72" column="96" selection-start-line="72" selection-start-column="96" selection-end-line="72" selection-end-column="96" />
+            <state relative-caret-position="528">
+              <caret line="114" column="47" selection-start-line="114" selection-start-column="47" selection-end-line="114" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -137,17 +126,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1795">
-              <caret line="132" column="60" selection-start-line="132" selection-start-column="60" selection-end-line="132" selection-end-column="60" />
+            <state relative-caret-position="543">
+              <caret line="117" column="47" selection-start-line="117" selection-start-column="47" selection-end-line="117" selection-end-column="47" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="75" column="96" selection-start-line="75" selection-start-column="96" selection-end-line="75" selection-end-column="96" />
+            <state relative-caret-position="528">
+              <caret line="117" column="47" selection-start-line="117" selection-start-column="47" selection-end-line="117" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -240,24 +229,24 @@
         <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" />
         <option value="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
         <option value="$PROJECT_DIR$/Util/post_training_process.py" />
-        <option value="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" />
         <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" />
         <option value="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" />
         <option value="$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py" />
         <option value="$PROJECT_DIR$/running_regimes/turtle_more_info_two_objs_mirror_policy_train.py" />
         <option value="$PROJECT_DIR$/running_regimes/turtle_more_info_combined_mirror_policy_train.py" />
-        <option value="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
+        <option value="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" />
         <option value="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py" />
+        <option value="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" />
+        <option value="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" />
         <option value="$PROJECT_DIR$/simper_path_finding_automate_run.py" />
         <option value="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" />
         <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
         <option value="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" />
-        <option value="$PROJECT_DIR$/dart_2d_walker_automate_run.py" />
       </list>
     </option>
   </component>
@@ -594,12 +583,12 @@
       <workItem from="1546206537548" duration="18000" />
       <workItem from="1546206572534" duration="5154000" />
       <workItem from="1546404135611" duration="23333000" />
-      <workItem from="1546913930822" duration="1133000" />
+      <workItem from="1546913930822" duration="2110000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29638000" />
+    <option name="totallyTimeSpent" value="30615000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1363,16 +1352,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="530">
-          <caret line="626" lean-forward="true" selection-start-line="626" selection-end-line="626" />
-          <folding>
-            <element signature="e#5721#5779#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="798">
@@ -1418,94 +1397,104 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="525" column="22" selection-start-line="525" selection-start-column="22" selection-end-line="525" selection-end-column="22" />
+          <folding>
+            <element signature="e#5721#5779#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="783">
-          <caret line="137" column="49" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="137" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="76" column="96" selection-start-line="76" selection-start-column="96" selection-end-line="76" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1443">
-          <caret line="139" column="60" selection-start-line="139" selection-start-column="60" selection-end-line="139" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1281">
-          <caret line="138" column="49" selection-start-line="138" selection-start-column="49" selection-end-line="138" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1526">
-          <caret line="139" column="49" selection-start-line="139" selection-start-column="49" selection-end-line="139" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1200">
-          <caret line="131" column="49" selection-start-line="131" selection-start-column="49" selection-end-line="131" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="72" column="96" selection-start-line="72" selection-start-column="96" selection-end-line="72" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="75" column="96" selection-start-line="75" selection-start-column="96" selection-end-line="75" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1795">
-          <caret line="132" column="60" selection-start-line="132" selection-start-column="60" selection-end-line="132" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="80" column="96" selection-start-line="80" selection-start-column="96" selection-end-line="80" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="79" column="99" selection-start-line="79" selection-start-column="99" selection-end-line="79" selection-end-column="99" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="80" column="96" selection-start-line="80" selection-start-column="96" selection-end-line="80" selection-end-column="96" />
+        <state relative-caret-position="550">
+          <caret line="120" column="47" selection-start-line="118" selection-start-column="12" selection-end-line="120" selection-end-column="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="45" column="23" lean-forward="true" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+        <state relative-caret-position="543">
+          <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="121" column="47" selection-start-line="121" selection-start-column="47" selection-end-line="121" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="121" column="47" selection-start-line="121" selection-start-column="47" selection-end-line="121" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="633">
+          <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="124" column="47" selection-start-line="124" selection-start-column="47" selection-end-line="124" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="118" column="47" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="114" column="47" selection-start-line="114" selection-start-column="47" selection-end-line="114" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="114" column="47" selection-start-line="114" selection-start-column="47" selection-end-line="114" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="117" column="47" selection-start-line="117" selection-start-column="47" selection-end-line="117" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="117" column="47" selection-start-line="117" selection-start-column="47" selection-end-line="117" selection-end-column="47" />
         </state>
       </provider>
     </entry>
