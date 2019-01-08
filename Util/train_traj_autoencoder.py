@@ -16,13 +16,14 @@ import matplotlib.pyplot as plt
 
 
 class Autoencoder():
-    def __init__(self, qnorm, dqnorm, norm_scales, model_name, input_dim, n_rows, n_cols):
+    def __init__(self, qnorm, dqnorm, norm_scales, model_name, input_dim, n_rows, n_cols, save_dir):
         self.qnorm = qnorm
         self.dqnorm = dqnorm
         self.model_name = model_name
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.input_dim = input_dim
+        self.save_dir = save_dir
         self.norm_scales = self.generateNormScaleArr(norm_scales)
         # print(self.norm_scales)
         self.autoencoder = self.build_autoencoder()
@@ -98,13 +99,16 @@ class Autoencoder():
         plt.ylabel('loss')
         plt.xlabel('epoch')
         plt.legend(['train', 'test'], loc='upper left')
-        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_training_curve.png')
+        # plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_training_curve.png')
+        plt.savefig(self.save_dir + '/plots/' + model_filename + '_training_curve.png')
+
         plt.close()
         # encoded_input = Input(shape=(encoding_dim,))
         # decoded_layer = self.autoencoder.layers[-1]
 
         self.autoencoder.name = model_filename
-        self.autoencoder.save('./novelty_data/local/autoencoders/' + model_filename)
+        # self.autoencoder.save('./novelty_data/local/autoencoders/' + model_filename)
+        self.autoencoder.save(self.save_dir + '/' + model_filename)
 
     # def vis_data_in_motion():
 
@@ -145,7 +149,9 @@ class Autoencoder():
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
 
-        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_vis.png')
+        # plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_vis.png')
+        plt.savefig(self.save_dir + '/plots/' + model_filename + '_reconstruction_vis.png')
+
         plt.close()
         # plt.show()
 
@@ -159,7 +165,9 @@ class Autoencoder():
         l2_norm = np.linalg.norm(diff[:], axis=1)
 
         plt.plot(items, l2_norm)
-        plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_err.png')
+        # plt.savefig('./novelty_data/local/autoencoders/plots/' + model_filename + '_reconstruction_err.png')
+        plt.savefig(self.save_dir + '/plots/' + model_filename + '_reconstruction_err.png')
+
         plt.close()
         # plt.show()
         print(l2_norm.shape)
@@ -189,14 +197,23 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', help='Scale of the dq in the skel', default=1024)
     parser.add_argument('--norm_scales', help='List of scales used to normalize autoencoder input', nargs='*',
                         default=[])
+    parser.add_argument('--run_dir', help='Directory for saving the log files for the large run')
 
     args = parser.parse_args()
+
+    if not os.path.isdir(args.run_dir + '/autoencoders'):
+        os.makedirs(args.run_dir + '/autoencoders')
+        os.makedirs(args.run_dir + '/autoencoders/plots')
 
     norm_scales = np.array(args.norm_scales, dtype=np.float32)
 
     model_filename = args.env + '_autoencoder_seed_' + str(args.seed) + '_run_' + str(args.curr_run) + '.h5'
 
-    collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
+    # collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
+    #     args.seed) + '_run_' + str(
+    #     args.curr_run) + '.pkl'
+
+    collected_data_filename = args.run_dir + '/sampled_paths/' + args.data_collect_env + '_seed_' + str(
         args.seed) + '_run_' + str(
         args.curr_run) + '.pkl'
 
@@ -208,7 +225,7 @@ if __name__ == '__main__':
 
     autoencoder = Autoencoder(float(args.qnorm), float(args.dqnorm), norm_scales, model_filename,
                               model_dim * traj_dim, traj_dim,
-                              model_dim)
+                              model_dim, args.run_dir + '/autoencoders')
 
     dataset = autoencoder.normalizeTraj(dataset)
     dataset = dataset.reshape((len(dataset), np.prod(dataset.shape[1:])))

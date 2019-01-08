@@ -333,7 +333,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
                               traj_per_policy_per_process=100,
                               policy_file_basename='itr_', data_dir='', policy_func=policy_fn, numState=15,
-                              obs_skip=15, action_skip=5):
+                              obs_skip=15, action_skip=5, run_dir=''):
     comm = MPI.COMM_WORLD
     directory = data_dir
 
@@ -377,7 +377,12 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
         numpyArr = np.array(all_subsampled_paths)
         print("All paths final shape is ", numpyArr.shape)
 
-        save_dir = os.path.abspath(os.curdir) + "/novelty_data/local/sampled_paths/" + output_name
+        # save_dir = os.path.abspath(os.curdir) + "/novelty_data/local/sampled_paths/" + output_name
+        if not os.path.isdir(run_dir + '/sampled_paths'):
+            os.makedirs(run_dir + '/sampled_paths')
+            os.makedirs(run_dir + '/sampled_paths/plots')
+
+        save_dir = run_dir + '/sampled_paths/' + output_name
         joblib.dump(numpyArr, save_dir)
         return save_dir
 
@@ -597,6 +602,7 @@ if __name__ == '__main__':
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=40)
     parser.add_argument('--policy_saving_path', help='Directory for saving the log files for this run')
+    parser.add_argument('--run_dir', help='Directory for saving the log files for the large run')
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
     parser.add_argument('--policy_fn_type', help='Length of the trajectory segment used for the autoencoder',
@@ -631,5 +637,6 @@ if __name__ == '__main__':
                                          policy_func=policy_func,
                                          numState=int(args.num_states_per_data),
                                          obs_skip=int(args.obs_skip_per_state),
-                                         action_skip=int(args.control_step_skip)
+                                         action_skip=int(args.control_step_skip),
+                                         run_dir=args.run_dir,
                                          )

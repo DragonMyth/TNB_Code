@@ -60,6 +60,7 @@ print("Files Loaded!")
 # def sanitizd_return_data():
 task_rts_for_all_seeds = []
 novelty_rts_for_all_seeds = []
+returns_for_all_seeds = []
 for learning_for_all_runs in learning_data_all_seeds:
     # num_runs = len(learning_data_all_runs)
     task_rwds = []
@@ -86,9 +87,9 @@ for learning_for_all_runs in learning_data_all_seeds:
 
     mean_task_rwd = task_rwds.mean(axis=0)
     mean_novelty_rwd = novelty_rwds.mean(axis=0)
-    task_rts_for_all_seeds.append(mean_task_rwd)
-    novelty_rts_for_all_seeds.append(mean_novelty_rwd)
-    # returns_for_all_seeds.append((mean_task_rwd, mean_novelty_rwd))
+    # task_rts_for_all_seeds.append(mean_task_rwd)
+    # novelty_rts_for_all_seeds.append(mean_novelty_rwd)
+    returns_for_all_seeds.append((mean_task_rwd, mean_novelty_rwd))
 
 fig, axs = plot.subplots(2, 1)
 # plot.figure()
