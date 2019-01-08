@@ -51,50 +51,40 @@ if __name__ == '__main__':
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(10, 40, 1):
+    for s in range(0, 10, 1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
         specified_time = None
-        for i in range(0, 1, 1):
+        for i in range(0, 5, 1):
             # i = 0
             curr_run = str(i)
-
-            # data_saving_path = 'data/ppo_' + env_name + '_seed_' + str(seed) + '_run_' + str(
-            #     curr_run) + '/' + '2018-10-01_16:53:21'
-
             if i == 0:
-                specified_time = None  # '2018-11-08_17:42:27'
+                specified_time = None  # '2018-12-05_11:45:52'
             else:
                 specified_time = None
 
             if specified_time is None:
-                seed_root_dir = 'data/local/' + str(st) + '_' + env_name + '_seed_' + str(
-                    seed)
-
                 data_saving_path = 'data/local/' + str(st) + '_' + env_name + '_seed_' + str(
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
                 train_policy = subprocess.call(
                     'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                        cpu_count) + ' python ./running_regimes/two_objs_policy_train.py'
+                        cpu_count) + ' python ./running_regimes/two_objs_policy_train_only_bisector.py'
                     + ' --env ' + args.env
                     + ' --seed ' + str(seed)
                     + ' --curr_run ' + curr_run
                     + ' --data_saving_path ' + str(data_saving_path + '/policy')
                     + ' --batch_size_per_process ' + str(args.batch_size_per_process)
                     + ' --num_iterations ' + str(args.num_iterations)
-                    + ' --run_dir ' + str(seed_root_dir)
                     , shell=True)
 
             else:
-                seed_root_dir = 'data/local/' + str(specified_time) + '_' + env_name + '_seed_' + str(
-                    seed)
-
                 data_saving_path = 'data/local/' + str(specified_time) + '_' + env_name + '_seed_' + str(
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
 
+            # if i != 1:
             collect_data = subprocess.call(
                 'OMP_NUM_THREADS="1" mpirun -np ' + str(cpu_count) + ' python ./Util/post_training_process.py'
                 + ' --seed ' + str(seed)
@@ -105,20 +95,18 @@ if __name__ == '__main__':
                 + ' --collect_policy_start ' + str(args.collect_policy_start)
                 + ' --collect_num_of_trajs ' + str(args.collect_num_of_trajs)
                 + ' --policy_saving_path ' + str(data_saving_path + '/policy')
-                + ' --run_dir ' + str(seed_root_dir)
                 + ' --ignore_obs ' + str(args.ignore_obs)
                 + ' --policy_fn_type ' + 'normal'
                 + ' --num_states_per_data ' + str(args.num_states_per_data)
                 + ' --obs_skip_per_state ' + str(args.obs_skip_per_state)
                 + ' --control_step_skip ' + str(args.control_step_skip)
-
                 , shell=True)
             #
-            collected_data_filename = seed_root_dir + '/sampled_paths/' + args.data_collect_env + '_seed_' + str(
+            collected_data_filename = 'novelty_data/local/sampled_paths/' + args.data_collect_env + '_seed_' + str(
                 seed) + '_run_' + str(
                 curr_run) + '.pkl'
 
-            plot_save_dir = seed_root_dir + '/sampled_paths/plots/' + args.data_collect_env + '_seed_' + str(
+            plot_save_dir = 'novelty_data/local/sampled_paths/plots/' + args.data_collect_env + '_seed_' + str(
                 seed) + '_run_' + str(
                 curr_run) + '_visited_plot.png'
 
@@ -134,7 +122,6 @@ if __name__ == '__main__':
                                                 + ' --num_epoch ' + str(num_epoch)
                                                 + ' --batch_size ' + str(batch_size)
                                                 + ' --norm_scales ' + str(norm_scale_str)
-                                                + ' --run_dir ' + str(seed_root_dir)
                                                 , shell=True
 
                                                 )
