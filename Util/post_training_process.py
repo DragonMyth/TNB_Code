@@ -276,7 +276,7 @@ def perform_rollout(policy,
     return path
 
 
-def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15, obs_skip=15, **opt):
+def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15, obs_skip=3, **opt):
     # For Each rollout
     rank = MPI.COMM_WORLD.Get_rank()
     np.random.seed(42 + rank)
@@ -333,7 +333,7 @@ def collect_rollout(policy, environment, rollout_num, ignoreObs, instancesNum=15
 def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, policy_gap=50, start_num=200,
                               traj_per_policy_per_process=100,
                               policy_file_basename='itr_', data_dir='', policy_func=policy_fn, numState=15,
-                              obs_skip=15, action_skip=5, run_dir=''):
+                              obs_skip=3, action_skip=1, run_dir=''):
     comm = MPI.COMM_WORLD
     directory = data_dir
 
@@ -611,9 +611,9 @@ if __name__ == '__main__':
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=15)
+                        default=3)
     parser.add_argument('--control_step_skip', help='Number of steps sharing the same control signal',
-                        default=5)
+                        default=1)
 
     args = parser.parse_args()
 

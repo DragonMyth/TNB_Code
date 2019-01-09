@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_2d_walker_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simper_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Util/post_training_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/post_training_process.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +23,7 @@
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$run_2d_path_finding.coverage" NAME="run_2d_path_finding Coverage Results" MODIFIED="1538419296493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/running_regimes" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$train_traj_autoencoder.coverage" NAME="train_traj_autoencoder Coverage Results" MODIFIED="1541547386882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Util" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$highDimDots.coverage" NAME="highDimDots Coverage Results" MODIFIED="1544733775335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NoveltyEnforcement$visualize_results.coverage" NAME="visualize_results Coverage Results" MODIFIED="1546909108665" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NoveltyEnforcement$visualize_results.coverage" NAME="visualize_results Coverage Results" MODIFIED="1546997856806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$two_objs_mirror_policy_train.coverage" NAME="two_objs_mirror_policy_train Coverage Results" MODIFIED="1539968458174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/running_regimes" />
     <SUITE FILE_PATH="coverage/NoveltyEnforcement$two_objs_policy_train.coverage" NAME="two_objs_policy_train Coverage Results" MODIFIED="1542380224819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/running_regimes" />
   </component>
@@ -52,64 +42,37 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_hopper_combined_obj_automate_run.py">
+        <entry file="file://$PROJECT_DIR$/visualize_results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="633">
-              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
+            <state relative-caret-position="387">
+              <caret line="94" column="18" selection-start-line="94" selection-start-column="18" selection-end-line="94" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
+        <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="124" column="47" selection-start-line="124" selection-start-column="47" selection-end-line="124" selection-end-column="47" />
+            <state relative-caret-position="320">
+              <caret line="100" selection-start-line="100" selection-end-line="100" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+        <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="118" column="47" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
+            <state relative-caret-position="127">
+              <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_3d_reacher_only_bisector_automate_run.py">
+        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="121" column="47" selection-start-line="121" selection-start-column="47" selection-end-line="121" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="122" column="47" selection-start-line="122" selection-start-column="47" selection-end-line="122" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="543">
-              <caret line="114" column="47" selection-start-line="114" selection-start-column="47" selection-end-line="114" selection-end-column="47" />
+            <state relative-caret-position="362">
+              <caret line="106" column="40" selection-start-line="106" selection-start-column="40" selection-end-line="106" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -124,6 +87,39 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="519">
+              <caret line="308" selection-start-line="308" selection-end-line="308" />
+              <folding>
+                <element signature="e#5721#5779#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="528">
+              <caret line="69" column="28" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#17#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="417">
+              <caret line="135" column="49" lean-forward="true" selection-start-line="56" selection-start-column="8" selection-end-line="135" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="543">
@@ -132,7 +128,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="528">
@@ -196,7 +192,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/humanoid_swim_straight_full_torque_actuated.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/__init__.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/__init__.py" />
         <option value="$PROJECT_DIR$/dart_hopper_automate_run.py" />
@@ -225,10 +220,8 @@
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/turtle_swim_straight_torque_actuate.py" />
         <option value="$PROJECT_DIR$/Util/plot_learning_from_all_seeds.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher_deceptive.py" />
-        <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train.py" />
         <option value="$PROJECT_DIR$/Util/train_traj_autoencoder.py" />
-        <option value="$PROJECT_DIR$/Util/post_training_process.py" />
         <option value="$PROJECT_DIR$/running_regimes/two_objs_policy_train_only_bisector.py" />
         <option value="$PROJECT_DIR$/running_regimes/turtle_two_objs_mirror_policy_train.py" />
         <option value="$PROJECT_DIR$/running_regimes/combined_single_obj_policy_train.py" />
@@ -247,6 +240,9 @@
         <option value="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" />
         <option value="$PROJECT_DIR$/turtle_more_info_forward_automate_run.py" />
         <option value="$PROJECT_DIR$/turtle_more_info_forward_combined_automate_run.py" />
+        <option value="$PROJECT_DIR$/visualize_results.py" />
+        <option value="$PROJECT_DIR$/Util/post_training_process.py" />
+        <option value="$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py" />
       </list>
     </option>
   </component>
@@ -583,12 +579,12 @@
       <workItem from="1546206537548" duration="18000" />
       <workItem from="1546206572534" duration="5154000" />
       <workItem from="1546404135611" duration="23333000" />
-      <workItem from="1546913930822" duration="2110000" />
+      <workItem from="1546913930822" duration="8818000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30615000" />
+    <option name="totallyTimeSpent" value="37323000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -609,8 +605,8 @@
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="0" weight="0.32958034" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32939914" />
-      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.47165775" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.26816785" />
+      <window_info anchor="bottom" id="Run" order="3" visible="true" weight="0.40748662" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.26737967" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32939914" />
@@ -1136,13 +1132,6 @@ adv_novel = batch['atarg_novel']</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/walker2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="35" column="74" selection-start-line="35" selection-start-column="74" selection-end-line="35" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/highDimDots.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -1168,13 +1157,6 @@ adv_novel = batch['atarg_novel']</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1395">
           <caret line="93" column="22" selection-start-line="93" selection-start-column="22" selection-end-line="93" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
         </state>
       </provider>
     </entry>
@@ -1303,20 +1285,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualize_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1110">
-          <caret line="74" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="62" column="30" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/hopper_deceptive.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1200">
@@ -1397,23 +1365,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="525" column="22" selection-start-line="525" selection-start-column="22" selection-end-line="525" selection-end-column="22" />
-          <folding>
-            <element signature="e#5721#5779#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="120" column="47" selection-start-line="118" selection-start-column="12" selection-end-line="120" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dart_2d_walker_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="543">
@@ -1463,13 +1414,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="543">
-          <caret line="118" column="47" selection-start-line="118" selection-start-column="47" selection-end-line="118" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/simper_path_finding_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="543">
@@ -1495,6 +1439,61 @@ adv_novel = batch['atarg_novel']</expression-string>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="117" column="47" selection-start-line="117" selection-start-column="47" selection-end-line="117" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="362">
+          <caret line="106" column="40" selection-start-line="106" selection-start-column="40" selection-end-line="106" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/dart/reacher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="15" column="15" selection-start-line="15" selection-start-column="15" selection-end-line="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../baselines/baselines/ppo1/pposgd_novelty.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="100" selection-start-line="100" selection-end-line="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="94" column="18" selection-start-line="94" selection-start-column="18" selection-end-line="94" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Util/post_training_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="519">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+          <folding>
+            <element signature="e#5721#5779#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="135" column="49" lean-forward="true" selection-start-line="56" selection-start-column="8" selection-end-line="135" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="69" column="28" selection-start-line="69" selection-start-column="28" selection-end-line="69" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
