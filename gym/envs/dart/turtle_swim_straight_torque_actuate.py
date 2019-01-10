@@ -120,10 +120,9 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
             novelPenn = 1
             done = True
 
-        if np.abs(reward)>100:
+        if np.abs(reward) > 100:
             reward = 0
         # print(reward)
-
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],
@@ -195,7 +194,7 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
 
                 self.novelDiff = min(novelDiffList)
 
-                self.novelDiffRev = np.exp(-self.novelDiff*self.novelty_factor)
+                self.novelDiffRev = np.exp(-self.novelDiff * self.novelty_factor)
                 # self.novelDiffRev = 4 - min(self.novelDiff, 4)
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff

@@ -188,7 +188,8 @@ class PathFindingDeceptive(gym.Env):
                                                  'rwd': reward}
 
     def _get_obs(self):
-        return np.concatenate([[self.goal_pos[0], self.goal_pos[1]], [self.point_pos[0], self.point_pos[1]],
+        return np.concatenate([[self.goal_pos[0] - self.point_pos[0], self.goal_pos[1] - self.point_pos[1]],
+                               [self.point_pos[0], self.point_pos[1]],
                                [self.point_vel[0], self.point_vel[1]]]).ravel()
 
     def do_simulation(self, tau, frameskip):
@@ -496,11 +497,11 @@ class PathFindingDeceptive(gym.Env):
                 self.novelDiff = min(novelDiffList)
 
                 # self.novelDiffRev = 1 - min(self.novelDiff, 1)
-                self.novelDiffRev = np.exp(-self.novelDiff*self.novelty_factor)
+                self.novelDiffRev = np.exp(-self.novelDiff * self.novelty_factor)
 
                 self.sum_of_old += self.novelDiffRev
                 self.sum_of_new += self.novelDiff
 
             novelRwd = self.novelty_factor * self.novelDiff
-            novelPenn =  self.novelDiffRev
+            novelPenn = self.novelDiffRev
         return novelRwd, novelPenn

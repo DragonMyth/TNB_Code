@@ -120,7 +120,7 @@ class SimplerPathFinding(gym.Env):
         init_obs = self._get_obs()
         self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
-
+        self.trail_color = (1, 0, 0)
         self.novel_autoencoders = []
 
         self.novel_visitations = []
@@ -305,6 +305,7 @@ class SimplerPathFinding(gym.Env):
         self.sum_of_new = 0
         self.have_goal_rew = True
         self.ret = 0
+        self.path_data = []
         return self._get_obs()
 
     def _render(self, mode='human', close=False):
@@ -388,7 +389,7 @@ class SimplerPathFinding(gym.Env):
             q_y = screen_height / 2
 
             point_mass = rendering.FilledPolygon(
-                [(q_x - 7, q_y - 7), (q_x - 7, q_y + 7), (q_x + 7, q_y + 7), (q_x + 7, q_y - 7)])
+                [(q_x - 2, q_y - 2), (q_x - 2, q_y + 2), (q_x + 2, q_y + 2), (q_x + 2, q_y - 2)])
             point_mass.set_color(0, 0, 1)
             self.point_mass_trans = rendering.Transform()
             point_mass.add_attr(self.point_mass_trans)
@@ -418,13 +419,16 @@ class SimplerPathFinding(gym.Env):
 
             point_2_y = screen_height / 2 + (point_2[1] / self.grid_size * self.grid_vis_size)
 
-            path_segment = rendering.FilledPolygon(
-                [(point_1_x - 4, point_1_y - 4), (point_1_x - 4, point_1_y + 4), (point_1_x + 4, point_1_y + 4),
-                 (point_1_x + 4, point_1_y - 4)])
+            # path_segment = rendering.FilledPolygon(
+            #     [(point_1_x - 1, point_1_y - 1), (point_1_x - 1, point_1_y + 1), (point_1_x + 1, point_1_y + 1),
+            #      (point_1_x + 1, point_1_y - 1)])
+
+            path_segment = rendering.Line(start=(point_1_x, point_1_y), end=(point_2_x, point_2_y))
+            path_segment.attrs[-1] = rendering.LineWidth(5)
             # print(avg_color)
             if (avg_color < 0):
 
-                path_segment.set_color(1, 0, 1)
+                path_segment.set_color(self.trail_color[0], self.trail_color[1], self.trail_color[2])
             else:
                 path_segment.set_color(0, min(1, avg_color * 0.8), 0)
 
