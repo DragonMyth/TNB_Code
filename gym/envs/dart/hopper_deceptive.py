@@ -91,9 +91,9 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
                     (height > .7) and (height < 8.8) and (abs(ang) < 2))
 
         ob = self._get_obs()
-
-        # First single obj run 500
-        reward -= 500 * novelPenn
+        # 1. single obj run 500
+        # 2. single obj run 2000
+        reward -= 2000 * novelPenn
         return ob, (reward, -novelPenn), done, {}
 
     def _get_obs(self):

@@ -13,7 +13,7 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         dart_env.DartEnv.__init__(self, 'reacher.skel', 4, 26, self.control_bounds, disableViewer=True)
 
         self.stepNum = 0
-        self.recordGap = 3
+        self.recordGap = 2
         self.novelty_window_size = 15
         self.traj_buffer = []  # [init_obs] * 5
 
@@ -77,7 +77,12 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         if (-reward_dist <= 0.12):
             reward += 500
 
-        reward -= 5 * novelPenn
+        #Following reward term is the combined version of task and novelty
+        #1. Try 500
+        #2. Try 100
+        #3. Try 1000
+        #reward -= 1000 * novelPenn
+
         return ob, (reward, -novelPenn), done, {'rwd': reward,
                                                 'states': s, 'actions': tau,
                                                 'NoveltyRwd': novelRwd, 'NoveltyPenn': -novelPenn

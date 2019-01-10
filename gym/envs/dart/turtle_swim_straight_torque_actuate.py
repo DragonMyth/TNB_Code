@@ -123,6 +123,9 @@ class DartTurtleSwimStraighTorqueActuateEnv(dart_env.DartEnv, utils.EzPickle):
         if np.abs(reward) > 100:
             reward = 0
         # print(reward)
+        else:
+            # 1. 1000
+            reward -= 1000 * novelPenn
 
         return ob, (reward, -novelPenn), done, {'rwd': reward, 'horizontal_pos_rwd': horizontal_pos_rwd,
                                                 'rotate_pen': -rotate_pen, 'orth_pen': -orth_pen, 'actions': tau[6::],

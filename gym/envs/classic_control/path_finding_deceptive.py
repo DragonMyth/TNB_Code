@@ -104,10 +104,10 @@ class PathFindingDeceptive(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
-        self.ignore_obs = 2
+        self.ignore_obs = 0# 2
 
         self.ret = 0
-        self.normScale = self.generateNormScaleArr([4, 10])
+        self.normScale = self.generateNormScaleArr([6, 10])
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
@@ -159,7 +159,7 @@ class PathFindingDeceptive(gym.Env):
         i, j = self.pos_to_grid_idx(pos_after)
         # print(pos_after)
         # print(self.goal_pos)
-        alive_penalty = -2  # -1  # - self.stepNum
+        alive_penalty =-5  # -1  # - self.stepNum
         reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
         reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
@@ -172,24 +172,26 @@ class PathFindingDeceptive(gym.Env):
         if self.grid_map[i, j] == 5:
             done = True
 
-            reward += 5000
-            self.ret += reward
+            #reward += 500
+            #self.ret += reward
 
-        if wall_hit:
-            reward -= 10
+        #if wall_hit:
+        #    reward -= 10
         # done = True
 
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
-        self.ret += reward
-        # reward -= 1000 * novelPenn
+        #self.ret += reward
+        #1. 500
+
+        #reward -= 500 * novelPenn
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
                                                  'rwd': reward}
 
     def _get_obs(self):
-        return np.concatenate([[self.goal_pos[0] - self.point_pos[0], self.goal_pos[1] - self.point_pos[1]],
-                               [self.point_pos[0], self.point_pos[1]],
+
+        return np.concatenate([[self.goal_pos[0]-self.point_pos[0], self.goal_pos[1]-self.point_pos[1]], [self.point_pos[0], self.point_pos[1]],
                                [self.point_vel[0], self.point_vel[1]]]).ravel()
 
     def do_simulation(self, tau, frameskip):

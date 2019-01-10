@@ -60,7 +60,7 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         reward_dist = - np.linalg.norm(vec)
         reward_ctrl = - np.square(tau).sum() * 0.001
-        alive_bonus = 0
+        alive_bonus = -2
 
         reward = reward_dist + reward_ctrl + alive_bonus
 
@@ -74,8 +74,8 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         done = not (np.isfinite(s).all() and (-reward_dist > 0.12))
 
-        # if (-reward_dist <= 0.12):
-        #     reward += 500
+        #if (-reward_dist <= 0.12):
+        #    reward += 500
         #
         # if dist > self.longest_dist:
         #     done = True
