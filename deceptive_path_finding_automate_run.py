@@ -21,10 +21,10 @@ if __name__ == '__main__':
                         default='PathFindingDeceptive-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=205)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=2)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
@@ -42,11 +42,11 @@ if __name__ == '__main__':
     batch_size = 1024
     # qnorm = 10
     # dqnorm = 10
-    for s in range(5):
+    for s in range(0,5,1):
         # s = 1
         seed = s * 13 + 7 * (s ** 2)
 
-        norm_scale = np.array([4, 10])
+        norm_scale = np.array([6, 10])
         norm_scale_str = ''
         for i in norm_scale:
             norm_scale_str += str(i) + ' '
