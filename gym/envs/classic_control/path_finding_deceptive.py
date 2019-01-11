@@ -98,7 +98,7 @@ class PathFindingDeceptive(gym.Env):
 
         self.sum_of_old = 0
         self.sum_of_new = 0
-        self.novelty_factor = 3
+        self.novelty_factor = 2
 
         self.novelDiff = 0
         self.novelDiffRev = 0
@@ -159,7 +159,7 @@ class PathFindingDeceptive(gym.Env):
         i, j = self.pos_to_grid_idx(pos_after)
         # print(pos_after)
         # print(self.goal_pos)
-        alive_penalty =-5  # -1  # - self.stepNum
+        alive_penalty =-2  # -1  # - self.stepNum
         reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
         reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
@@ -172,11 +172,11 @@ class PathFindingDeceptive(gym.Env):
         if self.grid_map[i, j] == 5:
             done = True
 
-            #reward += 500
+            reward += 500
             #self.ret += reward
 
-        #if wall_hit:
-        #    reward -= 10
+        if wall_hit:
+            reward -= 10
         # done = True
 
         # if self.sum_of_old > 20:
