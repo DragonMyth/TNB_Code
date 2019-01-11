@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a01f5c4c-2354-46a6-8154-8362e75864da" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Util/post_training_process.py" beforeDir="false" afterPath="$PROJECT_DIR$/Util/post_training_process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/highDimDots.py" beforeDir="false" afterPath="$PROJECT_DIR$/highDimDots.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/simper_path_finding_only_bisector_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_combined_obj_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_deceptive_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dart_3d_reacher_deceptive_only_bisector_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/dart_3d_reacher_deceptive_only_bisector_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_combined_obj_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/deceptive_path_finding_only_bisector_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simper_path_finding_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_automate_run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" beforeDir="false" afterPath="$PROJECT_DIR$/simper_path_finding_combined_obj_automate_run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visualize_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/visualize_results.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,11 +48,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/visualize_results.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            <state relative-caret-position="372">
+              <caret line="93" column="28" selection-start-line="93" selection-start-column="28" selection-end-line="93" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -69,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="104" column="31" lean-forward="true" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
+            <state relative-caret-position="1423">
+              <caret line="104" column="31" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -243,8 +249,8 @@
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/path_finding_deceptive.py" />
         <option value="$PROJECT_DIR$/highDimDots.py" />
         <option value="$PROJECT_DIR$/Util/post_training_process.py" />
-        <option value="$PROJECT_DIR$/visualize_results.py" />
         <option value="$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py" />
+        <option value="$PROJECT_DIR$/visualize_results.py" />
       </list>
     </option>
   </component>
@@ -588,12 +594,12 @@
       <workItem from="1546206537548" duration="18000" />
       <workItem from="1546206572534" duration="5154000" />
       <workItem from="1546404135611" duration="23333000" />
-      <workItem from="1546913930822" duration="32945000" />
+      <workItem from="1546913930822" duration="33413000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="61450000" />
+    <option name="totallyTimeSpent" value="61918000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1476,13 +1482,6 @@ adv_novel = batch['atarg_novel']</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/visualize_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../PhysicalSimulation/MyDartEnv/gym/envs/classic_control/simpler_path_finding.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="327">
@@ -1492,8 +1491,15 @@ adv_novel = batch['atarg_novel']</expression-string>
     </entry>
     <entry file="file://$PROJECT_DIR$/dart_hopper_deceptive_automate_run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="104" column="31" lean-forward="true" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
+        <state relative-caret-position="1423">
+          <caret line="104" column="31" selection-start-line="104" selection-start-column="31" selection-end-line="104" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/visualize_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="93" column="28" selection-start-line="93" selection-start-column="28" selection-end-line="93" selection-end-column="28" />
         </state>
       </provider>
     </entry>

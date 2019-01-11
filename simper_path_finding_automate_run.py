@@ -8,7 +8,7 @@ from Util.post_training_process import *
 if __name__ == '__main__':
     cpu_count = 8  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
-    num_trajs_per_pol = 400
+    num_trajs_per_pol = 100
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('--env', help='environment ID', default='SimplerPathFinding-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='SimplerPathFinding-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=205)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
             #     curr_run) + '/' + '2018-10-01_16:53:21'
 
             if i == 0:
-                specified_time = None  # '2018-11-08_17:42:27'
+                specified_time = None# '2019-01-10_20:38:39'
             else:
                 specified_time = None
 

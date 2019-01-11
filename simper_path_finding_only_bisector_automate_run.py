@@ -10,21 +10,20 @@ if __name__ == '__main__':
     num_sample_per_iter = 12000
     num_trajs_per_pol = 100
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='PathFindingDeceptive-v0')
+    parser.add_argument('--env', help='environment ID', default='SimplerPathFinding-v0')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
                         default=int(num_sample_per_iter / cpu_count))
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=250)
 
-    parser.add_argument('--data_collect_env', help='Environment used to collect data',
-                        default='PathFindingDeceptive-v0')
+    parser.add_argument('--data_collect_env', help='Environment used to collect data', default='SimplerPathFinding-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=205)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=2)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
@@ -38,22 +37,19 @@ if __name__ == '__main__':
     env_name = args.env
     seed = args.seed
 
+    norm_scale = np.array([4, 10])
+    norm_scale_str = ''
+    for i in norm_scale:
+        norm_scale_str += str(i) + ' '
+
     num_epoch = 200
     batch_size = 1024
     # qnorm = 10
     # dqnorm = 10
     for s in range(5):
-        # s = 1
         seed = s * 13 + 7 * (s ** 2)
-
-        norm_scale = np.array([4, 10])
-        norm_scale_str = ''
-        for i in norm_scale:
-            norm_scale_str += str(i) + ' '
-
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-        specified_time = None
         for i in range(0, 5, 1):
             # i = 0
             curr_run = str(i)
@@ -74,7 +70,7 @@ if __name__ == '__main__':
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
                 train_policy = subprocess.call(
                     'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                        cpu_count) + ' python ./running_regimes/combined_single_obj_policy_train.py'
+                        cpu_count) + ' python ./running_regimes/two_objs_policy_train_only_bisector.py'
                     + ' --env ' + args.env
                     + ' --seed ' + str(seed)
                     + ' --curr_run ' + curr_run
