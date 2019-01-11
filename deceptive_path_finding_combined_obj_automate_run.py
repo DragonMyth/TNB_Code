@@ -21,7 +21,7 @@ if __name__ == '__main__':
                         default='PathFindingDeceptive-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=205)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=2)

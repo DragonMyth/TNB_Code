@@ -46,7 +46,7 @@ if __name__ == '__main__':
         # s = 1
         seed = s * 13 + 7 * (s ** 2)
 
-        norm_scale = np.array([6, 10])
+        norm_scale = np.array([4, 10])
         norm_scale_str = ''
         for i in norm_scale:
             norm_scale_str += str(i) + ' '
