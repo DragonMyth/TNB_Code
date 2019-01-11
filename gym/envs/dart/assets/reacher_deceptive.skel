@@ -279,14 +279,7 @@
                     <offset>0 0 0</offset>
                 </inertia>
 
-                <visualization_shape>
-                    <geometry>
-                        <box>
-                            <size>1 0.5 0.01</size>
-                        </box>
-                    </geometry>
-                    <color>0 1 0 0.3</color>
-                </visualization_shape>
+
 
                 <collision_shape>
                     <geometry>

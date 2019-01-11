@@ -343,9 +343,11 @@ class SimplerPathFinding(gym.Env):
                     cell = rendering.FilledPolygon([(l, b), (l, t), (r, t), (r, b)])
 
                     # cell.add_attr(rendering.Transform())
-
+                    draw_cell_edge = True
                     if (self.grid_map[i, j] == 1):
-                        cell.set_color(0, 0, 0)
+                        # cell.set_color(0, 0, 0)
+                        cell.set_color(1, 1, 1)
+                        draw_cell_edge = False
 
                     elif (2 <= self.grid_map[i, j] <= 5):
 
@@ -353,34 +355,34 @@ class SimplerPathFinding(gym.Env):
 
                     elif (6 <= self.grid_map[i, j] <= 9):
 
-                        cell.set_color(0, ((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0))
+                        cell.set_color(((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0),
+                                       ((self.grid_map[i, j] - 5) / 4.0))
                     elif (self.grid_map[i, j] == -1):
 
                         cell.set_color(1, 0, 0)
 
                     else:
-                        color = np.ones(3)
-                        for vis in self.novel_visitations:
-                            if vis[i, j] > 0:
-                                color[0] -= vis[i, j]
-                                color[1] -= vis[i, j]
-                                color[2] = 0.5
-
+                        color = np.zeros(3)
                         cell.set_color(color[0], color[1], color[2])
-
-                    # right_edge = rendering.Line((l, b), (l, t))
-                    right_edge = rendering.FilledPolygon([(l - 1, b), (l - 1, t), (l + 1, t), (l + 1, b)])
-
-                    bottom_edge = rendering.FilledPolygon([(l, b - 1), (l, b + 1), (r, b + 1), (r, b - 1)])
-
-                    right_edge.set_color(.3, .3, .3)
-                    bottom_edge.set_color(.3, .3, .3)
-
-                    self.viewer.add_geom(right_edge)
 
                     self.viewer.add_geom(cell)
 
-                    self.viewer.add_geom(bottom_edge)
+                    if draw_cell_edge:
+                        left_edge = rendering.FilledPolygon([(l - 1, b), (l - 1, t), (l + 1, t), (l + 1, b)])
+                        #
+                        bottom_edge = rendering.FilledPolygon([(l, b - 1), (l, b + 1), (r, b + 1), (r, b - 1)])
+
+                        right_edge = rendering.FilledPolygon([(r - 1, b), (r - 1, t), (r + 1, t), (r + 1, b)])
+
+                        top_edge = rendering.FilledPolygon([(l, t - 1), (l, t + 1), (r, t + 1), (r, t - 1)])
+
+                        # right_edge.set_color(.3, .3, .3)
+                        # bottom_edge.set_color(.3, .3, .3)
+
+                        self.viewer.add_geom(right_edge)
+                        self.viewer.add_geom(bottom_edge)
+                        self.viewer.add_geom(left_edge)
+                        self.viewer.add_geom(top_edge)
 
             q = self.point_pos
 
@@ -424,7 +426,7 @@ class SimplerPathFinding(gym.Env):
             #      (point_1_x + 1, point_1_y - 1)])
 
             path_segment = rendering.Line(start=(point_1_x, point_1_y), end=(point_2_x, point_2_y))
-            path_segment.attrs[-1] = rendering.LineWidth(5)
+            path_segment.attrs[-1] = rendering.LineWidth(10)
             # print(avg_color)
             if (avg_color < 0):
 

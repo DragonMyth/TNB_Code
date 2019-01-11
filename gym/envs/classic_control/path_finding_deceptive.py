@@ -104,7 +104,7 @@ class PathFindingDeceptive(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
-        self.ignore_obs = 0# 2
+        self.ignore_obs = 0  # 2
 
         self.ret = 0
         self.normScale = self.generateNormScaleArr([6, 10])
@@ -159,7 +159,7 @@ class PathFindingDeceptive(gym.Env):
         i, j = self.pos_to_grid_idx(pos_after)
         # print(pos_after)
         # print(self.goal_pos)
-        alive_penalty =-5  # -1  # - self.stepNum
+        alive_penalty = -5  # -1  # - self.stepNum
         reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
         reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
@@ -172,26 +172,27 @@ class PathFindingDeceptive(gym.Env):
         if self.grid_map[i, j] == 5:
             done = True
 
-            #reward += 500
-            #self.ret += reward
+            # reward += 500
+            # self.ret += reward
 
-        #if wall_hit:
+        # if wall_hit:
         #    reward -= 10
         # done = True
 
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
-        #self.ret += reward
-        #1. 500
+        # self.ret += reward
+        # 1. 500
 
-        #reward -= 500 * novelPenn
+        # reward -= 500 * novelPenn
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
                                                  'rwd': reward}
 
     def _get_obs(self):
 
-        return np.concatenate([[self.goal_pos[0]-self.point_pos[0], self.goal_pos[1]-self.point_pos[1]], [self.point_pos[0], self.point_pos[1]],
+        return np.concatenate([[self.goal_pos[0] - self.point_pos[0], self.goal_pos[1] - self.point_pos[1]],
+                               [self.point_pos[0], self.point_pos[1]],
                                [self.point_vel[0], self.point_vel[1]]]).ravel()
 
     def do_simulation(self, tau, frameskip):
@@ -261,6 +262,8 @@ class PathFindingDeceptive(gym.Env):
         return wall_hit
 
     def _reset(self):
+        self.path_data = []
+
         self.point_pos = self.init_pos  # + self.np_random.uniform(low=-0.05,
         #                        high=0.05,
         #                       size=(2))
@@ -309,9 +312,10 @@ class PathFindingDeceptive(gym.Env):
                     cell = rendering.FilledPolygon([(l, b), (l, t), (r, t), (r, b)])
 
                     # cell.add_attr(rendering.Transform())
-
+                    draw_cell_edge = True
                     if (self.grid_map[i, j] == 1):
                         cell.set_color(0, 0, 0)
+                        draw_cell_edge = False
 
                     elif (2 <= self.grid_map[i, j] <= 5):
 
@@ -319,34 +323,17 @@ class PathFindingDeceptive(gym.Env):
 
                     elif (6 <= self.grid_map[i, j] <= 9):
 
-                        cell.set_color(0, ((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0))
+                        cell.set_color(((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0),
+                                       ((self.grid_map[i, j] - 5) / 4.0))
                     elif (self.grid_map[i, j] == -1):
 
                         cell.set_color(1, 0, 0)
 
                     else:
                         color = np.ones(3)
-                        for vis in self.novel_visitations:
-                            if vis[i, j] > 0:
-                                color[0] -= vis[i, j]
-                                color[1] -= vis[i, j]
-                                color[2] = 0.5
-
                         cell.set_color(color[0], color[1], color[2])
 
-                    # right_edge = rendering.Line((l, b), (l, t))
-                    right_edge = rendering.FilledPolygon([(l - 1, b), (l - 1, t), (l + 1, t), (l + 1, b)])
-
-                    bottom_edge = rendering.FilledPolygon([(l, b - 1), (l, b + 1), (r, b + 1), (r, b - 1)])
-
-                    right_edge.set_color(.3, .3, .3)
-                    bottom_edge.set_color(.3, .3, .3)
-
-                    self.viewer.add_geom(right_edge)
-
                     self.viewer.add_geom(cell)
-
-                    self.viewer.add_geom(bottom_edge)
 
             q = self.point_pos
 
@@ -355,7 +342,7 @@ class PathFindingDeceptive(gym.Env):
             q_y = screen_height / 2
 
             point_mass = rendering.FilledPolygon(
-                [(q_x - 7, q_y - 7), (q_x - 7, q_y + 7), (q_x + 7, q_y + 7), (q_x + 7, q_y - 7)])
+                [(q_x - 2, q_y - 2), (q_x - 2, q_y + 2), (q_x + 2, q_y + 2), (q_x + 2, q_y - 2)])
             point_mass.set_color(0, 0, 1)
             self.point_mass_trans = rendering.Transform()
             point_mass.add_attr(self.point_mass_trans)
@@ -385,13 +372,16 @@ class PathFindingDeceptive(gym.Env):
 
             point_2_y = screen_height / 2 + (point_2[1] / self.grid_size * self.grid_vis_size)
 
-            path_segment = rendering.FilledPolygon(
-                [(point_1_x - 4, point_1_y - 4), (point_1_x - 4, point_1_y + 4), (point_1_x + 4, point_1_y + 4),
-                 (point_1_x + 4, point_1_y - 4)])
+            # path_segment = rendering.FilledPolygon(
+            #     [(point_1_x - 1, point_1_y - 1), (point_1_x - 1, point_1_y + 1), (point_1_x + 1, point_1_y + 1),
+            #      (point_1_x + 1, point_1_y - 1)])
+
+            path_segment = rendering.Line(start=(point_1_x, point_1_y), end=(point_2_x, point_2_y))
+            path_segment.attrs[-1] = rendering.LineWidth(5)
             # print(avg_color)
             if (avg_color < 0):
 
-                path_segment.set_color(1, 0, 1)
+                path_segment.set_color(self.trail_color[0], self.trail_color[1], self.trail_color[2])
             else:
                 path_segment.set_color(0, min(1, avg_color * 0.8), 0)
 

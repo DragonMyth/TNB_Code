@@ -3,6 +3,7 @@
 import numpy as np
 from gym import utils
 from gym.envs.dart import dart_env
+from .reacher_trail_world import ReacherTrailWorld
 
 
 class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
@@ -10,7 +11,8 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.target = np.array([0.8, 0.25, 0])
         self.action_scale = np.array([10, 10, 10, 10, 10])
         self.control_bounds = np.array([[1.0, 1.0, 1.0, 1.0, 1.0], [-1.0, -1.0, -1.0, -1.0, -1.0]])
-        dart_env.DartEnv.__init__(self, 'reacher_deceptive.skel', 4, 26, self.control_bounds, disableViewer=True)
+        dart_env.DartEnv.__init__(self, 'reacher_deceptive.skel', 4, 26, self.control_bounds, disableViewer=True,
+                                  custom_world=ReacherTrailWorld)
         utils.EzPickle.__init__(self)
 
         self.stepNum = 0
@@ -34,6 +36,7 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         self.normScale = self.generateNormScaleArr([5, np.pi, 5, 5])
         self.longest_dist = 0
+        self.trail_color = (0, 0, 0)
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
@@ -74,7 +77,7 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
 
         done = not (np.isfinite(s).all() and (-reward_dist > 0.12))
 
-        #if (-reward_dist <= 0.12):
+        # if (-reward_dist <= 0.12):
         #    reward += 500
         #
         # if dist > self.longest_dist:
@@ -102,6 +105,8 @@ class DartReacherDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.stepNum = 0
 
         self.dart_world.reset()
+        self.dart_world.trail_color = self.trail_color
+        self.dart_world.robo_skel = self.robot_skeleton
         qpos = self.robot_skeleton.q + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
         qvel = self.robot_skeleton.dq + self.np_random.uniform(low=-.01, high=.01, size=self.robot_skeleton.ndofs)
         self.set_state(qpos, qvel)
