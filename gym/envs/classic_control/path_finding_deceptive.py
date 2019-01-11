@@ -104,10 +104,10 @@ class PathFindingDeceptive(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
-        self.ignore_obs = 0# 2
+        self.ignore_obs =  2
 
         self.ret = 0
-        self.normScale = self.generateNormScaleArr([6, 10])
+        self.normScale = self.generateNormScaleArr([4, 10])
 
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
@@ -172,7 +172,7 @@ class PathFindingDeceptive(gym.Env):
         if self.grid_map[i, j] == 5:
             done = True
 
-            reward += 500
+            reward += 5000
             #self.ret += reward
 
         if wall_hit:
