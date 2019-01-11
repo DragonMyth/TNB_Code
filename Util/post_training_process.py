@@ -28,6 +28,7 @@ import baselines.common.tf_util as U
 import itertools
 from keras.models import load_model
 from gym import wrappers
+import seaborn as sns
 
 
 def policy_fn(name, ob_space, ac_space):  # pylint: disable=W0613
@@ -387,49 +388,73 @@ def collect_rollouts_from_dir(env_name, num_policies, output_name, ignoreObs, po
         return save_dir
 
 
-def render_policy(env, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl", stoch=False,
-                  record=False, policy_func=policy_fn, autoencoder_name_list=[], random_policy=False):
+def render_policy(env_name, action_skip=1, save_path=False, save_filename="path_finding_policy_rollout_1.pkl",
+                  stoch=False,
+                  record=False, policy_func=policy_fn, autoencoder_name_list=[], random_policy=False, num_runs=1):
     if not random_policy:
         root = tkinter.Tk()
         # root.update()
         openFileOption = {}
-        openFileOption['initialdir'] = '../data/ppo_' + env
-        filename = askopenfilename(**openFileOption)
+        openFileOption['initialdir'] = '../data/ppo_' + env_name
+        filenames = askopenfilenames(**openFileOption)
         root.update()
 
         # DartFlatworm
         # DartHumanSwim
         # environment = "DartTurtle-v3"
-        print(filename)
-        policy_param = joblib.load(filename)
+        env = gym.make(env_name)
 
-        snapshot_dir = filename[0:filename.rfind('/') + 1]
+        for i in range(len(filenames)):
+            filename = filenames[i]
+            print(filename)
+            policy_param = joblib.load(filename)
 
-        # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
-        with U.single_threaded_session() as sess:
-            env = gym.make(env)
-            autoencoder_list = []
-            for autoencoder_name in autoencoder_name_list:
-                autoencoder_list.append(load_model(autoencoder_name))
+            snapshot_dir = filename[0:filename.rfind('/') + 1]
 
-            env.env.novel_autoencoders = autoencoder_list
+            # env = gym.wrappers.Monitor(env, snapshot_dir, force=True)
+            tf.reset_default_graph()
 
-            pi = policy_func('pi', env.observation_space, env.action_space)
+            with U.single_threaded_session() as sess:
+                # env = gym.make(env_name)
+                autoencoder_list = []
+                for autoencoder_name in autoencoder_name_list:
+                    autoencoder_list.append(load_model(autoencoder_name))
 
-            restore_policy(sess, pi, policy_param)
+                env.env.novel_autoencoders = autoencoder_list
 
-            # summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
-            path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=True,
-                                   stochastic=stoch,
-                                   control_step_skip=action_skip,
-                                   saved_rollout_path=None,
-                                   record=record
+                current_palette = sns.color_palette()
+                color = current_palette[i]
+                env.env.trail_color = color
+                # if i == 0:
+                #     env.env.trail_color = (1, 0, 0)
+                # elif i == 1:
+                #     env.env.trail_color = (0, 1, 0)
+                # elif i == 2:
+                #     env.env.trail_color = (0, 0, 1)
+                # elif i == 3:
+                #     env.env.trail_color = (1, 0, 1)
+                # else:
+                #     env.env.trail_color = (0, 0, 0)
 
-                                   )
+                pi = policy_func('pi', env.observation_space, env.action_space)
+
+                restore_policy(sess, pi, policy_param)
+
+                # summary_writer = tf.summary.FileWriter('./tflog', graph=sess.graph)
+                if not stoch:
+                    num_runs = 1
+                for r in range(num_runs):
+                    path = perform_rollout(pi, env, snapshot_dir=snapshot_dir, animate=True, plot_result=False,
+                                           stochastic=stoch,
+                                           control_step_skip=action_skip,
+                                           saved_rollout_path=None,
+                                           record=record
+
+                                           )
         if save_path:
             joblib.dump(path, save_filename)
     else:
-        env = gym.make(env)
+        env = gym.make(env_name)
 
         perform_rollout(None, env, snapshot_dir='.', animate=True, plot_result=False,
                         stochastic=stoch,

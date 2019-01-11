@@ -30,12 +30,12 @@ from Util.post_training_process import *
 
 
 def render_reacher():
-    render_policy('DartReacher3d-v1', stoch=False, record=True,
-                  autoencoder_name_list=[])
+    render_policy('DartReacher3d-v1', stoch=True, record=True,
+                  autoencoder_name_list=[], num_runs=3)
 
 
 def render_deceptive_reacher(random=False):
-    render_policy('DartReacher3d-v2', stoch=False, record=True,
+    render_policy('DartReacher3d-v2', stoch=True, record=True,
                   autoencoder_name_list=[], random_policy=random)
 
 
@@ -53,14 +53,14 @@ def render_turtles():
 
 def render_deceptive_maze():
     autoencoder_list = []
-    render_policy('PathFindingDeceptive-v0', stoch=False, record=True,
-                  autoencoder_name_list=[])
+    render_policy('PathFindingDeceptive-v0', stoch=True, record=True,
+                  autoencoder_name_list=[], num_runs=1)
 
 
 def render_four_way_maze():
     autoencoder_list = []
-    render_policy('SimplerPathFinding-v0', stoch=False, record=True,
-                  autoencoder_name_list=[])
+    render_policy('SimplerPathFinding-v0', stoch=True, record=True,
+                  autoencoder_name_list=[], num_runs=5)
 
 
 def render_humanoid():
@@ -83,7 +83,7 @@ def render_2d_walker():
                   autoencoder_name_list=[], random_policy=False)
 
 
-# render_four_way_maze()
+render_four_way_maze()
 # render_point_mass_wandering()
 
 # render_2d_walker()
@@ -91,6 +91,6 @@ def render_2d_walker():
 # render_turtles()
 # render_humanoid()
 # render_deceptive_maze()
-render_deceptive_reacher()
+# render_deceptive_reacher()
 # render_reacher()
 # render_hopper()
