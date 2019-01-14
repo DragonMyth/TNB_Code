@@ -307,6 +307,8 @@ def learn(env, policy_fn, *,
         novel_gradient_mag = []
         task_gradients = []
         novel_gradients = []
+        same_dir_cnt = 0
+        oppo_dir_cnt = 0
         # Here we do a bunch of optimization epochs over the data
 
         for _ in range(optim_epochs):
@@ -431,6 +433,8 @@ def learn(env, policy_fn, *,
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
         logger.record_tabular("RelativeDirection", np.array(same_update_direction).mean())
+        logger.record_tabular("SameDirectionCount", same_dir_cnt)
+        logger.record_tabular("OppoDirectionCount", oppo_dir_cnt)
         logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         logger.record_tabular("NoveltyGradMag", np.array(novel_gradient_mag).mean())
 
