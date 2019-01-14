@@ -307,6 +307,8 @@ def learn(env, policy_fn, *,
         novel_gradient_mag = []
         task_gradients = []
         novel_gradients = []
+        same_dir_cnt = 0
+        oppo_dir_cnt = 0
         # Here we do a bunch of optimization epochs over the data
 
         for _ in range(optim_epochs):
@@ -385,6 +387,7 @@ def learn(env, policy_fn, *,
                 # adv_dots = np.dot(adv_task_normalized, adv_novel_normalized)
                 # print('Dot',dot,'Adv_dot',adv_dots)
                 if (dot > 0):
+                    same_dir_cnt += 1
                     bisector_no_noise = (pol_g_reduced_normalized + pol_g_novel_reduced_normalized)
                     bisector_no_noise_normalized = bisector_no_noise / np.linalg.norm(bisector_no_noise)
                     # quarterSector_no_noise = (pol_g_reduced_normalized + bisector_no_noise_normalized)
@@ -400,7 +403,7 @@ def learn(env, policy_fn, *,
 
                     adam_all.update(final_gradient, optim_stepsize * cur_lrmult)
                 else:
-
+                    oppo_dir_cnt += 1
                     task_projection_no_noise = np.dot(pol_g_reduced,
                                                       pol_g_novel_reduced_normalized) * pol_g_novel_reduced_normalized
 
@@ -446,6 +449,8 @@ def learn(env, policy_fn, *,
         logger.record_tabular("TimestepsSoFar", timesteps_so_far)
         logger.record_tabular("TimeElapsed", time.time() - tstart)
         logger.record_tabular("RelativeDirection", np.array(same_update_direction).mean())
+        logger.record_tabular("SameDirectionCount", same_dir_cnt)
+        logger.record_tabular("OppoDirectionCount", oppo_dir_cnt)
         logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         logger.record_tabular("NoveltyGradMag", np.array(novel_gradient_mag).mean())
 
