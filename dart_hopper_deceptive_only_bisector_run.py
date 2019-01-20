@@ -8,10 +8,11 @@ from Util.post_training_process import *
 if __name__ == '__main__':
     cpu_count = 8  # multiprocessing.cpu_count()
     num_sample_per_iter = 12000
+
     num_trajs_per_pol = 100
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
+    parser.add_argument('--env', help='environment ID', default='DartHopper-v2')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
@@ -20,21 +21,23 @@ if __name__ == '__main__':
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data',
-                        default='DartReacher3d-v1')
+                        default='DartHopper-v2')
+
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
-    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=16)
+    parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=5)
 
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=2)
+                        default=3)
     parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
                         default=1)
+
     args = parser.parse_args()
     env_name = args.env
     seed = args.seed
@@ -45,12 +48,12 @@ if __name__ == '__main__':
     # qnorm = 2 * np.pi
     # dqnorm = 50
 
-    norm_scale = np.array([5, np.pi, 5, 5])
+    norm_scale = np.array([3, np.pi / 3.0, 3, 10])
     norm_scale_str = ''
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(0,5,1):
+    for s in range(5):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()
@@ -121,7 +124,7 @@ if __name__ == '__main__':
                 seed) + '_run_' + str(
                 curr_run) + '_visited_plot.png'
 
-            #plot_path_data(collected_data_filename, plot_save_dir)
+            plot_path_data(collected_data_filename, plot_save_dir)
 
             train_autoencoder = subprocess.call('OMP_NUM_THREADS="1" python ./Util/train_traj_autoencoder.py'
                                                 + ' --env ' + str(args.env)
@@ -135,5 +138,4 @@ if __name__ == '__main__':
                                                 + ' --norm_scales ' + str(norm_scale_str)
                                                 + ' --run_dir ' + str(seed_root_dir)
                                                 , shell=True
-
                                                 )

@@ -23,7 +23,7 @@ if __name__ == '__main__':
                         default='DartReacher3d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 100
+    num_epoch = 200
     batch_size = 1024
 
     # qnorm = 2 * np.pi

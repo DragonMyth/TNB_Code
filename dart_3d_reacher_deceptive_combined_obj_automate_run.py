@@ -11,7 +11,7 @@ if __name__ == '__main__':
     num_trajs_per_pol = 100
     print("Number of processes: ", cpu_count)
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v1')
+    parser.add_argument('--env', help='environment ID', default='DartReacher3d-v2')
     parser.add_argument('--seed', help='RNG seed', type=int, default=0)
     parser.add_argument('--batch_size_per_process',
                         help='Number of samples collected for each process at each iteration',
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_iterations', help='Number of iterations need to be run', default=500)
 
     parser.add_argument('--data_collect_env', help='Environment used to collect data',
-                        default='DartReacher3d-v1')
+                        default='DartReacher3d-v2')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
     parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
@@ -32,13 +32,13 @@ if __name__ == '__main__':
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=2)
+                        default=3)
     parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
                         default=1)
+
     args = parser.parse_args()
     env_name = args.env
-    seed = args.seed
-
+    # seed = args.seed
     num_epoch = 200
     batch_size = 1024
 
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(0,5,1):
-        seed = s * 13 + 7 * (s ** 2)
+    for s in range(0, 5, 1):
+        seed = s * 17 + 5 * (s ** 2)
 
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
@@ -77,7 +77,7 @@ if __name__ == '__main__':
                     seed) + '/ppo_' + env_name + '_run_' + str(curr_run)
                 train_policy = subprocess.call(
                     'OMP_NUM_THREADS="1" mpirun -np ' + str(
-                        cpu_count) + ' python ./running_regimes/two_objs_policy_train_only_bisector.py'
+                        cpu_count) + ' python ./running_regimes/combined_single_obj_policy_train.py'
                     + ' --env ' + args.env
                     + ' --seed ' + str(seed)
                     + ' --curr_run ' + curr_run

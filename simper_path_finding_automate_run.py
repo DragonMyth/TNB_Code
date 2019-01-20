@@ -28,7 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=3)
+                        default=2)
     parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
                         default=1)
 
@@ -46,11 +46,11 @@ if __name__ == '__main__':
     batch_size = 1024
     # qnorm = 10
     # dqnorm = 10
-    for s in range(5):
+    for s in range(3,5,1):
         seed = s * 13 + 7 * (s ** 2)
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
-        for i in range(0, 5, 1):
+        for i in range(0, 4, 1):
             # i = 0
             curr_run = str(i)
 
