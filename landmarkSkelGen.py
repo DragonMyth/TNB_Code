@@ -17,7 +17,7 @@ print(ElementTree.tostring(root))
 # print(pretty_xml_as_string)
 num_landmarks = 20
 root = ElementTree.Element("SkeletonHolder")
-landmarkSize = [1, 5, 1]
+landmarkSize = [0.2, 5, 1]
 color = [1, 0, 0, 1]
 
 for i in range(num_landmarks):

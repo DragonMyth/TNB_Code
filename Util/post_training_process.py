@@ -558,29 +558,35 @@ def plot_path_data(path_dir=None, save_dir=None):
             filenames = [path_dir]
 
         dataset = []
-        for file in filenames:
+        for f in range(len(filenames)):
+            file = filenames[f]
+            dataset = []
             dataset.extend(joblib.load(file))
-        dataset = np.array(dataset)
+            dataset = np.array(dataset)
 
-        np.random.shuffle(dataset)
+            np.random.shuffle(dataset)
 
-        plot.figure()
+            plot.figure()
 
-        max_data = min(5000, len(dataset))
-        for i in range(max_data):
-            # for data in dataset:
-            if (len(dataset[0, :, 0] > 1)):
-                plot.plot(dataset[i, :, 0], dataset[i, :, 1])
+            max_data = min(5000, len(dataset))
+            for i in range(max_data):
+                # for data in dataset:
+                if (len(dataset[0, :, 0] > 1)):
+                    plot.plot(dataset[i, :, 0], dataset[i, :, 1])
+                else:
+                    plot.scatter(dataset[i, 0, 0], dataset[i, 0, 1])
+            axes = plot.gca()
+            axes.set_ylim([-2.5, 2.5])
+            axes.set_xlim([-2.5, 2.5])
+
+            if not save_dir:
+                # plot.show()
+                import os
+                lalal=os.path.dirname(file)+'/plots/'+str(f)
+                print(lalal)
+                plot.savefig(lalal)
             else:
-                plot.scatter(dataset[i, 0, 0], dataset[i, 0, 1])
-        axes = plot.gca()
-        axes.set_ylim([-2.5, 2.5])
-        axes.set_xlim([-2.5, 2.5])
-
-        if not save_dir:
-            plot.show()
-        else:
-            plot.savefig(save_dir)
+                plot.savefig(save_dir)
 
 
 def restore_policy(sess, policy, policy_params):

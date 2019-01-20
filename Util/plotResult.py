@@ -49,7 +49,7 @@ def plot_progress():
 
     AverageReturns = np.array(data_lookup[category_idx_lookup['EpRewMean']])
     EpRNoveltyRewMean = np.array(data_lookup[category_idx_lookup['EpRNoveltyRewMean']])
-    # # RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
+    RelativeDirection = np.array(data_lookup[category_idx_lookup['RelativeDirection']])
     # TaskGradientMag = np.array(data_lookup[category_idx_lookup['TaskGradMag']])
     # NoveltyGradientMag = np.array(data_lookup[category_idx_lookup['NoveltyGradMag']])
     # MaxReturns = data_lookup[category_idx_lookup['MaxReturn']]
@@ -91,19 +91,19 @@ def plot_progress():
 
     plot.show()
 
-    # plot.figure()
-    #
-    # # plot.hist(RelativeDirection, stacked=True, bins=30)
-    # plot.xlabel('Relative Directions')
-    # plot.ylabel('Probability')
-    #
+    plot.figure()
+
+    plot.hist(RelativeDirection, stacked=True, bins=30)
+    plot.xlabel('Relative Directions')
+    plot.ylabel('Probability')
+
+    plot.legend()
+    plot.yscale('linear')
+    plot.xscale('linear')
     # plot.legend()
-    # plot.yscale('linear')
-    # plot.xscale('linear')
-    # # plot.legend()
-    # plot.savefig(snapshot_dir + '/relative_direction_prob' + '.jpg')
-    #
-    # plot.show()
+    plot.savefig(snapshot_dir + '/relative_direction_prob' + '.jpg')
+
+    plot.show()
     #
     # plot.figure()
     #

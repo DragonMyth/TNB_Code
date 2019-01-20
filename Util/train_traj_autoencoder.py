@@ -81,6 +81,9 @@ class Autoencoder():
                                        batch_size=batchsize,
                                        shuffle=True,
                                        )
+        self.autoencoder.name = model_filename
+        # self.autoencoder.save('./novelty_data/local/autoencoders/' + model_filename)
+        self.autoencoder.save(self.save_dir + '/' + model_filename)
         # validation_data=(x_test, x_test))
         # list all data in history
         print(history.history.keys())
@@ -106,9 +109,9 @@ class Autoencoder():
         # encoded_input = Input(shape=(encoding_dim,))
         # decoded_layer = self.autoencoder.layers[-1]
 
-        self.autoencoder.name = model_filename
+        # self.autoencoder.name = model_filename
         # self.autoencoder.save('./novelty_data/local/autoencoders/' + model_filename)
-        self.autoencoder.save(self.save_dir + '/' + model_filename)
+        # self.autoencoder.save(self.save_dir + '/' + model_filename)
 
     # def vis_data_in_motion():
 
