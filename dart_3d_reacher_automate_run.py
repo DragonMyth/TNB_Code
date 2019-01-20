@@ -23,7 +23,7 @@ if __name__ == '__main__':
                         default='DartReacher3d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
@@ -50,14 +50,14 @@ if __name__ == '__main__':
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(5):
+    for s in range(10,30,1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()
         st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
         specified_time = None
-        for i in range(0, 5, 1):
+        for i in range(0, 1, 1):
             # i = 0
             curr_run = str(i)
 

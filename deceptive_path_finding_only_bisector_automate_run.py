@@ -42,7 +42,7 @@ if __name__ == '__main__':
     batch_size = 1024
     # qnorm = 10
     # dqnorm = 10
-    for s in range(5):
+    for s in range(15,20,1):
         # s = 1
         seed = s * 13 + 7 * (s ** 2)
 
