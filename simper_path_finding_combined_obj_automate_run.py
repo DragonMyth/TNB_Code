@@ -20,7 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_collect_env', help='Environment used to collect data', default='SimplerPathFinding-v0')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=200)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=205)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
     parser.add_argument('--ignore_obs', help='Number of Dimensions in the obs that are ignored', default=0)
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_states_per_data', help='Number of states to concatenate within a trajectory segment',
                         default=15)
     parser.add_argument('--obs_skip_per_state', help='Number of simulation steps to skip between consecutive states',
-                        default=3)
+                        default=2)
     parser.add_argument('--control_step_skip', help='Number of simulation steps sharing the same control signal',
                         default=1)
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
                 seed) + '_run_' + str(
                 curr_run) + '_visited_plot.png'
 
-            plot_path_data(collected_data_filename, plot_save_dir)
+            #plot_path_data(collected_data_filename, plot_save_dir)
 
             train_autoencoder = subprocess.call('OMP_NUM_THREADS="1" python ./Util/train_traj_autoencoder.py'
                                                 + ' --env ' + str(args.env)

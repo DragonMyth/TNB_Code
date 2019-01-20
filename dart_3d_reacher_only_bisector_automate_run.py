@@ -23,7 +23,7 @@ if __name__ == '__main__':
                         default='DartReacher3d-v1')
     parser.add_argument('--collect_policy_gap', help='Gap between policies used to collect trajectories', default=5)
     parser.add_argument('--collect_policy_num', help='Number of policies used to collect trajectories', default=10)
-    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=450)
+    parser.add_argument('--collect_policy_start', help='First policy used to collect trajectories', default=455)
     parser.add_argument('--collect_num_of_trajs', help='Number of trajectories collected per process per policy',
                         default=int(num_trajs_per_pol / cpu_count))
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     env_name = args.env
     seed = args.seed
 
-    num_epoch = 100
+    num_epoch = 200
     batch_size = 1024
 
     # qnorm = 2 * np.pi
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     for i in norm_scale:
         norm_scale_str += str(i) + ' '
 
-    for s in range(5):
+    for s in range(0,5,1):
         seed = s * 13 + 7 * (s ** 2)
 
         ts = time.time()
@@ -121,7 +121,7 @@ if __name__ == '__main__':
                 seed) + '_run_' + str(
                 curr_run) + '_visited_plot.png'
 
-            plot_path_data(collected_data_filename, plot_save_dir)
+            #plot_path_data(collected_data_filename, plot_save_dir)
 
             train_autoencoder = subprocess.call('OMP_NUM_THREADS="1" python ./Util/train_traj_autoencoder.py'
                                                 + ' --env ' + str(args.env)
