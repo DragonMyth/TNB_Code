@@ -115,7 +115,7 @@ class SimplerPathFinding(gym.Env):
         self.normScale = self.generateNormScaleArr([4, 10])
 
         self.stepNum = 0
-        self.recordGap = 3
+        self.recordGap = 2
 
         init_obs = self._get_obs()
         self.novelty_window_size = 15
