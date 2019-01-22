@@ -15,255 +15,255 @@
                     <transformation>0 0 0 0 0 0</transformation>
                     <geometry>
                         <box>
-                            <size>500.0 0.05 5.0</size>
+                            <size>500.0 0.05 1.0</size>
                         </box>
                     </geometry>
-                    <color>0.5 0.5 0.5 1.0 </color>
+                    <color>0.9 0.9 0.9 1.0 </color>
                 </visualization_shape>
                 <collision_shape>
                     <transformation>0 0 0 0 0 0</transformation>
                     <geometry>
                         <box>
-                            <size>500.0 0.05 5.0</size>
+                            <size>500.0 0.05 1.0</size>
                         </box>
                     </geometry>
                 </collision_shape>                                
             </body>
-            <body name="landmark_0">
-		<transformation>0 0 -5 0 0 0</transformation>
+            	<body name="landmark_0">
+		<transformation>-50 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_1">
-		<transformation>5 0 -5 0 0 0</transformation>
+		<transformation>-45 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_2">
-		<transformation>10 0 -5 0 0 0</transformation>
+		<transformation>-40 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_3">
-		<transformation>15 0 -5 0 0 0</transformation>
+		<transformation>-35 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_4">
-		<transformation>20 0 -5 0 0 0</transformation>
+		<transformation>-30 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_5">
-		<transformation>25 0 -5 0 0 0</transformation>
+		<transformation>-25 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_6">
-		<transformation>30 0 -5 0 0 0</transformation>
+		<transformation>-20 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_7">
-		<transformation>35 0 -5 0 0 0</transformation>
+		<transformation>-15 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_8">
-		<transformation>40 0 -5 0 0 0</transformation>
+		<transformation>-10 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_9">
-		<transformation>45 0 -5 0 0 0</transformation>
+		<transformation>-5 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_10">
-		<transformation>50 0 -5 0 0 0</transformation>
+		<transformation>0 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_11">
-		<transformation>55 0 -5 0 0 0</transformation>
+		<transformation>5 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_12">
-		<transformation>60 0 -5 0 0 0</transformation>
+		<transformation>10 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_13">
-		<transformation>65 0 -5 0 0 0</transformation>
+		<transformation>15 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_14">
-		<transformation>70 0 -5 0 0 0</transformation>
+		<transformation>20 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_15">
-		<transformation>75 0 -5 0 0 0</transformation>
+		<transformation>25 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_16">
-		<transformation>80 0 -5 0 0 0</transformation>
+		<transformation>30 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_17">
-		<transformation>85 0 -5 0 0 0</transformation>
+		<transformation>35 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_18">
-		<transformation>90 0 -5 0 0 0</transformation>
+		<transformation>40 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
 		</visualization_shape>
 	</body>
 	<body name="landmark_19">
-		<transformation>95 0 -5 0 0 0</transformation>
+		<transformation>45 0 -5 0 0 0</transformation>
 		<visualization_shape>
 			<transformation>0 0 0 0 0 0</transformation>
 			<geometry>
 				<box>
-					<size>1 5 1</size>
+					<size>0.2 5 1</size>
 				</box>
 			</geometry>
 			<color>1 0 0 1</color>
@@ -349,6 +349,8 @@
 		<parent>world</parent>
 		<child>landmark_19</child>
 	</joint>
+
+
             <joint type="free" name="joint 1">
                 <parent>world</parent>
                 <child>ground</child>
@@ -414,6 +416,7 @@
                             <radius>0.05</radius>
                         </capsule>
                     </geometry>
+                    <color>1 0 1</color>
                 </visualization_shape>
                 <collision_shape>
                     <transformation>0.0 -0.225 0.0 1.57079632679 0.0 0.0</transformation>

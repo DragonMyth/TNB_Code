@@ -351,12 +351,13 @@ class SimplerPathFinding(gym.Env):
 
                     elif (2 <= self.grid_map[i, j] <= 5):
 
-                        cell.set_color((self.grid_map[i, j] - 1) / 4.0, 0, 0)
+                        cell.set_color(((self.grid_map[i, j] - 1) / 4.0) ** 0.6, 0, 0)
 
                     elif (6 <= self.grid_map[i, j] <= 9):
 
-                        cell.set_color(((self.grid_map[i, j] - 5) / 4.0), ((self.grid_map[i, j] - 5) / 4.0),
-                                       ((self.grid_map[i, j] - 5) / 4.0))
+                        cell.set_color(((self.grid_map[i, j] - 5) / 4.0) ** 0.6 - 0.05,
+                                       ((self.grid_map[i, j] - 5) / 4.0) ** 0.6 - 0.05,
+                                       ((self.grid_map[i, j] - 5) / 4.0) ** 0.6 - 0.05)
                     elif (self.grid_map[i, j] == -1):
 
                         cell.set_color(1, 0, 0)
@@ -367,22 +368,22 @@ class SimplerPathFinding(gym.Env):
 
                     self.viewer.add_geom(cell)
 
-                    if draw_cell_edge:
-                        left_edge = rendering.FilledPolygon([(l - 1, b), (l - 1, t), (l + 1, t), (l + 1, b)])
-                        #
-                        bottom_edge = rendering.FilledPolygon([(l, b - 1), (l, b + 1), (r, b + 1), (r, b - 1)])
-
-                        right_edge = rendering.FilledPolygon([(r - 1, b), (r - 1, t), (r + 1, t), (r + 1, b)])
-
-                        top_edge = rendering.FilledPolygon([(l, t - 1), (l, t + 1), (r, t + 1), (r, t - 1)])
-
-                        # right_edge.set_color(.3, .3, .3)
-                        # bottom_edge.set_color(.3, .3, .3)
-
-                        self.viewer.add_geom(right_edge)
-                        self.viewer.add_geom(bottom_edge)
-                        self.viewer.add_geom(left_edge)
-                        self.viewer.add_geom(top_edge)
+                    # if draw_cell_edge:
+                    #     left_edge = rendering.FilledPolygon([(l - 1, b), (l - 1, t), (l + 1, t), (l + 1, b)])
+                    #     #
+                    #     bottom_edge = rendering.FilledPolygon([(l, b - 1), (l, b + 1), (r, b + 1), (r, b - 1)])
+                    #
+                    #     right_edge = rendering.FilledPolygon([(r - 1, b), (r - 1, t), (r + 1, t), (r + 1, b)])
+                    #
+                    #     top_edge = rendering.FilledPolygon([(l, t - 1), (l, t + 1), (r, t + 1), (r, t - 1)])
+                    #
+                    #     # right_edge.set_color(.3, .3, .3)
+                    #     # bottom_edge.set_color(.3, .3, .3)
+                    #
+                    #     self.viewer.add_geom(right_edge)
+                    #     self.viewer.add_geom(bottom_edge)
+                    #     self.viewer.add_geom(left_edge)
+                    #     self.viewer.add_geom(top_edge)
 
             q = self.point_pos
 
@@ -391,19 +392,12 @@ class SimplerPathFinding(gym.Env):
             q_y = screen_height / 2
 
             point_mass = rendering.FilledPolygon(
-                [(q_x - 2, q_y - 2), (q_x - 2, q_y + 2), (q_x + 2, q_y + 2), (q_x + 2, q_y - 2)])
-            point_mass.set_color(0, 0, 1)
+                [(q_x - 5, q_y - 5), (q_x - 5, q_y + 5), (q_x + 5, q_y + 5), (q_x + 5, q_y - 5)])
+            point_mass.set_color(0, 1, 1)
             self.point_mass_trans = rendering.Transform()
             point_mass.add_attr(self.point_mass_trans)
 
             self.viewer.add_geom(point_mass)
-
-        q = self.point_pos
-
-        q_x = (q[0] / self.grid_size * self.grid_vis_size)
-        q_y = (q[1] / self.grid_size * self.grid_vis_size)
-
-        self.point_mass_trans.set_translation(q_x, q_y)
 
         if len(self.path_data) == 2:
             point_1 = self.path_data[0][0]
@@ -436,6 +430,12 @@ class SimplerPathFinding(gym.Env):
 
             self.viewer.add_geom(path_segment)
 
+        q = self.point_pos
+
+        q_x = (q[0] / self.grid_size * self.grid_vis_size)
+        q_y = (q[1] / self.grid_size * self.grid_vis_size)
+
+        self.point_mass_trans.set_translation(q_x, q_y)
         return self.viewer.render(return_rgb_array=mode == 'rgb_array')
 
     def pos_to_grid_idx(self, pos):

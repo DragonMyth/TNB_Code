@@ -33,6 +33,11 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         self.ignore_obs = 5
         self.normScale = self.generateNormScaleArr([3, np.pi / 3.0, 3, 10])
 
+        # self.metadata = {
+        #     'render.modes': ['human', 'rgb_array'],
+        #     'video.frames_per_second': 30
+        # }
+
     def generateNormScaleArr(self, norm_scales):
         norms = np.zeros(len(self._get_obs()[self.ignore_obs::]))
 
@@ -87,8 +92,7 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         reward -= 5e-1 * joint_limit_penalty
 
         s = self.state_vector()
-        done = not (np.isfinite(s).all() and (np.abs(s[2:]) < 100).all() and
-                    (height > .7) and (height < 8.8) and (abs(ang) < 2))
+        done = not (np.isfinite(s).all() and (np.abs(s[2:]) < 100).all() and (height > .7) and (height < 8.8) and (abs(ang) < 2))
 
         ob = self._get_obs()
         # 1. single obj run 500
@@ -118,7 +122,11 @@ class DartHopperDeceptiveEnv(dart_env.DartEnv, utils.EzPickle):
         return state
 
     def viewer_setup(self):
-        self._get_viewer().scene.tb.trans[2] = -5.5
+        self._get_viewer().scene.tb._set_theta(0)
+        self._get_viewer().scene.tb.trans[1] = -1.2
+        self._get_viewer().scene.tb.trans[2] = -4
+
+        # self.track_skeleton_id = 0
 
     def normalizeTraj(self, traj):
 

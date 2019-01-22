@@ -27,6 +27,7 @@ class ReacherTrailWorld(pydart.World):
 
                 p0 = trail[i][0]
                 p1 = trail[i + 1][0]
+                ri.set_line_width(5)
                 ri.render_line(p0, p1)
 
     def reset(self):

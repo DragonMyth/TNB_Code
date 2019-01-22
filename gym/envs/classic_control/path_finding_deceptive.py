@@ -62,7 +62,7 @@ class PathFindingDeceptive(gym.Env):
         # This scale is for torque output
         self.torque_scale = 250
 
-        self.obs_dim = 6
+        self.obs_dim = 4
 
         self.action_dim = 2
         action_high = np.ones(self.action_dim)
@@ -104,7 +104,7 @@ class PathFindingDeceptive(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
-        self.ignore_obs =  2
+        self.ignore_obs = 2
 
         self.ret = 0
         self.normScale = self.generateNormScaleArr([4, 10])
@@ -159,7 +159,7 @@ class PathFindingDeceptive(gym.Env):
         i, j = self.pos_to_grid_idx(pos_after)
         # print(pos_after)
         # print(self.goal_pos)
-        alive_penalty =-2  # -1  # - self.stepNum
+        alive_penalty = -2  # -1  # - self.stepNum
         reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
         reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
@@ -173,7 +173,7 @@ class PathFindingDeceptive(gym.Env):
             done = True
 
             reward += 5000
-            #self.ret += reward
+            # self.ret += reward
 
         if wall_hit:
             reward -= 10
@@ -191,7 +191,7 @@ class PathFindingDeceptive(gym.Env):
 
     def _get_obs(self):
 
-        return np.concatenate([[self.goal_pos[0] - self.point_pos[0], self.goal_pos[1] - self.point_pos[1]],
+        return np.concatenate([
                                [self.point_pos[0], self.point_pos[1]],
                                [self.point_vel[0], self.point_vel[1]]]).ravel()
 
@@ -342,8 +342,8 @@ class PathFindingDeceptive(gym.Env):
             q_y = screen_height / 2
 
             point_mass = rendering.FilledPolygon(
-                [(q_x - 2, q_y - 2), (q_x - 2, q_y + 2), (q_x + 2, q_y + 2), (q_x + 2, q_y - 2)])
-            point_mass.set_color(0, 0, 1)
+                [(q_x - 5, q_y - 5), (q_x - 5, q_y + 5), (q_x + 5, q_y + 5), (q_x + 5, q_y - 5)])
+            point_mass.set_color(0, 1, 1)
             self.point_mass_trans = rendering.Transform()
             point_mass.add_attr(self.point_mass_trans)
 
@@ -377,7 +377,7 @@ class PathFindingDeceptive(gym.Env):
             #      (point_1_x + 1, point_1_y - 1)])
 
             path_segment = rendering.Line(start=(point_1_x, point_1_y), end=(point_2_x, point_2_y))
-            path_segment.attrs[-1] = rendering.LineWidth(5)
+            path_segment.attrs[-1] = rendering.LineWidth(10)
             # print(avg_color)
             if (avg_color < 0):
 

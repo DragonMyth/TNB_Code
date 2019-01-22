@@ -31,6 +31,17 @@
         </skeleton>	
 
         <skeleton name="manipulator">
+            <body name="base">
+                <transformation>0 0.27 0 0 0 0</transformation>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.3 0.02 0.3</size>
+                        </box>
+                    </geometry>
+                    <color>0.5 0.5 0.5</color>
+                </visualization_shape>
+            </body>
             <body name="link 1">
                 <transformation>0 0 0 0 0 0</transformation>
                 <inertia>
@@ -94,6 +105,7 @@
                     </geometry>
                 </collision_shape>
             </body>
+
             <joint type="universal" name="joint 1">
                 <parent>world</parent>
                 <child>link 1</child>
@@ -163,6 +175,10 @@
                     </dynamics>
                 </axis2>
                 <transformation>0 0.25 0 0 0 0</transformation>
+            </joint>
+            <joint type="weld" name="base_joint">
+                <parent>world</parent>
+                <child>base</child>
             </joint>
         </skeleton>	
     </world>
