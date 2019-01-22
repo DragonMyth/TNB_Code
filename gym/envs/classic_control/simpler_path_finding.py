@@ -115,7 +115,7 @@ class SimplerPathFinding(gym.Env):
         self.normScale = self.generateNormScaleArr([4, 10])
 
         self.stepNum = 0
-        self.recordGap = 3
+        self.recordGap = 2
 
         init_obs = self._get_obs()
         self.novelty_window_size = 15
@@ -219,7 +219,12 @@ class SimplerPathFinding(gym.Env):
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
         self.ret += reward
-        # reward -= 1000 * novelPenn
+
+        #1. 200
+        #2. 500
+        #3. 1000
+        #4. 100
+        reward -= 100 * novelPenn
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
                                                  'Total Reward': reward}

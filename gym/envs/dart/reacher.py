@@ -84,7 +84,8 @@ class DartReacherEnv(dart_env.DartEnv, utils.EzPickle):
         # 1. Try 500
         # 2. Try 100
         # 3. Try 1000
-        # reward -= 1000 * novelPenn
+        # 4. Try 200
+        reward -= 200 * novelPenn
         # self.trail.append(self.robot_skeleton.bodynodes[2].to_world(fingertip))
 
         return ob, (reward, -novelPenn), done, {'rwd': reward,

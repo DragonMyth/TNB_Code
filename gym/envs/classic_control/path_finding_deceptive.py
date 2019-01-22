@@ -104,8 +104,7 @@ class PathFindingDeceptive(gym.Env):
         self.novelDiffRev = 0
         self.path_data = []
         self.have_goal_rew = True
-        self.ignore_obs = 2
-
+        self.ignore_obs = 0
         self.ret = 0
         self.normScale = self.generateNormScaleArr([4, 10])
 
@@ -159,7 +158,7 @@ class PathFindingDeceptive(gym.Env):
         i, j = self.pos_to_grid_idx(pos_after)
         # print(pos_after)
         # print(self.goal_pos)
-        alive_penalty = -2  # -1  # - self.stepNum
+        alive_penalty = -1  # - self.stepNum
         reward_dist = -np.linalg.norm(self.goal_pos - pos_after)
         reward = alive_penalty + reward_dist
         # reward -= self.sum_of_old
@@ -182,9 +181,11 @@ class PathFindingDeceptive(gym.Env):
         # if self.sum_of_old > 20:
         # self.have_goal_rew = False
         # self.ret += reward
-        # 1. 500
-
-        # reward -= 500 * novelPenn
+        #1. 500
+        #2. 100
+        #3. 1000
+        #4. 200
+        reward -= 200 * novelPenn
         return obs, (reward, -novelPenn), done, {'Alive penalty': alive_penalty,
                                                  'tau': tau, 'Novelty': novelRwd,
                                                  'rwd': reward}
