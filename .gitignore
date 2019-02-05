@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .idea/
 *.xml
 *.png
@@ -27,3 +28,41 @@ Final_Results/
 good_videos/
 AutoEncoder/
 .DS_Store
+=======
+*.swp
+*.pyc
+*.pkl
+*.py~
+.pytest_cache
+.DS_Store
+.idea
+
+# Setuptools distribution and build folders.
+/dist/
+/build
+keys/
+
+# Virtualenv
+/env
+
+
+*.sublime-project
+*.sublime-workspace
+
+.idea
+
+logs/
+
+.ipynb_checkpoints
+ghostdriver.log
+
+htmlcov
+
+junk
+src
+
+*.egg-info
+.cache
+
+MUJOCO_LOG.TXT
+>>>>>>> baselines/master
