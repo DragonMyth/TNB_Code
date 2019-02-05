@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .idea/
 *.xml
 *.png
@@ -28,7 +27,6 @@ Final_Results/
 good_videos/
 AutoEncoder/
 .DS_Store
-=======
 *.swp
 *.pyc
 *.pkl
@@ -36,6 +34,10 @@ AutoEncoder/
 .pytest_cache
 .DS_Store
 .idea
+*.swp
+*.pyc
+*.py~
+.DS_Store
 
 # Setuptools distribution and build folders.
 /dist/
@@ -45,6 +47,8 @@ keys/
 # Virtualenv
 /env
 
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
 
 *.sublime-project
 *.sublime-workspace
@@ -65,4 +69,17 @@ src
 .cache
 
 MUJOCO_LOG.TXT
->>>>>>> baselines/master
+junk
+MUJOCO_LOG.txt
+
+rllab_mujoco
+
+tutorial/*.html
+
+# IDE files
+.eggs
+.tox
+
+# PyCharm project files
+.idea
+vizdoom.ini

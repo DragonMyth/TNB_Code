@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+<skel version="1.0">
+    <world name="world 1">
+        <physics>
+            <time_step>0.0001</time_step>
+            <gravity>0 0 0</gravity>
+            <collision_detector>dart</collision_detector>
+        </physics>
+        <skeleton name="reference_bar">
+            <mobile>false</mobile>
+            <body name="ground">
+                <transformation>0 1 0 0 1.57 0.0</transformation>
+                <visualization_shape>
+                    <transformation>0 0 0 0 0 0</transformation>
+                    <geometry>
+                        <capsule>
+                            <height>2.0</height>
+                            <radius>0.02</radius>
+                        </capsule>
+                    </geometry>
+                    <color>0.3 0.3 0.7 1</color>
+                </visualization_shape>
+            </body>
+            <joint type="free" name="joint 1">
+                <parent>world</parent>
+                <child>ground</child>
+            </joint>
+        </skeleton>
+        <skeleton name="eel">
+            <transformation>-2 0 0 0 0 0</transformation>
+            <body name="head">
+                <transformation>0.5 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="segment_1">
+                <transformation>0.3 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="segment_2">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <body name="segment_3">
+                <transformation>-0.1 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.2 0.15 0.02</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+            <joint name="main_joint" type="free">
+                <parent>world</parent>
+                <child>head</child>
+            </joint>
+            <joint name="segment_1_joint" type="revolute">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <axis>
+                    <xyz>0 1 0</xyz>
+                </axis>
+                <parent>head</parent>
+                <child>segment_1</child>
+            </joint>
+            <joint name="segment_2_joint" type="revolute">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <axis>
+                    <xyz>0 1 0</xyz>
+                </axis>
+                <parent>segment_1</parent>
+                <child>segment_2</child>
+            </joint>
+            <joint name="segment_3_joint" type="revolute">
+                <transformation>0.1 0 0 0 0 0</transformation>
+                <axis>
+                    <xyz>0 1 0</xyz>
+                </axis>
+                <parent>segment_2</parent>
+                <child>segment_3</child>
+            </joint>
+        </skeleton>
+    </world>
+</skel>

@@ -1,0 +1,714 @@
+<?xml version="1.0" ?>
+<skel version="1.0">
+    <world name="world 1">
+        <physics>
+            <time_step>0.002</time_step>
+            <gravity>0 0 0</gravity>
+            <collision_detector>dart</collision_detector>
+        </physics>
+
+        <skeleton name="reference_bar">
+            <mobile>false</mobile>
+            <body name="ground">
+                <transformation>0 1 0 0 1.57 0.0</transformation>
+                <visualization_shape>
+                    <transformation>0 0 0 0 0 0</transformation>
+                    <geometry>
+                        <capsule>
+                            <height>2.0</height>
+                            <radius>0.02</radius>
+                        </capsule>
+                    </geometry>
+                    <color>0.3 0.3 0.7 1</color>
+                </visualization_shape>
+            </body>
+            <joint type="free" name="joint 1">
+                <parent>world</parent>
+                <child>ground</child>
+            </joint>
+        </skeleton>
+
+        <skeleton name="skeleton">
+            <transformation>-1 0 0 0 0 -1.57</transformation>
+            <body name="root">
+                <transformation>0 0 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.002</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.22 0.08 0.08</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.22 0.08 0.08</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="left_femur">
+                <transformation>-0.07 -0.14 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0008</mass>
+                </inertia>
+
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.09 0.2 0.045</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.09 0.2 0.045</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="left_fibula">
+                <transformation>-0.07 -0.35 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.075 0.22 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.075 0.22 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+             <body name="left_tarsals">
+                <transformation>-0.07 -0.585 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.00005</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.25 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.25 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+             <body name="right_femur">
+                <transformation>0.07 -0.14 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0008</mass>
+                </inertia>
+
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.09 0.2 0.045</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.09 0.2 0.045</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="right_fibula">
+                <transformation>0.07 -0.35 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.075 0.22 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.075 0.22 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+             <body name="right_tarsals">
+                <transformation>0.07 -0.585 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.00005</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.25 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.25 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="abdomen">
+                <transformation>0 0.115 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.005</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.18 0.15 0.08</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.18 0.15 0.08</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="chest">
+                <transformation>0 0.27 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.005</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.26 0.16 0.08</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.26 0.16 0.08</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="neck">
+                <transformation>0 0.365 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.001</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.04 0.05</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.05 0.04 0.05</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="head">
+                <transformation>0 0.44 0 0 0 0</transformation>
+                <inertia>
+                    <mass>0.001</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.11 0.11 0.11</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.11 0.11 0.11</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+
+            <body name="left_humerus">
+                <transformation>-0.22 0.32 0 0 0 1.57</transformation>
+                <inertia>
+                    <mass>0.0008</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.06 0.18 0.06</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.06 0.18 0.06</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="left_radius">
+                <transformation>-0.405 0.32 0 0 0 1.57</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.055 0.19 0.055</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.055 0.19 0.055</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="left_carpals">
+                <transformation>-0.55 0.32 -0.05 0 -0.6 1.57</transformation>
+                <inertia>
+                    <mass>0.00003</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.20 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.20 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+             <body name="right_humerus">
+                <transformation>0.22 0.32 0 0 0 -1.57</transformation>
+                <inertia>
+                    <mass>0.0008</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.06 0.18 0.06</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.06 0.18 0.06</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="right_radius">
+                <transformation>0.405 0.32 0 0 0 -1.57</transformation>
+                <inertia>
+                    <mass>0.0006</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.055 0.19 0.055</size>
+                        </box>
+                    </geometry>
+                    <color>0.95 0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.055 0.19 0.055</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+            <body name="right_carpals">
+                <transformation>0.55 0.32 -0.05 0 0.6 -1.57</transformation>
+                <inertia>
+                    <mass>0.00003</mass>
+                </inertia>
+                <visualization_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.20 0.03</size>
+                        </box>
+                    </geometry>
+                    <color>0.15 0.15 0.95</color>
+                </visualization_shape>
+                <collision_shape>
+                    <geometry>
+                        <box>
+                            <size>0.15 0.20 0.03</size>
+                        </box>
+                    </geometry>
+                </collision_shape>
+            </body>
+
+
+            <joint name="main_joint" type="free">
+                <parent>world</parent>
+                <child>root</child>
+            </joint>
+
+            <joint name="neck_chest_joint" type="weld">
+                <parent>chest</parent>
+                <child>neck</child>
+            </joint>
+
+            <joint name="head_neck_joint" type="weld">
+                <parent>neck</parent>
+                <child>head</child>
+            </joint>
+
+            <joint name="abdomin_root_joint" type="revolute">
+                <transformation>0 -0.075 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+
+                <parent>root</parent>
+                <child>abdomen</child>
+            </joint>
+
+            <joint name="chest_abdomen_joint" type="revolute">
+                <axis>
+                    <xyz>0 1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+                <parent>abdomen</parent>
+                <child>chest</child>
+            </joint>
+
+
+            <joint name="left_humerus_chest_joint" type="euler">
+                <transformation>0 -0.09 0 0 0 0</transformation>
+                <axis_order>zyx</axis_order>
+                <axis>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis3>
+                <!--<init_pos>1 0 0</init_pos>-->
+                <parent>chest</parent>
+                <child>left_humerus</child>
+            </joint>
+
+             <joint name="left_radius_humerus_joint" type="revolute">
+                <transformation>0 -0.095 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+
+                <init_pos>-0.1</init_pos>
+                <parent>left_humerus</parent>
+                <child>left_radius</child>
+            </joint>
+
+            <joint name="left_carpals_radius_joint" type="weld">
+
+                <parent>left_radius</parent>
+                <child>left_carpals</child>
+            </joint>
+
+            <joint name="right_humerus_chest_joint" type="euler">
+                <transformation>0 -0.09 0 0 3.14159 3.14159</transformation>
+                <axis_order>zyx</axis_order>
+                <axis>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis3>
+                <!--<init_pos>1 0 0</init_pos>-->
+                <parent>chest</parent>
+                <child>right_humerus</child>
+            </joint>
+
+             <joint name="right_radius_humerus_joint" type="revolute">
+                <transformation>0 -0.095 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+
+                <init_pos>-0.1</init_pos>
+                <parent>right_humerus</parent>
+                <child>right_radius</child>
+            </joint>
+
+            <joint name="right_carpals_radius_joint" type="weld">
+                <parent>right_radius</parent>
+                <child>right_carpals</child>
+            </joint>
+
+            <joint name="left_femur_root_joint" type="euler">
+                <transformation>0 0.1 0 0 0 0</transformation>
+                <axis_order>zyx</axis_order>
+                 <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis3>
+                <parent>root</parent>
+                <child>left_femur</child>
+            </joint>
+
+             <joint name="left_fibula_femur_joint" type="revolute">
+                <transformation>0 0.11 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
+                </axis>
+
+
+                <parent>left_femur</parent>
+                <child>left_fibula</child>
+            </joint>
+
+            <joint name="left_tarsals_febula_joint" type="universal">
+                <transformation>0 0.125 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+
+                <axis2>
+                    <xyz>0 1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+
+                <parent>left_fibula</parent>
+                <child>left_tarsals</child>
+            </joint>
+
+            <joint name="right_femur_root_joint" type="euler">
+                <transformation>0 0.1 0 0 3.14159 3.14159</transformation>
+                <axis_order>zyx</axis_order>
+                 <axis>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+                <axis2>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+                <axis3>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis3>
+                <parent>root</parent>
+                <child>right_femur</child>
+            </joint>
+
+             <joint name="right_fibula_femur_joint" type="revolute">
+                <transformation>0 0.11 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-3</lower>
+                    	<upper>0</upper>
+                    </limit>
+                </axis>
+
+  <!--               <axis2>
+                    <xyz>0 0 -1</xyz>
+                </axis2>
+ -->
+                <parent>right_femur</parent>
+                <child>right_fibula</child>
+            </joint>
+
+            <joint name="right_tarsals_febula_joint" type="universal">
+                <transformation>0 0.125 0 0 0 0</transformation>
+                <axis>
+                    <xyz>1 0 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis>
+
+                <axis2>
+                    <xyz>0 -1 0</xyz>
+                    <limit>
+                    	<lower>-1.5</lower>
+                    	<upper>1.5</upper>
+                    </limit>
+                    <dynamics>
+                        <damping>0.00005</damping>
+                    </dynamics>
+                </axis2>
+
+                <parent>right_fibula</parent>
+                <child>right_tarsals</child>
+            </joint>
+            
+        </skeleton>
+    </world>
+</skel>
