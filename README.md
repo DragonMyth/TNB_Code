@@ -6,7 +6,7 @@ Yunbo Zhang, Wenhao Yu, Greg Turk
 
 ## Dependencies
 This implementation is built on top of the following repositories:
-[OpenAi Gym]([https://github.com/openai/gym](https://github.com/openai/gym))
+[OpenAi Gym](https://github.com/openai/gym)
 [DartEnv]([https://github.com/DartEnv/dart-env](https://github.com/DartEnv/dart-env))
 [OpenAI Baselines]([https://github.com/openai/baselines](https://github.com/openai/baselines))
 
