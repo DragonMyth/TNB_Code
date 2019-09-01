@@ -2,13 +2,16 @@
 
 Yunbo Zhang, Wenhao Yu, Greg Turk
 
-#### ICML 2019  [[website]]([https://sites.google.com/view/learningnovelpolicy/home](https://sites.google.com/view/learningnovelpolicy/home))
+#### ICML 2019  [[website]](https://sites.google.com/view/learningnovelpolicy/home)
 
 ## Dependencies
 This implementation is built on top of the following repositories:
+
 [OpenAi Gym](https://github.com/openai/gym)
-[DartEnv]([https://github.com/DartEnv/dart-env](https://github.com/DartEnv/dart-env))
-[OpenAI Baselines]([https://github.com/openai/baselines](https://github.com/openai/baselines))
+
+[DartEnv](https://github.com/DartEnv/dart-env)
+
+[OpenAI Baselines](https://github.com/openai/baselines)
 
 ## Installation
 After Installation of all repos,  copy 
