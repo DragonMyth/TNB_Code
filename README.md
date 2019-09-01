@@ -2,7 +2,9 @@
 
 Yunbo Zhang, Wenhao Yu, Greg Turk
 
-#### ICML 2019  [[website]](https://sites.google.com/view/learningnovelpolicy/home)
+#### ICML 2019  
+[[website]](https://sites.google.com/view/learningnovelpolicy/home) 
+[[Paper]](https://arxiv.org/pdf/1905.05252.pdf)
 
 ## Dependencies
 This implementation is built on top of the following repositories:
