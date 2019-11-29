@@ -39,9 +39,7 @@ def traj_segment_generator(pi, env, horizon, stochastic):
     while True:
         prevac = ac
         ac, vpred, vpred_novel = pi.act(stochastic, ob)
-        if (np.isnan(vpred)):
-            print(ac)
-            print(ob)
+
         # Slight weirdness here because we need value function at time T
         # before returning segment [0, T-1] so we get the correct
         # terminal value
@@ -92,8 +90,6 @@ def add_vtarg_and_adv(seg, gamma, lam):
     """
     new = np.append(seg["new"], 0)  # last element is only used for last vtarg, but we already zeroed it if last new = 1
     vpred = np.append(seg["vpred"], seg["nextvpred"])
-    if (np.isnan(vpred).any()):
-        print("ac")
     vpred_novel = np.append(seg["vpred_novel"], seg["nextvpred_novel"])
 
     T = len(seg["rew"])
@@ -102,8 +98,7 @@ def add_vtarg_and_adv(seg, gamma, lam):
     seg["adv_novel"] = gaelam_novel = np.empty(T, 'float32')
 
     rew = seg["rew"]
-    if (np.isnan(rew).any()):
-        print("HAHAHAHAHA Reward EXPLODE!!!!!!!!!")
+
     rew_novel = seg["rew_novel"]
     lastgaelam = 0
     lastgaelam_novel = 0
@@ -111,11 +106,8 @@ def add_vtarg_and_adv(seg, gamma, lam):
     for t in reversed(range(T)):
         nonterminal = 1 - new[t + 1]
         delta = rew[t] + gamma * vpred[t + 1] * nonterminal - vpred[t]
-        if (np.isnan(delta)):
-            print('reward', rew[t])
-            print('vpred t+1', vpred[t + 1])
-            print('vpred t', vpred[t])
-            print('nonterminal', nonterminal)
+ 
+
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
 
         delta_novel = rew_novel[t] + gamma * vpred_novel[t + 1] * nonterminal - vpred_novel[t]
@@ -253,8 +245,6 @@ def learn(env, policy_fn, *,
     total_task_gradients = []
     total_novelty_gradients = []
     while True:
-        # if iters_so_far == 5:
-        #     print("BREAK PLACEHOLDER")
 
         if callback: callback(locals(), globals())
         if max_timesteps and timesteps_so_far >= max_timesteps:
@@ -320,8 +310,7 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
-                # if MPI.COMM_WORLD.Get_rank() == 0:
-                #    print(np.max(g[policy_var_count::]))
+ 
                 pol_g = g[0:policy_var_count]
                 pol_g_novel = g_novel[0:policy_var_count]
 
@@ -353,16 +342,7 @@ def learn(env, policy_fn, *,
                 pol_g_novel_reduced_no_noise_normalized = pol_g_novel_reduced_no_noise / np.linalg.norm(
                     pol_g_novel_reduced_no_noise)
 
-                if (np.isnan(batch["ob"]).any()):
-                    print("OBS is NANANANANNANANANAN")
-                if (np.isnan(batch["ac"]).any()):
-                    print("ACT is NANANANANNANANANAN")
-                if (np.isnan(batch["atarg"]).any()):
-                    print("Atarg is NANANANANAN")
-                if (np.isnan(batch["vtarg"]).any()):
-                    print("Vtarg is NANANANANNANA")
-                if (np.isnan(final_gradient).any()):
-                    print("ValueNet has NANANANANANANNANANAN")
+    
 
                 dot = np.dot(pol_g_reduced_no_noise_normalized, pol_g_novel_reduced_no_noise_normalized)
 
@@ -380,12 +360,7 @@ def learn(env, policy_fn, *,
                 pol_g_reduced_normalized = pol_g_reduced / np.linalg.norm(pol_g_reduced)
                 pol_g_novel_reduced_normalized = pol_g_novel_reduced / np.linalg.norm(pol_g_novel_reduced)
 
-                # adv_task = batch['atarg']
-                # adv_novel = batch['atarg_novel']
-                # adv_task_normalized = adv_task / np.linalg.norm(adv_task)
-                # adv_novel_normalized = adv_novel / np.linalg.norm(adv_novel)
-                # adv_dots = np.dot(adv_task_normalized, adv_novel_normalized)
-                # print('Dot',dot,'Adv_dot',adv_dots)
+     
                 if (dot > 0):
                     same_dir_cnt += 1
                     bisector_no_noise = (pol_g_reduced_normalized + pol_g_novel_reduced_normalized)
@@ -454,7 +429,6 @@ def learn(env, policy_fn, *,
         logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         logger.record_tabular("NoveltyGradMag", np.array(novel_gradient_mag).mean())
 
-        # print('Gradient shape: ',np.array(task_gradients).shape)
         task_gradients = np.array(task_gradients).mean(axis=0)
         total_task_gradients.append(task_gradients)
 
