@@ -90,6 +90,7 @@ def add_vtarg_and_adv(seg, gamma, lam):
     """
     new = np.append(seg["new"], 0)  # last element is only used for last vtarg, but we already zeroed it if last new = 1
     vpred = np.append(seg["vpred"], seg["nextvpred"])
+
     vpred_novel = np.append(seg["vpred_novel"], seg["nextvpred_novel"])
 
     T = len(seg["rew"])
@@ -106,7 +107,6 @@ def add_vtarg_and_adv(seg, gamma, lam):
     for t in reversed(range(T)):
         nonterminal = 1 - new[t + 1]
         delta = rew[t] + gamma * vpred[t + 1] * nonterminal - vpred[t]
- 
 
         gaelam[t] = lastgaelam = delta + gamma * lam * nonterminal * lastgaelam
 
@@ -246,6 +246,7 @@ def learn(env, policy_fn, *,
     total_novelty_gradients = []
     while True:
 
+
         if callback: callback(locals(), globals())
         if max_timesteps and timesteps_so_far >= max_timesteps:
             break
@@ -310,7 +311,7 @@ def learn(env, policy_fn, *,
                                                               batch["vtarg_novel"],
                                                               cur_lrmult)
 
- 
+
                 pol_g = g[0:policy_var_count]
                 pol_g_novel = g_novel[0:policy_var_count]
 
@@ -342,7 +343,7 @@ def learn(env, policy_fn, *,
                 pol_g_novel_reduced_no_noise_normalized = pol_g_novel_reduced_no_noise / np.linalg.norm(
                     pol_g_novel_reduced_no_noise)
 
-    
+
 
                 dot = np.dot(pol_g_reduced_no_noise_normalized, pol_g_novel_reduced_no_noise_normalized)
 
@@ -360,7 +361,6 @@ def learn(env, policy_fn, *,
                 pol_g_reduced_normalized = pol_g_reduced / np.linalg.norm(pol_g_reduced)
                 pol_g_novel_reduced_normalized = pol_g_novel_reduced / np.linalg.norm(pol_g_novel_reduced)
 
-     
                 if (dot > 0):
                     same_dir_cnt += 1
                     bisector_no_noise = (pol_g_reduced_normalized + pol_g_novel_reduced_normalized)
@@ -428,6 +428,7 @@ def learn(env, policy_fn, *,
         logger.record_tabular("OppoDirectionCount", oppo_dir_cnt)
         logger.record_tabular("TaskGradMag", np.array(task_gradient_mag).mean())
         logger.record_tabular("NoveltyGradMag", np.array(novel_gradient_mag).mean())
+
 
         task_gradients = np.array(task_gradients).mean(axis=0)
         total_task_gradients.append(task_gradients)
